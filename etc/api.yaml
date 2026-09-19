@@ -1,0 +1,69 @@
+Name: thinktalk-api
+Host: 0.0.0.0
+Port: 8888
+Timeout: 120000
+MaxBytes: 10485760
+
+Auth:
+  AccessSecret: ${JWT_ACCESS_SECRET}
+  AccessExpire: 604800
+  RefreshSecret: ${JWT_REFRESH_SECRET}
+  RefreshExpire: 2592000
+  RefreshAfter: 604800
+
+# 4 Consolidated RPC Services:
+UserRpc:
+  Endpoints:
+    - 127.0.0.1:8080
+  NonBlock: true
+  Timeout: 10000
+
+ContentRpc:
+  Endpoints:
+    - 127.0.0.1:9090
+  NonBlock: true
+  Timeout: 10000
+
+SocialRpc:
+  Endpoints:
+    - 127.0.0.1:8082
+  NonBlock: true
+  Timeout: 10000
+
+AgentRpc:
+  Endpoints:
+    - 127.0.0.1:8087
+  NonBlock: true
+  Timeout: 120000
+
+Redis:
+  Host: ${REDIS_HOST}:${REDIS_PORT}
+  Pass: ${REDIS_PASS}
+  Type: node
+  DB: 0
+
+BizRedis:
+  Host: ${REDIS_HOST}:${REDIS_PORT}
+  Pass: ${REDIS_PASS}
+  Type: node
+
+MinIO:
+  Endpoint: ${MINIO_ENDPOINT}
+  AccessKeyID: ${MINIO_ACCESS_KEY_ID}
+  AccessKeySecret: ${MINIO_ACCESS_KEY_SECRET}
+  BucketName: ${MINIO_BUCKET_NAME}
+  Location: zh-east-1
+  UseSSL: false
+
+Alipay:
+  AppId: "${ALIPAY_APP_ID}"
+  PrivateKey: ${ALIPAY_PRIVATE_KEY}
+  AlipayPublicKey: ${ALIPAY_PUBLIC_KEY}
+  NotifyURL: ${ALIPAY_NOTIFY_URL}
+  ReturnURL: ${ALIPAY_RETURN_URL:http://localhost:5173/member/pay-result}
+  IsProduction: false
+
+NotificationPusher:
+  Brokers:
+    - ${KAFKA_HOST}:${KAFKA_PORT}
+  Topic: thinktalk_notification

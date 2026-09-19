@@ -1,0 +1,14 @@
+Name: agent-api
+Host: 0.0.0.0
+Port: 8892
+Timeout: 120000
+
+Auth:
+  AccessSecret: ${JWT_ACCESS_SECRET}
+  AccessExpire: 604800
+
+AgentRpc:
+  Endpoints:
+    - 127.0.0.1:8092
+  NonBlock: true
+  Timeout: 120000
