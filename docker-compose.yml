@@ -1,0 +1,20 @@
+services:
+  api-thinktalk:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: api-thinktalk:latest
+    container_name: api-thinktalk
+    restart: unless-stopped
+    ports:
+      - "8888:8888"
+    volumes:
+      - ./etc:/app/etc
+    env_file:
+      - .env
+    networks:
+      - thinktalk-net
+
+networks:
+  thinktalk-net:
+    driver: bridge
