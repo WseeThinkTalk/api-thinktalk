@@ -1,0 +1,17 @@
+syntax = "v1"
+
+info (
+	title:   "ThinkTalk Unified API Gateway"
+	desc:    "聚合用户、文章、即时通讯、AI智能体、知识问答、社交互动、会员及标签的统一 API 契约"
+	author:  "ThinkTalk Team"
+	version: "v1"
+)
+
+import "user/user.api"
+import "article/article.api"
+import "chat/chat.api"
+import "agent/agent.api"
+import "qa/qa.api"
+import "social/social.api"
+import "member/member.api"
+import "tag/tag.api"

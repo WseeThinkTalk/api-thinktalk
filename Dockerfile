@@ -1,15 +1,18 @@
 FROM golang:1.26-alpine AS builder
 
-WORKDIR /build
+LABEL stage=gobuilder
 
+ENV CGO_ENABLED=0
+ENV GOOS=linux
 ENV GOPROXY=https://goproxy.cn,direct
+
+WORKDIR /build
 
 COPY go.mod go.sum ./
 RUN go mod download
 
 COPY . .
-
-RUN CGO_ENABLED=0 GOOS=linux go build -ldflags="-s -w" -o /app/api-thinktalk .
+RUN go build -ldflags="-s -w" -o /app/api-thinktalk main.go
 
 FROM alpine:3.20
 
@@ -22,5 +25,4 @@ COPY etc /app/etc
 
 EXPOSE 8888
 
-ENTRYPOINT ["/app/api-thinktalk"]
-CMD ["-f", "etc/api.yaml"]
+CMD ["./api-thinktalk", "-f", "etc/api.yaml"]

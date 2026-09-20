@@ -1,0 +1,129 @@
+syntax = "v1"
+
+type (
+	PublishQuestionRequest {
+		Title   string `json:"title"`
+		Content string `json:"content"`
+		TagIds  string `json:"tag_ids"`
+	}
+	PublishQuestionResponse {
+		QuestionId int64 `json:"question_id"`
+	}
+	AnswerQuestionRequest {
+		QuestionId int64  `json:"question_id"`
+		Content    string `json:"content"`
+	}
+	AnswerQuestionResponse {
+		AnswerId int64 `json:"answer_id"`
+	}
+	AcceptAnswerRequest {
+		QuestionId int64 `json:"question_id"`
+		AnswerId   int64 `json:"answer_id"`
+	}
+	QuestionDetailRequest {
+		QuestionId int64 `form:"question_id"`
+	}
+	QuestionListRequest {
+		AuthorId int64 `form:"author_id,optional"`
+		Cursor   int64 `form:"cursor"`
+		PageSize int64 `form:"page_size"`
+		SortType int32 `form:"sort_type,optional"`
+	}
+	QuestionItem {
+		Id         int64  `json:"id"`
+		Title      string `json:"title"`
+		Content    string `json:"content"`
+		AuthorId   int64  `json:"author_id"`
+		AnswerNum  int64  `json:"answer_num"`
+		ViewNum    int64  `json:"view_num"`
+		TagIds     string `json:"tag_ids"`
+		CreateTime int64  `json:"create_time"`
+	}
+	QuestionListResponse {
+		Items  []*QuestionItem `json:"items"`
+		Cursor int64           `json:"cursor"`
+		IsEnd  bool            `json:"is_end"`
+	}
+	QuestionDetailResponse {
+		Question *QuestionItem `json:"question"`
+	}
+	QuestionDeleteRequest {
+		QuestionId int64 `json:"question_id"`
+	}
+	AnswerListRequest {
+		QuestionId int64 `form:"question_id"`
+		Cursor     int64 `form:"cursor"`
+		PageSize   int64 `form:"page_size"`
+	}
+	AnswerItem {
+		Id         int64  `json:"id"`
+		QuestionId int64  `json:"question_id"`
+		AuthorId   int64  `json:"author_id"`
+		Content    string `json:"content"`
+		IsAccepted bool   `json:"is_accepted"`
+		LikeNum    int64  `json:"like_num"`
+		ReplyNum   int64  `json:"reply_num"`
+		CreateTime int64  `json:"create_time"`
+	}
+	AnswerListResponse {
+		Items  []*AnswerItem `json:"items"`
+		Cursor int64         `json:"cursor"`
+		IsEnd  bool          `json:"is_end"`
+	}
+	AnswerDeleteRequest {
+		AnswerId int64 `json:"answer_id"`
+	}
+	SearchQuestionsRequest {
+		Keyword  string `form:"keyword"`
+		Cursor   int64  `form:"cursor"`
+		PageSize int64  `form:"page_size"`
+	}
+	SearchQuestionItem {
+		Id         int64  `json:"id"`
+		Title      string `json:"title"`
+		Content    string `json:"content"`
+		AuthorId   int64  `json:"author_id"`
+		AnswerNum  int64  `json:"answer_num"`
+		TagIds     string `json:"tag_ids"`
+		CreateTime int64  `json:"create_time"`
+	}
+	SearchQuestionsResponse {
+		Items  []*SearchQuestionItem `json:"items"`
+		Cursor int64                 `json:"cursor"`
+		IsEnd  bool                  `json:"is_end"`
+	}
+)
+
+@server (
+	prefix: /v1/qa
+	jwt:    Auth
+	group:  qa
+)
+service api {
+	@handler PublishQuestionHandler
+	post /publish (PublishQuestionRequest) returns (PublishQuestionResponse)
+
+	@handler AnswerQuestionHandler
+	post /answer (AnswerQuestionRequest) returns (AnswerQuestionResponse)
+
+	@handler AcceptAnswerHandler
+	post /accept (AcceptAnswerRequest)
+
+	@handler QuestionsHandler
+	get /list (QuestionListRequest) returns (QuestionListResponse)
+
+	@handler QuestionDetailHandler
+	get /detail (QuestionDetailRequest) returns (QuestionDetailResponse)
+
+	@handler QuestionDeleteHandler
+	post /delete (QuestionDeleteRequest)
+
+	@handler AnswerListHandler
+	get /answers (AnswerListRequest) returns (AnswerListResponse)
+
+	@handler AnswerDeleteHandler
+	post /answer/delete (AnswerDeleteRequest)
+
+	@handler SearchQuestionsHandler
+	get /search (SearchQuestionsRequest) returns (SearchQuestionsResponse)
+}

@@ -1,0 +1,109 @@
+syntax = "v1"
+
+type (
+	MemberInfoRequest {}
+	MemberInfoResponse {
+		UserId        int64 `json:"user_id"`
+		MemberLevel   int32 `json:"member_level"`
+		ExpireAt      int64 `json:"expire_at"`
+		IsActive      bool  `json:"is_active"`
+		RemainDays    int64 `json:"remain_days"`
+	}
+	MemberRightRequest {}
+	MemberRightItem {
+		Id          int64  `json:"id"`
+		Level       int32  `json:"level"`
+		RightCode   string `json:"right_code"`
+		RightName   string `json:"right_name"`
+		Description string `json:"description"`
+		Icon        string `json:"icon"`
+	}
+	MemberRightResponse {
+		Rights []*MemberRightItem `json:"rights"`
+	}
+	MemberOrderListRequest {
+		Cursor   int64 `form:"cursor"`
+		PageSize int64 `form:"page_size"`
+	}
+	MemberOrderItem {
+		OrderId       string  `json:"order_id"`
+		UserId        int64   `json:"user_id"`
+		TargetLevel   int32   `json:"target_level"`
+		DurationMonths int32  `json:"duration_months"`
+		Amount        float64 `json:"amount"`
+		PayStatus     int32   `json:"pay_status"`
+		PayChannel    string  `json:"pay_channel"`
+		CreateTime    int64   `json:"create_time"`
+		PayTime       int64   `json:"pay_time"`
+	}
+	MemberOrderListResponse {
+		Items  []*MemberOrderItem `json:"items"`
+		Cursor int64              `json:"cursor"`
+		IsEnd  bool               `json:"is_end"`
+	}
+	UpgradeMemberRequest {
+		TargetLevel    int32 `json:"target_level"`
+		DurationMonths int32 `json:"duration_months"`
+	}
+	UpgradeMemberResponse {
+		Amount float64 `json:"amount"`
+	}
+	CreateMemberOrderRequest {
+		TargetLevel    int32  `json:"target_level"`
+		DurationMonths int32  `json:"duration_months"`
+		PayChannel     string `json:"pay_channel"`
+	}
+	CreateMemberOrderResponse {
+		OrderId string `json:"order_id"`
+		PayUrl  string `json:"pay_url"`
+	}
+	QueryOrderStatusRequest {
+		OrderId string `json:"order_id"`
+	}
+	QueryOrderStatusResponse {
+		OrderId   string `json:"order_id"`
+		PayStatus int32  `json:"pay_status"`
+	}
+)
+
+@server (
+	prefix: /v1/member
+	jwt:    Auth
+	group:  member
+)
+service api {
+	@handler MemberInfoHandler
+	get /info (MemberInfoRequest) returns (MemberInfoResponse)
+
+	@handler MemberRightHandler
+	get /right (MemberRightRequest) returns (MemberRightResponse)
+
+	@handler MemberOrderListHandler
+	get /orders (MemberOrderListRequest) returns (MemberOrderListResponse)
+}
+
+@server (
+	prefix:    /v1/member
+	jwt:       Auth
+	signature: true
+	group:     member
+)
+service api {
+	@handler UpgradeMemberHandler
+	post /upgrade (UpgradeMemberRequest) returns (UpgradeMemberResponse)
+
+	@handler CreateMemberOrderHandler
+	post /order/create (CreateMemberOrderRequest) returns (CreateMemberOrderResponse)
+
+	@handler QueryOrderStatusHandler
+	post /order/query-status (QueryOrderStatusRequest) returns (QueryOrderStatusResponse)
+}
+
+@server (
+	prefix: /v1/member/alipay
+	group:  member
+)
+service api {
+	@handler AlipayNotifyHandler
+	post /notify
+}

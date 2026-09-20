@@ -1,0 +1,120 @@
+syntax = "v1"
+
+type (
+	Token {
+		AccessToken  string `json:"access_token"`
+		AccessExpire int64  `json:"access_expire"`
+	}
+	RegisterRequest {
+		Name             string `json:"name"`
+		Mobile           string `json:"mobile"`
+		Password         string `json:"password"`
+		VerificationCode string `json:"verification_code"`
+	}
+	RegisterResponse {
+		UserId int64 `json:"user_id"`
+		Token  Token `json:"token"`
+	}
+	VerificationRequest {
+		Mobile string `json:"mobile"`
+	}
+	VerificationResponse {}
+	LoginRequest {
+		Mobile           string `json:"mobile"`
+		VerificationCode string `json:"verification_code,optional"`
+		Password         string `json:"password,optional"`
+	}
+	LoginResponse {
+		UserId int64 `json:"userId"`
+		Token  Token `json:"token"`
+	}
+	UserInfoResponse {
+		UserId       int64  `json:"user_id"`
+		Username     string `json:"username"`
+		Avatar       string `json:"avatar"`
+		Role         int64  `json:"role"`
+		DisplayId    string `json:"display_id"`
+		Bio          string `json:"bio"`
+		Gender       int32  `json:"gender"`
+		ProfileCover string `json:"profile_cover"`
+	}
+	UserProfileResponse {
+		UserId       int64  `json:"user_id"`
+		Username     string `json:"username"`
+		Avatar       string `json:"avatar"`
+		Role         int64  `json:"role"`
+		DisplayId    string `json:"display_id"`
+		Bio          string `json:"bio"`
+		Gender       int32  `json:"gender"`
+		ProfileCover string `json:"profile_cover"`
+	}
+	UpdateProfileRequest {
+		Username     string `json:"username,optional"`
+		Avatar       string `json:"avatar,optional"`
+		Bio          string `json:"bio,optional"`
+		Gender       int32  `json:"gender,optional"`
+		ProfileCover string `json:"profile_cover,optional"`
+	}
+	UpdateProfileResponse {}
+	AdminUserListRequest {
+		Cursor   int64 `form:"cursor,optional"`
+		PageSize int64 `form:"page_size,optional"`
+	}
+	AdminUserInfo {
+		UserId       int64  `json:"user_id"`
+		Username     string `json:"username"`
+		Avatar       string `json:"avatar"`
+		Role         int64  `json:"role"`
+		DisplayId    string `json:"display_id"`
+		Bio          string `json:"bio"`
+		Gender       int32  `json:"gender"`
+		ProfileCover string `json:"profile_cover"`
+	}
+	AdminUserListResponse {
+		Users  []AdminUserInfo `json:"users"`
+		Cursor int64           `json:"cursor"`
+		IsEnd  bool            `json:"is_end"`
+	}
+)
+
+@server (
+	prefix: /v1
+	group:  user
+)
+service api {
+	@handler RegisterHandler
+	post /register (RegisterRequest) returns (RegisterResponse)
+
+	@handler VerificationHandler
+	post /verification (VerificationRequest) returns (VerificationResponse)
+
+	@handler LoginHandler
+	post /login (LoginRequest) returns (LoginResponse)
+}
+
+@server (
+	prefix:    /v1/user
+	jwt:       Auth
+	signature: true
+	group:     user
+)
+service api {
+	@handler UserInfoHandler
+	get /info returns (UserInfoResponse)
+
+	@handler UpdateProfileHandler
+	post /profile/update (UpdateProfileRequest) returns (UpdateProfileResponse)
+
+	@handler UserProfileHandler
+	get /profile returns (UserProfileResponse)
+}
+
+@server (
+	prefix: /v1/admin/user
+	jwt:    Auth
+	group:  user
+)
+service api {
+	@handler AdminUserListHandler
+	get /list (AdminUserListRequest) returns (AdminUserListResponse)
+}

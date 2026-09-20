@@ -1,0 +1,133 @@
+syntax = "v1"
+
+type (
+	TagDetailRequest {
+		Id int64 `form:"id"`
+	}
+	TagItem {
+		Id          int64  `json:"id"`
+		Name        string `json:"name"`
+		Category    string `json:"category"`
+		Description string `json:"description"`
+		Icon        string `json:"icon"`
+		UseCount    int64  `json:"use_count"`
+		FollowCount int64  `json:"follow_count"`
+		IsFollowed  bool   `json:"is_followed"`
+	}
+	TagDetailResponse {
+		Tag *TagItem `json:"tag"`
+	}
+	TagListRequest {
+		Category string `form:"category,optional"`
+		Keyword  string `form:"keyword,optional"`
+		Cursor   int64  `form:"cursor"`
+		PageSize int64  `form:"page_size"`
+	}
+	TagListResponse {
+		Items  []*TagItem `json:"items"`
+		Cursor int64      `json:"cursor"`
+		IsEnd  bool       `json:"is_end"`
+	}
+	HotTagsRequest {
+		Limit int32 `form:"limit,optional"`
+	}
+	HotTagsResponse {
+		Items []*TagItem `json:"items"`
+	}
+	ResourcesByTagRequest {
+		TagId        int64  `form:"tag_id"`
+		ResourceType string `form:"resource_type,optional"`
+		Cursor       int64  `form:"cursor"`
+		PageSize     int64  `form:"page_size"`
+	}
+	ResourcesByTagResponse {
+		ResourceIds []int64 `json:"resource_ids"`
+		Cursor      int64   `json:"cursor"`
+		IsEnd       bool    `json:"is_end"`
+	}
+	TagsByResourceRequest {
+		ResourceType string `form:"resource_type"`
+		ResourceId   int64  `form:"resource_id"`
+	}
+	TagsByResourceResponse {
+		Tags []*TagItem `json:"tags"`
+	}
+	TagCreateRequest {
+		Name        string `json:"name"`
+		Category    string `json:"category"`
+		Description string `json:"description,optional"`
+		Icon        string `json:"icon,optional"`
+	}
+	TagCreateResponse {
+		Id int64 `json:"id"`
+	}
+	TagUpdateRequest {
+		Id          int64  `json:"id"`
+		Name        string `json:"name,optional"`
+		Category    string `json:"category,optional"`
+		Description string `json:"description,optional"`
+		Icon        string `json:"icon,optional"`
+	}
+	TagUpdateResponse {}
+	TagDeleteRequest {
+		Id int64 `json:"id"`
+	}
+	TagDeleteResponse {}
+	TagResourceRequest {
+		ResourceType string  `json:"resource_type"`
+		ResourceId   int64   `json:"resource_id"`
+		TagIds       []int64 `json:"tag_ids"`
+	}
+	TagResourceResponse {}
+	UntagResourceRequest {
+		ResourceType string  `json:"resource_type"`
+		ResourceId   int64   `json:"resource_id"`
+		TagIds       []int64 `json:"tag_ids"`
+	}
+	UntagResourceResponse {}
+)
+
+@server (
+	prefix: /v1/tag
+	jwt:    Auth
+	group:  tag
+)
+service api {
+	@handler TagDetailHandler
+	get /detail (TagDetailRequest) returns (TagDetailResponse)
+
+	@handler TagListHandler
+	get /list (TagListRequest) returns (TagListResponse)
+
+	@handler HotTagsHandler
+	get /hot (HotTagsRequest) returns (HotTagsResponse)
+
+	@handler ResourcesByTagHandler
+	get /resource/list (ResourcesByTagRequest) returns (ResourcesByTagResponse)
+
+	@handler TagsByResourceHandler
+	get /resource/tags (TagsByResourceRequest) returns (TagsByResourceResponse)
+}
+
+@server (
+	prefix:    /v1/tag
+	jwt:       Auth
+	signature: true
+	group:     tag
+)
+service api {
+	@handler TagCreateHandler
+	post /create (TagCreateRequest) returns (TagCreateResponse)
+
+	@handler TagUpdateHandler
+	post /update (TagUpdateRequest) returns (TagUpdateResponse)
+
+	@handler TagDeleteHandler
+	post /delete (TagDeleteRequest) returns (TagDeleteResponse)
+
+	@handler TagResourceHandler
+	post /resource/add (TagResourceRequest) returns (TagResourceResponse)
+
+	@handler UntagResourceHandler
+	post /resource/remove (UntagResourceRequest) returns (UntagResourceResponse)
+}

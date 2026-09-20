@@ -1,0 +1,347 @@
+syntax = "v1"
+
+type (
+	ThumbupRequest {
+		BizId    string `json:"biz_id"`
+		ObjId    int64  `json:"obj_id"`
+		LikeType int32  `json:"like_type"`
+	}
+	ThumbupResponse {
+		BizId     string `json:"biz_id"`
+		ObjId     int64  `json:"obj_id"`
+		LikeNum   int64  `json:"like_num"`
+		HasLikded bool   `json:"has_liked"`
+	}
+	IsThumbupRequest {
+		BizId string `form:"biz_id"`
+		ObjId int64  `form:"obj_id"`
+	}
+	IsThumbupResponse {
+		HasLiked bool  `json:"has_liked"`
+		LikeNum  int64 `json:"like_num"`
+	}
+	FollowRequest {
+		FollowId int64 `json:"follow_id"`
+	}
+	FollowResponse {}
+	UnFollowRequest {
+		FollowId int64 `json:"follow_id"`
+	}
+	UnFollowResponse {}
+	FollowListRequest {
+		Cursor   int64 `form:"cursor"`
+		PageSize int64 `form:"page_size"`
+	}
+	FollowListResponse {
+		Items  []*FollowItem `json:"items"`
+		Cursor int64         `json:"cursor"`
+		IsEnd  bool          `json:"is_end"`
+	}
+	FollowItem {
+		Id             int64  `json:"id"`
+		FollowId       int64  `json:"follow_id"`
+		FollowName     string `json:"follow_name"`
+		FollowAvatar   string `json:"follow_avatar"`
+		FollowBio      string `json:"follow_bio"`
+		IsMutualFollow bool   `json:"is_mutual_follow"`
+		CreateTime     int64  `json:"create_time"`
+	}
+	FansListRequest {
+		Cursor   int64 `form:"cursor"`
+		PageSize int64 `form:"page_size"`
+	}
+	FansListResponse {
+		Items  []*FansItem `json:"items"`
+		Cursor int64       `json:"cursor"`
+		IsEnd  bool        `json:"is_end"`
+	}
+	FansItem {
+		Id             int64  `json:"id"`
+		FansId         int64  `json:"fans_id"`
+		FansName       string `json:"fans_name"`
+		FansAvatar     string `json:"fans_avatar"`
+		FansBio        string `json:"fans_bio"`
+		IsMutualFollow bool   `json:"is_mutual_follow"`
+		CreateTime     int64  `json:"create_time"`
+	}
+	ConcernedAddRequest {
+		BizId string `json:"biz_id"`
+		ObjId int64  `json:"obj_id"`
+	}
+	ConcernedAddResponse {}
+	ConcernedCancelRequest {
+		BizId string `json:"biz_id"`
+		ObjId int64  `json:"obj_id"`
+	}
+	ConcernedCancelResponse {}
+	ConcernedCheckRequest {
+		BizId string `form:"biz_id"`
+		ObjId int64  `form:"obj_id"`
+	}
+	ConcernedCheckResponse {
+		IsConcerned bool `json:"is_concerned"`
+	}
+	ConcernedListRequest {
+		BizId    string `form:"biz_id"`
+		Cursor   int64  `form:"cursor"`
+		PageSize int64  `form:"page_size"`
+	}
+	ConcernedItem {
+		Id         int64  `json:"id"`
+		UserId     int64  `json:"user_id"`
+		BizId      string `json:"biz_id"`
+		ObjId      int64  `json:"obj_id"`
+		CreateTime int64  `json:"create_time"`
+	}
+	ConcernedListResponse {
+		Items  []*ConcernedItem `json:"items"`
+		Cursor int64            `json:"cursor"`
+		IsEnd  bool             `json:"is_end"`
+	}
+	ConcernedCountRequest {
+		BizId string `form:"biz_id"`
+		ObjId int64  `form:"obj_id"`
+	}
+	ConcernedCountResponse {
+		Count int64 `json:"count"`
+	}
+	NotificationListRequest {
+		Cursor   int64 `form:"cursor"`
+		PageSize int64 `form:"page_size"`
+	}
+	NotificationItem {
+		Id         int64  `json:"id"`
+		UserId     int64  `json:"user_id"`
+		SenderId   int64  `json:"sender_id"`
+		SenderName string `json:"sender_name"`
+		SenderAvatar string `json:"sender_avatar"`
+		MsgType    int32  `json:"msg_type"`
+		Title      string `json:"title"`
+		Content    string `json:"content"`
+		BizId      string `json:"biz_id"`
+		ObjId      int64  `json:"obj_id"`
+		IsRead     bool   `json:"is_read"`
+		CreateTime int64  `json:"create_time"`
+	}
+	NotificationListResponse {
+		Items  []*NotificationItem `json:"items"`
+		Cursor int64               `json:"cursor"`
+		IsEnd  bool                `json:"is_end"`
+	}
+	UnreadCountRequest {}
+	UnreadCountResponse {
+		Count int64 `json:"count"`
+	}
+	MarkReadRequest {
+		Id int64 `json:"id"`
+	}
+	MarkReadResponse {}
+	MarkAllReadRequest {}
+	MarkAllReadResponse {}
+	DeleteNotificationRequest {
+		Id int64 `json:"id"`
+	}
+	DeleteNotificationResponse {}
+	ReplyDetailRequest {
+		Id int64 `form:"id"`
+	}
+	ReplyDetailResponse {
+		Reply *ReplyItem `json:"reply"`
+	}
+	ReplyListRequest {
+		BizId    string `form:"biz_id"`
+		ObjId    int64  `form:"obj_id"`
+		Cursor   int64  `form:"cursor"`
+		PageSize int64  `form:"page_size"`
+	}
+	ReplyItem {
+		Id         int64        `json:"id"`
+		BizId      string       `json:"biz_id"`
+		ObjId      int64        `json:"obj_id"`
+		UserId     int64        `json:"user_id"`
+		Username   string       `json:"username"`
+		Avatar     string       `json:"avatar"`
+		Content    string       `json:"content"`
+		ParentId   int64        `json:"parent_id"`
+		LikeNum    int64        `json:"like_num"`
+		SubReplies []*ReplyItem `json:"sub_replies"`
+		CreateTime int64        `json:"create_time"`
+	}
+	ReplyListResponse {
+		Items  []*ReplyItem `json:"items"`
+		Cursor int64        `json:"cursor"`
+		IsEnd  bool         `json:"is_end"`
+	}
+	ReplyCountRequest {
+		BizId string `form:"biz_id"`
+		ObjId int64  `form:"obj_id"`
+	}
+	ReplyCountResponse {
+		Count int64 `json:"count"`
+	}
+	ReplyCreateRequest {
+		BizId    string `json:"biz_id"`
+		ObjId    int64  `json:"obj_id"`
+		Content  string `json:"content"`
+		ParentId int64  `json:"parent_id,optional"`
+	}
+	ReplyCreateResponse {
+		Id int64 `json:"id"`
+	}
+	ReplyDeleteRequest {
+		Id int64 `json:"id"`
+	}
+	ReplyDeleteResponse {}
+	AdminReplyListRequest {
+		Cursor   int64 `form:"cursor,optional"`
+		PageSize int64 `form:"page_size,optional"`
+	}
+	AdminReplyListResponse {
+		Items  []*ReplyItem `json:"items"`
+		Cursor int64        `json:"cursor"`
+		IsEnd  bool         `json:"is_end"`
+	}
+	AdminDeleteReplyRequest {
+		ReplyId int64 `json:"reply_id"`
+	}
+	AdminDeleteReplyResponse {}
+	AdminBroadcastRequest {
+		Title   string `json:"title"`
+		Content string `json:"content"`
+	}
+	AdminBroadcastResponse {}
+)
+
+@server (
+	prefix:    /v1/like
+	jwt:       Auth
+	signature: true
+	group:     social
+)
+service api {
+	@handler ThumbupHandler
+	post /thumbup (ThumbupRequest) returns (ThumbupResponse)
+
+	@handler IsThumbupHandler
+	get /thumbup (IsThumbupRequest) returns (IsThumbupResponse)
+}
+
+@server (
+	prefix:    /v1/follow
+	jwt:       Auth
+	signature: true
+	group:     social
+)
+service api {
+	@handler FollowHandler
+	post /follow (FollowRequest) returns (FollowResponse)
+
+	@handler UnFollowHandler
+	post /unfollow (UnFollowRequest) returns (UnFollowResponse)
+
+	@handler FollowListHandler
+	get /list (FollowListRequest) returns (FollowListResponse)
+
+	@handler FansListHandler
+	get /fans (FansListRequest) returns (FansListResponse)
+}
+
+@server (
+	prefix:    /v1/concerned
+	jwt:       Auth
+	signature: true
+	group:     social
+)
+service api {
+	@handler ConcernedAddHandler
+	post /add (ConcernedAddRequest) returns (ConcernedAddResponse)
+
+	@handler ConcernedCancelHandler
+	post /cancel (ConcernedCancelRequest) returns (ConcernedCancelResponse)
+
+	@handler ConcernedCheckHandler
+	get /check (ConcernedCheckRequest) returns (ConcernedCheckResponse)
+
+	@handler ConcernedListHandler
+	get /list (ConcernedListRequest) returns (ConcernedListResponse)
+
+	@handler ConcernedCountHandler
+	get /count (ConcernedCountRequest) returns (ConcernedCountResponse)
+}
+
+@server (
+	prefix: /v1/message
+	jwt:    Auth
+	group:  social
+)
+service api {
+	@handler NotificationListHandler
+	get /list (NotificationListRequest) returns (NotificationListResponse)
+
+	@handler UnreadCountHandler
+	get /unread (UnreadCountRequest) returns (UnreadCountResponse)
+
+	@handler MarkReadHandler
+	post /read (MarkReadRequest) returns (MarkReadResponse)
+
+	@handler MarkAllReadHandler
+	post /readall (MarkAllReadRequest) returns (MarkAllReadResponse)
+
+	@handler DeleteNotificationHandler
+	post /delete (DeleteNotificationRequest) returns (DeleteNotificationResponse)
+}
+
+@server (
+	prefix: /v1/reply
+	jwt:    Auth
+	group:  social
+)
+service api {
+	@handler ReplyDetailHandler
+	get /detail (ReplyDetailRequest) returns (ReplyDetailResponse)
+
+	@handler ReplyListHandler
+	get /list (ReplyListRequest) returns (ReplyListResponse)
+
+	@handler ReplyCountHandler
+	get /count (ReplyCountRequest) returns (ReplyCountResponse)
+
+	@handler AdminReplyListHandler
+	get /admin/list (AdminReplyListRequest) returns (AdminReplyListResponse)
+}
+
+@server (
+	prefix:    /v1/reply
+	jwt:       Auth
+	signature: true
+	group:     social
+)
+service api {
+	@handler ReplyCreateHandler
+	post /create (ReplyCreateRequest) returns (ReplyCreateResponse)
+
+	@handler ReplyDeleteHandler
+	post /delete (ReplyDeleteRequest) returns (ReplyDeleteResponse)
+}
+
+@server (
+	prefix:     /v1/reply
+	jwt:        Auth
+	middleware: AdminAuth
+	group:      social
+)
+service api {
+	@handler AdminDeleteReplyHandler
+	post /admin/delete (AdminDeleteReplyRequest) returns (AdminDeleteReplyResponse)
+}
+
+@server (
+	prefix:     /v1/admin/notification
+	jwt:        Auth
+	middleware: AdminAuth
+	group:      social
+)
+service api {
+	@handler AdminBroadcastHandler
+	post /broadcast (AdminBroadcastRequest) returns (AdminBroadcastResponse)
+}

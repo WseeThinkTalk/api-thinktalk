@@ -1,0 +1,114 @@
+syntax = "v1"
+
+type (
+	SendMessageRequest {
+		ReceiverId int64  `json:"receiver_id"`
+		Content    string `json:"content"`
+		MsgType    int32  `json:"msg_type"`
+	}
+	SendMessageResponse {}
+	ConversationsRequest {
+		Cursor   int64 `form:"cursor"`
+		PageSize int64 `form:"page_size"`
+	}
+	ConversationItem {
+		Id               int64  `json:"id"`
+		TargetUserId     int64  `json:"target_user_id"`
+		TargetUserName   string `json:"target_user_name"`
+		TargetUserAvatar string `json:"target_user_avatar"`
+		LastMessage      string `json:"last_message"`
+		LastMessageTime  int64  `json:"last_message_time"`
+		UnreadCount      int64  `json:"unread_count"`
+	}
+	ConversationsResponse {
+		Items  []*ConversationItem `json:"items"`
+		Cursor int64               `json:"cursor"`
+		IsEnd  bool                `json:"is_end"`
+	}
+	MessagesRequest {
+		ConversationId int64 `form:"conversation_id"`
+		Cursor         int64 `form:"cursor"`
+		PageSize       int64 `form:"page_size"`
+	}
+	MessageItem {
+		Id             int64  `json:"id"`
+		ConversationId int64  `json:"conversation_id"`
+		SenderId       int64  `json:"sender_id"`
+		ReceiverId     int64  `json:"receiver_id"`
+		Content        string `json:"content"`
+		MsgType        int32  `json:"msg_type"`
+		IsRead         bool   `json:"is_read"`
+		CreateTime     int64  `json:"create_time"`
+	}
+	MessagesResponse {
+		Items  []*MessageItem `json:"items"`
+		Cursor int64          `json:"cursor"`
+		IsEnd  bool           `json:"is_end"`
+	}
+	ChatMarkReadRequest {
+		ConversationId int64 `json:"conversation_id"`
+	}
+	ChatMarkReadResponse {}
+	ChatUnreadCountResponse {
+		Total int64 `json:"total"`
+	}
+	MessageResponse {
+		Id             int64  `json:"id"`
+		ConversationId int64  `json:"conversation_id"`
+		SenderId       int64  `json:"sender_id"`
+		ReceiverId     int64  `json:"receiver_id"`
+		Content        string `json:"content"`
+		MsgType        int32  `json:"msg_type"`
+		CreateTime     int64  `json:"create_time"`
+	}
+	WsInMessage {
+		Type        string `json:"type"`
+		ReceiverId  int64  `json:"receiver_id,omitempty"`
+		Content     string `json:"content,omitempty"`
+		MsgType     int32  `json:"msg_type,omitempty"`
+		ClientMsgId string `json:"client_msg_id,omitempty"`
+	}
+	WsOutMessage {
+		Type        string `json:"type"`
+		SenderId    int64  `json:"sender_id,omitempty"`
+		Content     string `json:"content,omitempty"`
+		MsgType     int32  `json:"msg_type,omitempty"`
+		CreateTime  int64  `json:"create_time,omitempty"`
+		Message     string `json:"message,omitempty"`
+		ClientMsgId string `json:"client_msg_id,omitempty"`
+	}
+)
+
+@server (
+	prefix: /v1/chat
+	jwt:    Auth
+	group:  chat
+)
+service api {
+	@handler ConversationsHandler
+	get /conversations (ConversationsRequest) returns (ConversationsResponse)
+
+	@handler MessagesHandler
+	get /messages (MessagesRequest) returns (MessagesResponse)
+
+	@handler SendMessageHandler
+	post /send (SendMessageRequest) returns (SendMessageResponse)
+
+	@handler MarkReadHandler
+	post /markread (ChatMarkReadRequest) returns (ChatMarkReadResponse)
+
+	@handler UnreadCountHandler
+	get /unread returns (ChatUnreadCountResponse)
+
+	@handler OnlineHandler
+	get /online returns (string)
+}
+
+@server (
+	prefix: /v1/chat
+	group:  chat
+)
+service api {
+	@handler WebSocketHandler
+	get /ws
+}

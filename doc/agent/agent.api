@@ -1,0 +1,63 @@
+syntax = "v1"
+
+type (
+	ChatRequest {
+		SessionID string `json:"session_id,optional"`
+		Message   string `json:"message"`
+	}
+	HistoryRequest {
+		SessionID string `form:"session_id"`
+	}
+	AgentMessageItem {
+		Role    string `json:"role"`
+		Content string `json:"content"`
+	}
+	HistoryResponse {
+		SessionID string             `json:"session_id"`
+		Title     string             `json:"title"`
+		Messages  []AgentMessageItem `json:"messages"`
+		CreatedAt int64              `json:"created_at"`
+		UpdatedAt int64              `json:"updated_at"`
+	}
+	StopRequest {
+		SessionID string `json:"session_id"`
+	}
+	SessionItem {
+		SessionID    string `json:"session_id"`
+		Title        string `json:"title"`
+		MessageCount int32  `json:"message_count"`
+		CreatedAt    int64  `json:"created_at"`
+		UpdatedAt    int64  `json:"updated_at"`
+	}
+	ListSessionsResponse {
+		Sessions []SessionItem `json:"sessions"`
+	}
+	DeleteSessionRequest {
+		SessionID string `json:"session_id"`
+	}
+	DeleteSessionResponse {
+		Success bool `json:"success"`
+	}
+)
+
+@server (
+	prefix: /v1/agent
+	jwt:    Auth
+	group:  agent
+)
+service api {
+	@handler ChatHandler
+	post /chat (ChatRequest)
+
+	@handler StopHandler
+	post /stop (StopRequest)
+
+	@handler HistoryHandler
+	get /history (HistoryRequest) returns (HistoryResponse)
+
+	@handler ListSessionsHandler
+	get /sessions returns (ListSessionsResponse)
+
+	@handler DeleteSessionHandler
+	delete /sessions (DeleteSessionRequest) returns (DeleteSessionResponse)
+}
