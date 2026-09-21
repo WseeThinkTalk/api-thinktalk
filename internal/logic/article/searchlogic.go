@@ -37,19 +37,20 @@ func (l *SearchLogic) Search(req *types.SearchRequest) (resp *types.SearchRespon
 		return nil, err
 	}
 
+	// 转换文章搜索结果数据项
 	items := make([]types.SearchInfo, 0, len(ret.Items))
-	for _, item := range ret.Items {
+	for _, v := range ret.Items {
 		items = append(items, types.SearchInfo{
-			ArticleId:   item.ArticleId,
-			Title:       item.Title,
-			Description: item.Description,
-			Cover:       item.Cover,
-			AuthorId:    item.AuthorId,
-			AuthorName:  item.AuthorName,
-			LikeNum:     item.LikeNum,
-			CommentNum:  item.CommentNum,
-			PublishTime: item.PublishTime,
-			AuthorAvatar: item.AuthorAvatar,
+			ArticleId:   v.ArticleId,
+			Title:       v.Title,
+			Description: v.Description,
+			Cover:       v.Cover,
+			AuthorId:    v.AuthorId,
+			AuthorName:  v.AuthorName,
+			LikeNum:     v.LikeNum,
+			CommentNum:  v.CommentNum,
+			PublishTime: v.PublishTime,
+			AuthorAvatar: v.AuthorAvatar,
 		})
 	}
 

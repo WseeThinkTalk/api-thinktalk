@@ -53,9 +53,10 @@ func (l *ReplyListLogic) ReplyList(req *types.ReplyListRequest) (resp *types.Rep
 		return u.Username, u.Avatar
 	}
 
+	// 转换评论列表数据项
 	items := make([]*types.ReplyItem, 0, len(rpcResp.Items))
-	for _, item := range rpcResp.Items {
-		items = append(items, convertReplyItem(item, getUserInfo))
+	for _, v := range rpcResp.Items {
+		items = append(items, convertReplyItem(v, getUserInfo))
 	}
 	resp.Items = items
 	resp.Cursor = rpcResp.Cursor

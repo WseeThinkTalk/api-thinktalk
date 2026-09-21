@@ -33,17 +33,18 @@ func (l *MemberOrderListLogic) MemberOrderList(userId int64, req *types.MemberOr
 		return nil, err
 	}
 
+	// 转换会员订单数据项
 	items := make([]*types.MemberOrderItem, 0, len(rpcResp.Items))
-	for _, item := range rpcResp.Items {
+	for _, v := range rpcResp.Items {
 		items = append(items, &types.MemberOrderItem{
-			Id:           item.Id,
-			UserId:       item.UserId,
-			Level:        item.Level,
-			DurationDays: item.DurationDays,
-			Amount:       item.Amount,
-			PayChannel:   item.PayChannel,
-			Status:       item.Status,
-			CreateTime:   item.CreateTime,
+			Id:           v.Id,
+			UserId:       v.UserId,
+			Level:        v.Level,
+			DurationDays: v.DurationDays,
+			Amount:       v.Amount,
+			PayChannel:   v.PayChannel,
+			Status:       v.Status,
+			CreateTime:   v.CreateTime,
 		})
 	}
 	resp.Items = items

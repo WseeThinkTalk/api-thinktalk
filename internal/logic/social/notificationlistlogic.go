@@ -35,17 +35,18 @@ func (l *NotificationListLogic) NotificationList(userId int64, req *types.Notifi
 		return nil, err
 	}
 
+	// 转换通知列表项
 	items := make([]*types.NotificationItem, 0, len(rpcResp.Items))
-	for _, item := range rpcResp.Items {
+	for _, v := range rpcResp.Items {
 		items = append(items, &types.NotificationItem{
-			Id:            item.Id,
-			Type:          item.Type,
-			Title:         item.Title,
-			Content:       item.Content,
-			IsRead:        item.IsRead,
-			TriggerUserId: item.TriggerUserId,
-			RefId:         item.RefId,
-			CreateTime:    item.CreateTime,
+			Id:            v.Id,
+			Type:          v.Type,
+			Title:         v.Title,
+			Content:       v.Content,
+			IsRead:        v.IsRead,
+			TriggerUserId: v.TriggerUserId,
+			RefId:         v.RefId,
+			CreateTime:    v.CreateTime,
 		})
 	}
 	resp.Items = items

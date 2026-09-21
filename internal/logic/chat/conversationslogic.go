@@ -38,23 +38,24 @@ func (l *ConversationsLogic) Conversations(userId int64, req *types.Conversation
 		return nil, err
 	}
 
+	// 转换会话列表并补充对方用户信息
 	items := make([]*types.ConversationItem, 0, len(rpcResp.Items))
-	for _, item := range rpcResp.Items {
+	for _, v := range rpcResp.Items {
 		targetName := ""
 		targetAvatar := ""
-		if userResp, err := l.svcCtx.UserRPC.FindById(l.ctx, &user.FindByIdRequest{UserId: item.TargetUserId}); err == nil {
+		if userResp, err := l.svcCtx.UserRPC.FindById(l.ctx, &user.FindByIdRequest{UserId: v.TargetUserId}); err == nil {
 			targetName = userResp.Username
 			targetAvatar = userResp.Avatar
 		}
 
 		items = append(items, &types.ConversationItem{
-			Id:               item.Id,
-			TargetUserId:     item.TargetUserId,
+			Id:               v.Id,
+			TargetUserId:     v.TargetUserId,
 			TargetUserName:   targetName,
 			TargetUserAvatar: targetAvatar,
-			LastMessage:      item.LastMessage,
-			LastMessageTime:  item.LastMessageTime,
-			UnreadCount:      item.UnreadCount,
+			LastMessage:      v.LastMessage,
+			LastMessageTime:  v.LastMessageTime,
+			UnreadCount:      v.UnreadCount,
 		})
 	}
 

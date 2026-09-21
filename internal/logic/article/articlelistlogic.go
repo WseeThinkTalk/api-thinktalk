@@ -56,14 +56,15 @@ func (l *ArticleListLogic) ArticleList(req *types.ArticleListRequest) (resp *typ
 		return resp, nil
 	}
 
+	// 转换用户文章列表数据项
 	infos := make([]types.ArticleInfo, 0, len(articles.Articles))
-	for _, article := range articles.Articles {
+	for _, v := range articles.Articles {
 		infos = append(infos, types.ArticleInfo{
-			ArticleId:   article.Id,
-			Cover:       article.Cover,
-			Description: article.Description,
-			Title:       article.Title,
-			Status:      article.Status,
+			ArticleId:   v.Id,
+			Cover:       v.Cover,
+			Description: v.Description,
+			Title:       v.Title,
+			Status:      v.Status,
 		})
 	}
 

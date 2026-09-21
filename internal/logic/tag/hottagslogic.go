@@ -30,14 +30,15 @@ func (l *HotTagsLogic) HotTags(req *types.HotTagsRequest) (resp *types.HotTagsRe
 		l.Errorf("[HotTags] rpc err: %v", err)
 		return nil, err
 	}
+	// 转换热门标签项
 	items := make([]*types.TagItem, 0, len(rpcResp.Items))
-	for _, item := range rpcResp.Items {
+	for _, v := range rpcResp.Items {
 		items = append(items, &types.TagItem{
-			TagId:         item.TagId,
-			TagName:       item.TagName,
-			TagDesc:       item.TagDesc,
-			ResourceCount: item.ResourceCount,
-			CreateTime:    item.CreateTime,
+			TagId:         v.TagId,
+			TagName:       v.TagName,
+			TagDesc:       v.TagDesc,
+			ResourceCount: v.ResourceCount,
+			CreateTime:    v.CreateTime,
 		})
 	}
 	resp.Items = items

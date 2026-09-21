@@ -36,10 +36,11 @@ func (l *AdminReplyListLogic) AdminReplyList(req *types.AdminReplyListRequest) (
 		return nil, err
 	}
 
+	// 转换评论管理列表项（支持嵌套子评论）
 	var items []*types.ReplyItem
-	for _, item := range rpcResp.Items {
+	for _, v := range rpcResp.Items {
 		var subReplies []*types.ReplyItem
-		for _, sub := range item.SubReplies {
+		for _, sub := range v.SubReplies {
 			subReplies = append(subReplies, &types.ReplyItem{
 				ReplyId:       sub.ReplyId,
 				BizId:         sub.BizId,
@@ -54,15 +55,15 @@ func (l *AdminReplyListLogic) AdminReplyList(req *types.AdminReplyListRequest) (
 		}
 
 		items = append(items, &types.ReplyItem{
-			ReplyId:       item.ReplyId,
-			BizId:         item.BizId,
-			TargetId:      item.TargetId,
-			ReplyUserId:   item.ReplyUserId,
-			BeReplyUserId: item.BeReplyUserId,
-			ParentId:      item.ParentId,
-			Content:       item.Content,
-			LikeNum:       item.LikeNum,
-			CreateTime:    item.CreateTime,
+			ReplyId:       v.ReplyId,
+			BizId:         v.BizId,
+			TargetId:      v.TargetId,
+			ReplyUserId:   v.ReplyUserId,
+			BeReplyUserId: v.BeReplyUserId,
+			ParentId:      v.ParentId,
+			Content:       v.Content,
+			LikeNum:       v.LikeNum,
+			CreateTime:    v.CreateTime,
 			SubReplies:    subReplies,
 		})
 	}

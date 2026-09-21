@@ -31,14 +31,15 @@ func (l *TagsByResourceLogic) TagsByResource(req *types.TagsByResourceRequest) (
 		l.Errorf("[TagsByResource] rpc err: %v", err)
 		return nil, err
 	}
+	// 转换资源标签列表数据项
 	items := make([]*types.TagItem, 0, len(rpcResp.Items))
-	for _, item := range rpcResp.Items {
+	for _, v := range rpcResp.Items {
 		items = append(items, &types.TagItem{
-			TagId:         item.TagId,
-			TagName:       item.TagName,
-			TagDesc:       item.TagDesc,
-			ResourceCount: item.ResourceCount,
-			CreateTime:    item.CreateTime,
+			TagId:         v.TagId,
+			TagName:       v.TagName,
+			TagDesc:       v.TagDesc,
+			ResourceCount: v.ResourceCount,
+			CreateTime:    v.CreateTime,
 		})
 	}
 	resp.Items = items

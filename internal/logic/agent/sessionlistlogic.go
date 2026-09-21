@@ -38,14 +38,15 @@ func (l *ListSessionsLogic) ListSessions() (resp *types.ListSessionsResponse, er
 		return nil, err
 	}
 
+	// 组装智能体历史会话项
 	items := make([]types.SessionItem, len(rpcResp.Sessions))
-	for i, s := range rpcResp.Sessions {
+	for i, v := range rpcResp.Sessions {
 		items[i] = types.SessionItem{
-			SessionID:    s.SessionId,
-			Title:        s.Title,
-			MessageCount: s.MessageCount,
-			CreatedAt:    s.CreatedAt,
-			UpdatedAt:    s.UpdatedAt,
+			SessionID:    v.SessionId,
+			Title:        v.Title,
+			MessageCount: v.MessageCount,
+			CreatedAt:    v.CreatedAt,
+			UpdatedAt:    v.UpdatedAt,
 		}
 	}
 	resp.Sessions = items

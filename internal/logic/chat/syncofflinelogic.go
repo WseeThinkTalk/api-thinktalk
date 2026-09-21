@@ -53,25 +53,25 @@ func (l *SyncOfflineLogic) SyncOnConnect(userId int64) {
 		return
 	}
 
-	// 2. 只保留有未读消息的会话
+	// 过滤未读会话并补充对方用户信息
 	var unreadConvs []unreadSyncItem
 	var totalUnread int64
-	for _, item := range resp.Items {
-		if item.UnreadCount == 0 {
+	for _, v := range resp.Items {
+		if v.UnreadCount == 0 {
 			continue
 		}
-		totalUnread += item.UnreadCount
+		totalUnread += v.UnreadCount
 
 		conv := unreadSyncItem{
-			Id:              item.Id,
-			TargetUserId:    item.TargetUserId,
-			LastMessage:     item.LastMessage,
-			LastMessageTime: item.LastMessageTime,
-			UnreadCount:     item.UnreadCount,
+			Id:              v.Id,
+			TargetUserId:    v.TargetUserId,
+			LastMessage:     v.LastMessage,
+			LastMessageTime: v.LastMessageTime,
+			UnreadCount:     v.UnreadCount,
 		}
 
 		// 获取对方用户信息
-		if userResp, err := l.svcCtx.UserRPC.FindById(l.ctx, &user.FindByIdRequest{UserId: item.TargetUserId}); err == nil {
+		if userResp, err := l.svcCtx.UserRPC.FindById(l.ctx, &user.FindByIdRequest{UserId: v.TargetUserId}); err == nil {
 			conv.TargetUserName = userResp.Username
 			conv.TargetUserAvatar = userResp.Avatar
 		}

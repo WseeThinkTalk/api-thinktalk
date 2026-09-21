@@ -36,17 +36,18 @@ func (l *AnswerListLogic) AnswerList(req *types.AnswerListRequest) (resp *types.
 		l.Errorf("[AnswerList] rpc err: %v", err)
 		return nil, err
 	}
+	// 转换回答列表项
 	items := make([]*types.AnswerItem, 0, len(rpcResp.Items))
-	for _, item := range rpcResp.Items {
+	for _, v := range rpcResp.Items {
 		items = append(items, &types.AnswerItem{
-			Id:         item.Id,
-			QuestionId: item.QuestionId,
-			AuthorId:   item.AuthorId,
-			Content:    item.Content,
-			IsAccepted: item.IsAccepted,
-			LikeNum:    item.LikeNum,
-			ReplyNum:   item.ReplyNum,
-			CreateTime: item.CreateTime,
+			Id:         v.Id,
+			QuestionId: v.QuestionId,
+			AuthorId:   v.AuthorId,
+			Content:    v.Content,
+			IsAccepted: v.IsAccepted,
+			LikeNum:    v.LikeNum,
+			ReplyNum:   v.ReplyNum,
+			CreateTime: v.CreateTime,
 		})
 	}
 	resp.Items = items

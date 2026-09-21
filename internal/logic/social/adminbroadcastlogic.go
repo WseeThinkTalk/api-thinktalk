@@ -64,8 +64,8 @@ func (l *AdminBroadcastLogic) AdminBroadcast(req *types.AdminBroadcastNotificati
 		title := req.Title
 		content := req.Content
 		pusher := l.svcCtx.NotificationPusher
-		for _, item := range rpcResp.Items {
-			userId := item.UserId
+		for _, v := range rpcResp.Items {
+			userId := v.UserId
 			threading.GoSafe(func() {
 				notif := map[string]interface{}{
 					"userId":        userId,

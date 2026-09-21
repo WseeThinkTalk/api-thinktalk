@@ -35,19 +35,20 @@ func (l *FollowListLogic) FollowList(userId int64, req *types.FollowListRequest)
 		return nil, err
 	}
 
+	// 转换关注列表项并补充对方用户信息
 	items := make([]*types.FollowItem, 0, len(rpcResp.Items))
-	for _, item := range rpcResp.Items {
+	for _, v := range rpcResp.Items {
 		targetName := ""
 		targetAvatar := ""
-		if userResp, err := l.svcCtx.UserRPC.FindById(l.ctx, &user.FindByIdRequest{UserId: item.FollowedUserId}); err == nil {
+		if userResp, err := l.svcCtx.UserRPC.FindById(l.ctx, &user.FindByIdRequest{UserId: v.FollowedUserId}); err == nil {
 			targetName = userResp.Username
 			targetAvatar = userResp.Avatar
 		}
 		items = append(items, &types.FollowItem{
-			Id:               item.Id,
-			FollowedUserId:   item.FollowedUserId,
-			CreateTime:       item.CreateTime,
-			FansCount:        item.FansCount,
+			Id:               v.Id,
+			FollowedUserId:   v.FollowedUserId,
+			CreateTime:       v.CreateTime,
+			FansCount:        v.FansCount,
 			TargetUserName:   targetName,
 			TargetUserAvatar: targetAvatar,
 		})

@@ -33,12 +33,13 @@ func (l *ResourcesByTagLogic) ResourcesByTag(req *types.ResourcesByTagRequest) (
 		l.Errorf("[ResourcesByTag] rpc err: %v", err)
 		return nil, err
 	}
+	// 转换标签关联资源项
 	items := make([]*types.ResourceItem, 0, len(rpcResp.Items))
-	for _, item := range rpcResp.Items {
+	for _, v := range rpcResp.Items {
 		items = append(items, &types.ResourceItem{
-			TargetId:   item.TargetId,
-			BizId:      item.BizId,
-			CreateTime: item.CreateTime,
+			TargetId:   v.TargetId,
+			BizId:      v.BizId,
+			CreateTime: v.CreateTime,
 		})
 	}
 	resp.Items = items

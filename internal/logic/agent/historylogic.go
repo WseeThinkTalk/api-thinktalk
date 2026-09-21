@@ -39,9 +39,10 @@ func (l *HistoryLogic) History(req *types.HistoryRequest) (resp *types.HistoryRe
 		return nil, err
 	}
 
+	// 转换会话历史消息列表
 	msgs := make([]types.AgentMessageItem, len(rpcResp.Messages))
-	for i, m := range rpcResp.Messages {
-		msgs[i] = types.AgentMessageItem{Role: m.Role, Content: m.Content}
+	for i, v := range rpcResp.Messages {
+		msgs[i] = types.AgentMessageItem{Role: v.Role, Content: v.Content}
 	}
 	resp.SessionID = rpcResp.SessionId
 	resp.Title = rpcResp.Title

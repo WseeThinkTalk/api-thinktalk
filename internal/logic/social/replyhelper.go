@@ -23,8 +23,9 @@ func convertReplyItem(pb *reply.ReplyItem, getUserInfo func(int64) (string, stri
 		ReplyUserName:   name,
 		ReplyUserAvatar: avatar,
 	}
-	for _, sub := range pb.SubReplies {
-		item.SubReplies = append(item.SubReplies, convertReplyItem(sub, getUserInfo))
+	// 递归转换子评论列表
+	for _, v := range pb.SubReplies {
+		item.SubReplies = append(item.SubReplies, convertReplyItem(v, getUserInfo))
 	}
 	return item
 }

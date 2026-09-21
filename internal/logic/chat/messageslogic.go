@@ -37,17 +37,18 @@ func (l *MessagesLogic) Messages(userId int64, req *types.MessagesRequest) (resp
 		return nil, err
 	}
 
+	// 转换聊天消息数据项
 	items := make([]*types.MessageItem, 0, len(rpcResp.Items))
-	for _, item := range rpcResp.Items {
+	for _, v := range rpcResp.Items {
 		items = append(items, &types.MessageItem{
-			Id:             item.Id,
-			ConversationId: item.ConversationId,
-			SenderId:       item.SenderId,
-			ReceiverId:     item.ReceiverId,
-			Content:        item.Content,
-			MsgType:        item.MsgType,
-			IsRead:         item.IsRead,
-			CreateTime:     item.CreateTime,
+			Id:             v.Id,
+			ConversationId: v.ConversationId,
+			SenderId:       v.SenderId,
+			ReceiverId:     v.ReceiverId,
+			Content:        v.Content,
+			MsgType:        v.MsgType,
+			IsRead:         v.IsRead,
+			CreateTime:     v.CreateTime,
 		})
 	}
 

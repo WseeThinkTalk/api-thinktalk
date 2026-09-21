@@ -35,19 +35,20 @@ func (l *FansListLogic) FansList(userId int64, req *types.FansListRequest) (resp
 		return nil, err
 	}
 
+	// 转换粉丝列表项并补充对方用户信息
 	items := make([]*types.FollowItem, 0, len(rpcResp.Items))
-	for _, item := range rpcResp.Items {
+	for _, v := range rpcResp.Items {
 		targetName := ""
 		targetAvatar := ""
-		if userResp, err := l.svcCtx.UserRPC.FindById(l.ctx, &user.FindByIdRequest{UserId: item.FansUserId}); err == nil {
+		if userResp, err := l.svcCtx.UserRPC.FindById(l.ctx, &user.FindByIdRequest{UserId: v.FansUserId}); err == nil {
 			targetName = userResp.Username
 			targetAvatar = userResp.Avatar
 		}
 		items = append(items, &types.FollowItem{
-			Id:               item.UserId,
-			FollowedUserId:   item.FansUserId,
-			CreateTime:       item.CreateTime,
-			FansCount:        item.FansCount,
+			Id:               v.UserId,
+			FollowedUserId:   v.FansUserId,
+			CreateTime:       v.CreateTime,
+			FansCount:        v.FansCount,
 			TargetUserName:   targetName,
 			TargetUserAvatar: targetAvatar,
 		})

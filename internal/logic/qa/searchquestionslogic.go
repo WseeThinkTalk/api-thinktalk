@@ -36,16 +36,17 @@ func (l *SearchQuestionsLogic) SearchQuestions(req *types.SearchQuestionsRequest
 		l.Errorf("[SearchQuestions] rpc err: %v", err)
 		return nil, err
 	}
+	// 转换问答搜索结果项
 	items := make([]*types.SearchQuestionItem, 0, len(rpcResp.Items))
-	for _, item := range rpcResp.Items {
+	for _, v := range rpcResp.Items {
 		items = append(items, &types.SearchQuestionItem{
-			Id:         item.Id,
-			Title:      item.Title,
-			Content:    item.Content,
-			AuthorId:   item.AuthorId,
-			AnswerNum:  item.AnswerNum,
-			TagIds:     item.TagIds,
-			CreateTime: item.CreateTime,
+			Id:         v.Id,
+			Title:      v.Title,
+			Content:    v.Content,
+			AuthorId:   v.AuthorId,
+			AnswerNum:  v.AnswerNum,
+			TagIds:     v.TagIds,
+			CreateTime: v.CreateTime,
 		})
 	}
 	resp.Items = items
