@@ -1,4 +1,4 @@
-﻿package social
+package social
 
 import (
 	reply "api-thinktalk/client/reply/pb"
