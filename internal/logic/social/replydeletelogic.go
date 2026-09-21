@@ -1,4 +1,4 @@
-﻿package social
+package social
 
 import (
 	"context"
@@ -20,8 +20,10 @@ func NewReplyDeleteLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Reply
 	return &ReplyDeleteLogic{ctx: ctx, svcCtx: svcCtx, Logger: logx.WithContext(ctx)}
 }
 
-func (l *ReplyDeleteLogic) DeleteReply(userId int64, req *types.ReplyDeleteRequest) (*types.ReplyDeleteResponse, error) {
-	_, err := l.svcCtx.ReplyRPC.DeleteReply(l.ctx, &reply.DeleteReplyRequest{
+func (l *ReplyDeleteLogic) DeleteReply(userId int64, req *types.ReplyDeleteRequest) (resp *types.ReplyDeleteResponse, err error) {
+	resp = new(types.ReplyDeleteResponse)
+
+	_, err = l.svcCtx.ReplyRPC.DeleteReply(l.ctx, &reply.DeleteReplyRequest{
 		ReplyId: req.ReplyId,
 		UserId:  userId,
 	})
@@ -29,5 +31,5 @@ func (l *ReplyDeleteLogic) DeleteReply(userId int64, req *types.ReplyDeleteReque
 		l.Errorf("[DeleteReply] rpc err: %v", err)
 		return nil, err
 	}
-	return &types.ReplyDeleteResponse{}, nil
+	return resp, nil
 }

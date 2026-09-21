@@ -1,4 +1,4 @@
-﻿package chat
+package chat
 
 import (
 	"context"
@@ -21,12 +21,14 @@ func NewConversationsLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Con
 	return &ConversationsLogic{ctx: ctx, svcCtx: svcCtx, Logger: logx.WithContext(ctx)}
 }
 
-func (l *ConversationsLogic) Conversations(userId int64, req *types.ConversationsRequest) (*types.ConversationsResponse, error) {
+func (l *ConversationsLogic) Conversations(userId int64, req *types.ConversationsRequest) (resp *types.ConversationsResponse, err error) {
+	resp = new(types.ConversationsResponse)
+
 	if req.PageSize == 0 {
 		req.PageSize = types.DefaultPageSize
 	}
 
-	resp, err := l.svcCtx.Chat.Conversations(l.ctx, &pb.ConversationsRequest{
+	rpcResp, err := l.svcCtx.Chat.Conversations(l.ctx, &pb.ConversationsRequest{
 		UserId:   userId,
 		Cursor:   req.Cursor,
 		PageSize: req.PageSize,
@@ -36,8 +38,8 @@ func (l *ConversationsLogic) Conversations(userId int64, req *types.Conversation
 		return nil, err
 	}
 
-	items := make([]*types.ConversationItem, 0, len(resp.Items))
-	for _, item := range resp.Items {
+	items := make([]*types.ConversationItem, 0, len(rpcResp.Items))
+	for _, item := range rpcResp.Items {
 		targetName := ""
 		targetAvatar := ""
 		if userResp, err := l.svcCtx.UserRPC.FindById(l.ctx, &user.FindByIdRequest{UserId: item.TargetUserId}); err == nil {
@@ -56,9 +58,8 @@ func (l *ConversationsLogic) Conversations(userId int64, req *types.Conversation
 		})
 	}
 
-	return &types.ConversationsResponse{
-		Items:  items,
-		Cursor: resp.Cursor,
-		IsEnd:  resp.IsEnd,
-	}, nil
+	resp.Items = items
+	resp.Cursor = rpcResp.Cursor
+	resp.IsEnd = rpcResp.IsEnd
+	return resp, nil
 }

@@ -1,4 +1,4 @@
-﻿package tag
+package tag
 
 import (
 	"context"
@@ -20,13 +20,15 @@ func NewTagDeleteLogic(ctx context.Context, svcCtx *svc.ServiceContext) *TagDele
 	return &TagDeleteLogic{ctx: ctx, svcCtx: svcCtx, Logger: logx.WithContext(ctx)}
 }
 
-func (l *TagDeleteLogic) TagDelete(userId int64, req *types.TagDeleteRequest) (*types.TagDeleteResponse, error) {
-	_, err := l.svcCtx.TagRPC.DeleteTag(l.ctx, &tag.DeleteTagRequest{
+func (l *TagDeleteLogic) TagDelete(userId int64, req *types.TagDeleteRequest) (resp *types.TagDeleteResponse, err error) {
+	resp = new(types.TagDeleteResponse)
+
+	_, err = l.svcCtx.TagRPC.DeleteTag(l.ctx, &tag.DeleteTagRequest{
 		TagId: req.TagId,
 	})
 	if err != nil {
 		l.Errorf("[DeleteTag] rpc err: %v", err)
 		return nil, err
 	}
-	return &types.TagDeleteResponse{}, nil
+	return resp, nil
 }

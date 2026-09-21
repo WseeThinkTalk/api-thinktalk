@@ -1,4 +1,4 @@
-﻿// Code scaffolded by goctl. Safe to edit.
+// Code scaffolded by goctl. Safe to edit.
 // goctl 1.10.1
 
 package user
@@ -30,6 +30,8 @@ func NewUpdateProfileLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Upd
 }
 
 func (l *UpdateProfileLogic) UpdateProfile(req *types.UpdateProfileRequest) (resp *types.UpdateProfileResponse, err error) {
+	resp = new(types.UpdateProfileResponse)
+
 	userId, err := l.ctx.Value("userId").(json.Number).Int64()
 	if err != nil {
 		return nil, err
@@ -51,5 +53,5 @@ func (l *UpdateProfileLogic) UpdateProfile(req *types.UpdateProfileRequest) (res
 		return nil, err
 	}
 
-	return &types.UpdateProfileResponse{}, nil
+	return resp, nil
 }

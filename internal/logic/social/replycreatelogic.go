@@ -1,4 +1,4 @@
-﻿package social
+package social
 
 import (
 	"context"
@@ -20,8 +20,10 @@ func NewReplyCreateLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Reply
 	return &ReplyCreateLogic{ctx: ctx, svcCtx: svcCtx, Logger: logx.WithContext(ctx)}
 }
 
-func (l *ReplyCreateLogic) CreateReply(userId int64, req *types.ReplyCreateRequest) (*types.ReplyCreateResponse, error) {
-	resp, err := l.svcCtx.ReplyRPC.CreateReply(l.ctx, &reply.CreateReplyRequest{
+func (l *ReplyCreateLogic) CreateReply(userId int64, req *types.ReplyCreateRequest) (resp *types.ReplyCreateResponse, err error) {
+	resp = new(types.ReplyCreateResponse)
+
+	rpcResp, err := l.svcCtx.ReplyRPC.CreateReply(l.ctx, &reply.CreateReplyRequest{
 		BizId:         req.BizId,
 		TargetId:      req.TargetId,
 		ReplyUserId:   userId,
@@ -33,5 +35,6 @@ func (l *ReplyCreateLogic) CreateReply(userId int64, req *types.ReplyCreateReque
 		l.Errorf("[CreateReply] rpc err: %v", err)
 		return nil, err
 	}
-	return &types.ReplyCreateResponse{ReplyId: resp.ReplyId}, nil
+	resp.ReplyId = rpcResp.ReplyId
+	return resp, nil
 }

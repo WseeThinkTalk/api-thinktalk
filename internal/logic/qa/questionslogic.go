@@ -1,4 +1,4 @@
-﻿package qa
+package qa
 
 import (
 	"context"
@@ -24,8 +24,10 @@ func NewQuestionsLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Questio
 	}
 }
 
-func (l *QuestionsLogic) Questions(userId int64, req *types.QuestionListRequest) (*types.QuestionListResponse, error) {
-	resp, err := l.svcCtx.QaRPC.Questions(l.ctx, &qa.QuestionsRequest{
+func (l *QuestionsLogic) Questions(userId int64, req *types.QuestionListRequest) (resp *types.QuestionListResponse, err error) {
+	resp = new(types.QuestionListResponse)
+
+	rpcResp, err := l.svcCtx.QaRPC.Questions(l.ctx, &qa.QuestionsRequest{
 		UserId:   req.AuthorId,
 		Cursor:   req.Cursor,
 		PageSize: req.PageSize,
@@ -35,8 +37,8 @@ func (l *QuestionsLogic) Questions(userId int64, req *types.QuestionListRequest)
 		l.Errorf("[Questions] rpc err: %v", err)
 		return nil, err
 	}
-	items := make([]*types.QuestionItem, 0, len(resp.Items))
-	for _, item := range resp.Items {
+	items := make([]*types.QuestionItem, 0, len(rpcResp.Items))
+	for _, item := range rpcResp.Items {
 		items = append(items, &types.QuestionItem{
 			Id:         item.Id,
 			Title:      item.Title,
@@ -48,5 +50,8 @@ func (l *QuestionsLogic) Questions(userId int64, req *types.QuestionListRequest)
 			CreateTime: item.CreateTime,
 		})
 	}
-	return &types.QuestionListResponse{Items: items, Cursor: resp.Cursor, IsEnd: resp.IsEnd}, nil
+	resp.Items = items
+	resp.Cursor = rpcResp.Cursor
+	resp.IsEnd = rpcResp.IsEnd
+	return resp, nil
 }

@@ -1,4 +1,4 @@
-﻿// Code scaffolded by goctl. Safe to edit.
+// Code scaffolded by goctl. Safe to edit.
 // goctl 1.10.1
 
 package user
@@ -33,6 +33,8 @@ func NewLoginLogic(ctx context.Context, svcCtx *svc.ServiceContext) *LoginLogic 
 }
 
 func (l *LoginLogic) Login(req *types.LoginRequest) (resp *types.LoginResponse, err error) {
+	resp = new(types.LoginResponse)
+
 	req.Mobile = strings.TrimSpace(req.Mobile)
 	if len(req.Mobile) == 0 {
 		return nil, code.LoginMobileEmpty
@@ -102,11 +104,10 @@ func (l *LoginLogic) Login(req *types.LoginRequest) (resp *types.LoginResponse, 
 		_ = deleteActivationCode(req.Mobile, req.VerificationCode, l.svcCtx.RDB)
 	}
 
-	return &types.LoginResponse{
-		UserId: mobile.UserId,
-		Token: types.Token{
-			AccessToken:  token.AccessToken,
-			AccessExpire: token.AccessExpire,
-		},
-	}, nil
+	resp.UserId = mobile.UserId
+	resp.Token = types.Token{
+		AccessToken:  token.AccessToken,
+		AccessExpire: token.AccessExpire,
+	}
+	return resp, nil
 }

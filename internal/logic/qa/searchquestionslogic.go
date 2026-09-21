@@ -1,4 +1,4 @@
-﻿package qa
+package qa
 
 import (
 	"context"
@@ -24,8 +24,10 @@ func NewSearchQuestionsLogic(ctx context.Context, svcCtx *svc.ServiceContext) *S
 	}
 }
 
-func (l *SearchQuestionsLogic) SearchQuestions(req *types.SearchQuestionsRequest) (*types.SearchQuestionsResponse, error) {
-	resp, err := l.svcCtx.QaRPC.SearchQuestions(l.ctx, &qa.SearchQuestionsRequest{
+func (l *SearchQuestionsLogic) SearchQuestions(req *types.SearchQuestionsRequest) (resp *types.SearchQuestionsResponse, err error) {
+	resp = new(types.SearchQuestionsResponse)
+
+	rpcResp, err := l.svcCtx.QaRPC.SearchQuestions(l.ctx, &qa.SearchQuestionsRequest{
 		Keyword:  req.Keyword,
 		Cursor:   req.Cursor,
 		PageSize: req.PageSize,
@@ -34,8 +36,8 @@ func (l *SearchQuestionsLogic) SearchQuestions(req *types.SearchQuestionsRequest
 		l.Errorf("[SearchQuestions] rpc err: %v", err)
 		return nil, err
 	}
-	items := make([]*types.SearchQuestionItem, 0, len(resp.Items))
-	for _, item := range resp.Items {
+	items := make([]*types.SearchQuestionItem, 0, len(rpcResp.Items))
+	for _, item := range rpcResp.Items {
 		items = append(items, &types.SearchQuestionItem{
 			Id:         item.Id,
 			Title:      item.Title,
@@ -46,5 +48,8 @@ func (l *SearchQuestionsLogic) SearchQuestions(req *types.SearchQuestionsRequest
 			CreateTime: item.CreateTime,
 		})
 	}
-	return &types.SearchQuestionsResponse{Items: items, Cursor: resp.Cursor, IsEnd: resp.IsEnd}, nil
+	resp.Items = items
+	resp.Cursor = rpcResp.Cursor
+	resp.IsEnd = rpcResp.IsEnd
+	return resp, nil
 }

@@ -19,7 +19,9 @@ func NewHistoryLogic(ctx context.Context, svcCtx *svc.ServiceContext) *HistoryLo
 	return &HistoryLogic{ctx: ctx, svcCtx: svcCtx}
 }
 
-func (l *HistoryLogic) History(req *types.HistoryRequest) (*types.HistoryResponse, error) {
+func (l *HistoryLogic) History(req *types.HistoryRequest) (resp *types.HistoryResponse, err error) {
+	resp = new(types.HistoryResponse)
+
 	userIDVal := l.ctx.Value("userId")
 	if userIDVal == nil {
 		return nil, fmt.Errorf("unauthorized")
@@ -29,7 +31,7 @@ func (l *HistoryLogic) History(req *types.HistoryRequest) (*types.HistoryRespons
 		return nil, err
 	}
 
-	resp, err := l.svcCtx.AgentClient.GetHistory(l.ctx, &pb.GetHistoryRequest{
+	rpcResp, err := l.svcCtx.AgentClient.GetHistory(l.ctx, &pb.GetHistoryRequest{
 		UserId:    uid,
 		SessionId: req.SessionID,
 	})
@@ -37,15 +39,14 @@ func (l *HistoryLogic) History(req *types.HistoryRequest) (*types.HistoryRespons
 		return nil, err
 	}
 
-	msgs := make([]types.AgentMessageItem, len(resp.Messages))
-	for i, m := range resp.Messages {
+	msgs := make([]types.AgentMessageItem, len(rpcResp.Messages))
+	for i, m := range rpcResp.Messages {
 		msgs[i] = types.AgentMessageItem{Role: m.Role, Content: m.Content}
 	}
-	return &types.HistoryResponse{
-		SessionID: resp.SessionId,
-		Title:     resp.Title,
-		Messages:  msgs,
-		CreatedAt: resp.CreatedAt,
-		UpdatedAt: resp.UpdatedAt,
-	}, nil
+	resp.SessionID = rpcResp.SessionId
+	resp.Title = rpcResp.Title
+	resp.Messages = msgs
+	resp.CreatedAt = rpcResp.CreatedAt
+	resp.UpdatedAt = rpcResp.UpdatedAt
+	return resp, nil
 }

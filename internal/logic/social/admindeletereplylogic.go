@@ -1,4 +1,4 @@
-﻿package social
+package social
 
 import (
 	"context"
@@ -24,8 +24,10 @@ func NewAdminDeleteReplyLogic(ctx context.Context, svcCtx *svc.ServiceContext) *
 	}
 }
 
-func (l *AdminDeleteReplyLogic) AdminDeleteReply(req *types.AdminDeleteReplyRequest) (*types.AdminDeleteReplyResponse, error) {
-	_, err := l.svcCtx.ReplyRPC.DeleteReply(l.ctx, &reply.DeleteReplyRequest{
+func (l *AdminDeleteReplyLogic) AdminDeleteReply(req *types.AdminDeleteReplyRequest) (resp *types.AdminDeleteReplyResponse, err error) {
+	resp = new(types.AdminDeleteReplyResponse)
+
+	_, err = l.svcCtx.ReplyRPC.DeleteReply(l.ctx, &reply.DeleteReplyRequest{
 		ReplyId: req.ReplyId,
 		IsAdmin: true,
 	})
@@ -33,5 +35,5 @@ func (l *AdminDeleteReplyLogic) AdminDeleteReply(req *types.AdminDeleteReplyRequ
 		l.Errorf("[AdminDeleteReply] rpc err: %v replyId: %d", err, req.ReplyId)
 		return nil, err
 	}
-	return &types.AdminDeleteReplyResponse{}, nil
+	return resp, nil
 }

@@ -1,4 +1,4 @@
-﻿// Code scaffolded by goctl. Safe to edit.
+// Code scaffolded by goctl. Safe to edit.
 // goctl 1.10.1
 
 package article
@@ -33,6 +33,8 @@ func NewPublishLogic(ctx context.Context, svcCtx *svc.ServiceContext) *PublishLo
 }
 
 func (l *PublishLogic) Publish(req *types.PublishRequest) (resp *types.PublishResponse, err error) {
+	resp = new(types.PublishResponse)
+
 	if len(req.Title) == 0 {
 		return nil, code.ArtitleTitleEmpty
 	}
@@ -63,5 +65,6 @@ func (l *PublishLogic) Publish(req *types.PublishRequest) (resp *types.PublishRe
 		return nil, err
 	}
 
-	return &types.PublishResponse{ArticleId: pret.ArticleId}, nil
+	resp.ArticleId = pret.ArticleId
+	return resp, nil
 }

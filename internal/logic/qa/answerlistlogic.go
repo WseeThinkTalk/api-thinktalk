@@ -1,4 +1,4 @@
-﻿package qa
+package qa
 
 import (
 	"context"
@@ -24,8 +24,10 @@ func NewAnswerListLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Answer
 	}
 }
 
-func (l *AnswerListLogic) AnswerList(req *types.AnswerListRequest) (*types.AnswerListResponse, error) {
-	resp, err := l.svcCtx.QaRPC.AnswerList(l.ctx, &qa.AnswerListRequest{
+func (l *AnswerListLogic) AnswerList(req *types.AnswerListRequest) (resp *types.AnswerListResponse, err error) {
+	resp = new(types.AnswerListResponse)
+
+	rpcResp, err := l.svcCtx.QaRPC.AnswerList(l.ctx, &qa.AnswerListRequest{
 		QuestionId: req.QuestionId,
 		Cursor:     req.Cursor,
 		PageSize:   req.PageSize,
@@ -34,8 +36,8 @@ func (l *AnswerListLogic) AnswerList(req *types.AnswerListRequest) (*types.Answe
 		l.Errorf("[AnswerList] rpc err: %v", err)
 		return nil, err
 	}
-	items := make([]*types.AnswerItem, 0, len(resp.Items))
-	for _, item := range resp.Items {
+	items := make([]*types.AnswerItem, 0, len(rpcResp.Items))
+	for _, item := range rpcResp.Items {
 		items = append(items, &types.AnswerItem{
 			Id:         item.Id,
 			QuestionId: item.QuestionId,
@@ -47,5 +49,8 @@ func (l *AnswerListLogic) AnswerList(req *types.AnswerListRequest) (*types.Answe
 			CreateTime: item.CreateTime,
 		})
 	}
-	return &types.AnswerListResponse{Items: items, Cursor: resp.Cursor, IsEnd: resp.IsEnd}, nil
+	resp.Items = items
+	resp.Cursor = rpcResp.Cursor
+	resp.IsEnd = rpcResp.IsEnd
+	return resp, nil
 }

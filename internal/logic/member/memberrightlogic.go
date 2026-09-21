@@ -20,8 +20,10 @@ func NewMemberRightLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Membe
 	return &MemberRightLogic{ctx: ctx, svcCtx: svcCtx, Logger: logx.WithContext(ctx)}
 }
 
-func (l *MemberRightLogic) CheckRight(userId int64, req *types.MemberRightRequest) (*types.MemberRightResponse, error) {
-	resp, err := l.svcCtx.MemberRPC.CheckMemberRight(l.ctx, &pb.CheckMemberRightRequest{
+func (l *MemberRightLogic) CheckRight(userId int64, req *types.MemberRightRequest) (resp *types.MemberRightResponse, err error) {
+	resp = new(types.MemberRightResponse)
+
+	rpcResp, err := l.svcCtx.MemberRPC.CheckMemberRight(l.ctx, &pb.CheckMemberRightRequest{
 		UserId:   userId,
 		RightKey: req.RightKey,
 	})
@@ -29,8 +31,7 @@ func (l *MemberRightLogic) CheckRight(userId int64, req *types.MemberRightReques
 		l.Errorf("[CheckMemberRight] rpc err: %v", err)
 		return nil, err
 	}
-	return &types.MemberRightResponse{
-		HasRight: resp.HasRight,
-		Level:    resp.Level,
-	}, nil
+	resp.HasRight = rpcResp.HasRight
+	resp.Level = rpcResp.Level
+	return resp, nil
 }

@@ -1,4 +1,4 @@
-﻿package social
+package social
 
 import (
 	"context"
@@ -21,8 +21,11 @@ func NewFansListLogic(ctx context.Context, svcCtx *svc.ServiceContext) *FansList
 	return &FansListLogic{ctx: ctx, svcCtx: svcCtx, Logger: logx.WithContext(ctx)}
 }
 
-func (l *FansListLogic) FansList(userId int64, req *types.FansListRequest) (*types.FansListResponse, error) {
-	resp, err := l.svcCtx.FollowRPC.FansList(l.ctx, &pb.FansListRequest{
+func (l *FansListLogic) FansList(userId int64, req *types.FansListRequest) (resp *types.FansListResponse, err error) {
+	resp = new(types.FansListResponse)
+	resp.Items = make([]*types.FollowItem, 0)
+
+	rpcResp, err := l.svcCtx.FollowRPC.FansList(l.ctx, &pb.FansListRequest{
 		UserId:   userId,
 		Cursor:   req.Cursor,
 		PageSize: req.PageSize,
@@ -32,8 +35,8 @@ func (l *FansListLogic) FansList(userId int64, req *types.FansListRequest) (*typ
 		return nil, err
 	}
 
-	items := make([]*types.FollowItem, 0, len(resp.Items))
-	for _, item := range resp.Items {
+	items := make([]*types.FollowItem, 0, len(rpcResp.Items))
+	for _, item := range rpcResp.Items {
 		targetName := ""
 		targetAvatar := ""
 		if userResp, err := l.svcCtx.UserRPC.FindById(l.ctx, &user.FindByIdRequest{UserId: item.FansUserId}); err == nil {
@@ -49,9 +52,8 @@ func (l *FansListLogic) FansList(userId int64, req *types.FansListRequest) (*typ
 			TargetUserAvatar: targetAvatar,
 		})
 	}
-	return &types.FansListResponse{
-		Items:  items,
-		Cursor: resp.Cursor,
-		IsEnd:  resp.IsEnd,
-	}, nil
+	resp.Items = items
+	resp.Cursor = rpcResp.Cursor
+	resp.IsEnd = rpcResp.IsEnd
+	return resp, nil
 }

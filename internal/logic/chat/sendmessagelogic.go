@@ -20,8 +20,10 @@ func NewSendMessageLogic(ctx context.Context, svcCtx *svc.ServiceContext) *SendM
 	return &SendMessageLogic{ctx: ctx, svcCtx: svcCtx, Logger: logx.WithContext(ctx)}
 }
 
-func (l *SendMessageLogic) SendMessage(userId int64, req *types.SendMessageRequest) (*types.SendMessageResponse, error) {
-	_, err := l.svcCtx.Chat.SendMessage(l.ctx, &pb.SendMessageRequest{
+func (l *SendMessageLogic) SendMessage(userId int64, req *types.SendMessageRequest) (resp *types.SendMessageResponse, err error) {
+	resp = new(types.SendMessageResponse)
+
+	_, err = l.svcCtx.Chat.SendMessage(l.ctx, &pb.SendMessageRequest{
 		SenderId:   userId,
 		ReceiverId: req.ReceiverId,
 		Content:    req.Content,
@@ -40,5 +42,5 @@ func (l *SendMessageLogic) SendMessage(userId int64, req *types.SendMessageReque
 		MsgType:  req.MsgType,
 	})
 
-	return &types.SendMessageResponse{}, nil
+	return resp, nil
 }

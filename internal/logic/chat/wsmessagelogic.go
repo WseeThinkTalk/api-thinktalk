@@ -20,8 +20,10 @@ func NewWsMessageLogic(ctx context.Context, svcCtx *svc.ServiceContext) *WsMessa
 	return &WsMessageLogic{ctx: ctx, svcCtx: svcCtx, Logger: logx.WithContext(ctx)}
 }
 
-func (l *WsMessageLogic) HandleMessage(userId int64, msg *types.WsInMessage) (*types.WsOutMessage, error) {
-	_, err := l.svcCtx.Chat.SendMessage(l.ctx, &pb.SendMessageRequest{
+func (l *WsMessageLogic) HandleMessage(userId int64, msg *types.WsInMessage) (resp *types.WsOutMessage, err error) {
+	resp = new(types.WsOutMessage)
+
+	_, err = l.svcCtx.Chat.SendMessage(l.ctx, &pb.SendMessageRequest{
 		SenderId:   userId,
 		ReceiverId: msg.ReceiverId,
 		Content:    msg.Content,
@@ -29,8 +31,10 @@ func (l *WsMessageLogic) HandleMessage(userId int64, msg *types.WsInMessage) (*t
 	})
 	if err != nil {
 		l.Errorf("[WsMessage] rpc err: %v userId: %d", err, userId)
-		return &types.WsOutMessage{Type: "error", Message: err.Error()}, err
+		return nil, err
 	}
 
-	return &types.WsOutMessage{Type: "ack", Message: "sent"}, nil
+	resp.Type = "ack"
+	resp.Message = "sent"
+	return resp, nil
 }

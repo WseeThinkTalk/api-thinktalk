@@ -1,4 +1,4 @@
-﻿package tag
+package tag
 
 import (
 	"context"
@@ -20,8 +20,10 @@ func NewResourcesByTagLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Re
 	return &ResourcesByTagLogic{ctx: ctx, svcCtx: svcCtx, Logger: logx.WithContext(ctx)}
 }
 
-func (l *ResourcesByTagLogic) ResourcesByTag(req *types.ResourcesByTagRequest) (*types.ResourcesByTagResponse, error) {
-	resp, err := l.svcCtx.TagRPC.ResourcesByTag(l.ctx, &tag.ResourcesByTagRequest{
+func (l *ResourcesByTagLogic) ResourcesByTag(req *types.ResourcesByTagRequest) (resp *types.ResourcesByTagResponse, err error) {
+	resp = new(types.ResourcesByTagResponse)
+
+	rpcResp, err := l.svcCtx.TagRPC.ResourcesByTag(l.ctx, &tag.ResourcesByTagRequest{
 		TagId:    req.TagId,
 		BizId:    req.BizId,
 		Cursor:   req.Cursor,
@@ -31,13 +33,16 @@ func (l *ResourcesByTagLogic) ResourcesByTag(req *types.ResourcesByTagRequest) (
 		l.Errorf("[ResourcesByTag] rpc err: %v", err)
 		return nil, err
 	}
-	items := make([]*types.ResourceItem, 0, len(resp.Items))
-	for _, item := range resp.Items {
+	items := make([]*types.ResourceItem, 0, len(rpcResp.Items))
+	for _, item := range rpcResp.Items {
 		items = append(items, &types.ResourceItem{
 			TargetId:   item.TargetId,
 			BizId:      item.BizId,
 			CreateTime: item.CreateTime,
 		})
 	}
-	return &types.ResourcesByTagResponse{Items: items, Cursor: resp.Cursor, IsEnd: resp.IsEnd}, nil
+	resp.Items = items
+	resp.Cursor = rpcResp.Cursor
+	resp.IsEnd = rpcResp.IsEnd
+	return resp, nil
 }

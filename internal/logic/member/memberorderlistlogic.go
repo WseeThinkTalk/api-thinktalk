@@ -20,8 +20,10 @@ func NewMemberOrderListLogic(ctx context.Context, svcCtx *svc.ServiceContext) *M
 	return &MemberOrderListLogic{ctx: ctx, svcCtx: svcCtx, Logger: logx.WithContext(ctx)}
 }
 
-func (l *MemberOrderListLogic) MemberOrderList(userId int64, req *types.MemberOrderListRequest) (*types.MemberOrderListResponse, error) {
-	resp, err := l.svcCtx.MemberRPC.MemberOrderList(l.ctx, &pb.MemberOrderListRequest{
+func (l *MemberOrderListLogic) MemberOrderList(userId int64, req *types.MemberOrderListRequest) (resp *types.MemberOrderListResponse, err error) {
+	resp = new(types.MemberOrderListResponse)
+
+	rpcResp, err := l.svcCtx.MemberRPC.MemberOrderList(l.ctx, &pb.MemberOrderListRequest{
 		UserId:   userId,
 		Cursor:   req.Cursor,
 		PageSize: req.PageSize,
@@ -31,8 +33,8 @@ func (l *MemberOrderListLogic) MemberOrderList(userId int64, req *types.MemberOr
 		return nil, err
 	}
 
-	items := make([]*types.MemberOrderItem, 0, len(resp.Items))
-	for _, item := range resp.Items {
+	items := make([]*types.MemberOrderItem, 0, len(rpcResp.Items))
+	for _, item := range rpcResp.Items {
 		items = append(items, &types.MemberOrderItem{
 			Id:           item.Id,
 			UserId:       item.UserId,
@@ -44,9 +46,8 @@ func (l *MemberOrderListLogic) MemberOrderList(userId int64, req *types.MemberOr
 			CreateTime:   item.CreateTime,
 		})
 	}
-	return &types.MemberOrderListResponse{
-		Items:  items,
-		Cursor: resp.Cursor,
-		IsEnd:  resp.IsEnd,
-	}, nil
+	resp.Items = items
+	resp.Cursor = rpcResp.Cursor
+	resp.IsEnd = rpcResp.IsEnd
+	return resp, nil
 }

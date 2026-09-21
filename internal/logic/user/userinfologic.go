@@ -1,4 +1,4 @@
-﻿// Code scaffolded by goctl. Safe to edit.
+// Code scaffolded by goctl. Safe to edit.
 // goctl 1.10.1
 
 package user
@@ -29,6 +29,8 @@ func NewUserInfoLogic(ctx context.Context, svcCtx *svc.ServiceContext) *UserInfo
 }
 
 func (l *UserInfoLogic) UserInfo() (resp *types.UserInfoResponse, err error) {
+	resp = new(types.UserInfoResponse)
+
 	userId, err := l.ctx.Value("userId").(json.Number).Int64()
 	if err != nil {
 		return nil, err
@@ -44,14 +46,13 @@ func (l *UserInfoLogic) UserInfo() (resp *types.UserInfoResponse, err error) {
 		return nil, err
 	}
 
-	return &types.UserInfoResponse{
-		UserId:       id.UserId,
-		Username:     id.Username,
-		Avatar:       id.Avatar,
-		Role:         id.Role,
-		DisplayId:    id.DisplayId,
-		Bio:          id.Bio,
-		Gender:       id.Gender,
-		ProfileCover: id.ProfileCover,
-	}, nil
+	resp.UserId = id.UserId
+	resp.Username = id.Username
+	resp.Avatar = id.Avatar
+	resp.Role = id.Role
+	resp.DisplayId = id.DisplayId
+	resp.Bio = id.Bio
+	resp.Gender = id.Gender
+	resp.ProfileCover = id.ProfileCover
+	return resp, nil
 }

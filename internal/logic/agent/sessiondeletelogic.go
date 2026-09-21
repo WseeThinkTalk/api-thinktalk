@@ -19,7 +19,9 @@ func NewDeleteSessionLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Del
 	return &DeleteSessionLogic{ctx: ctx, svcCtx: svcCtx}
 }
 
-func (l *DeleteSessionLogic) DeleteSession(req *types.DeleteSessionRequest) (*types.DeleteSessionResponse, error) {
+func (l *DeleteSessionLogic) DeleteSession(req *types.DeleteSessionRequest) (resp *types.DeleteSessionResponse, err error) {
+	resp = new(types.DeleteSessionResponse)
+
 	userIDVal := l.ctx.Value("userId")
 	if userIDVal == nil {
 		return nil, fmt.Errorf("unauthorized")
@@ -29,12 +31,13 @@ func (l *DeleteSessionLogic) DeleteSession(req *types.DeleteSessionRequest) (*ty
 		return nil, err
 	}
 
-	resp, err := l.svcCtx.AgentClient.DeleteSession(l.ctx, &pb.DeleteSessionRequest{
+	rpcResp, err := l.svcCtx.AgentClient.DeleteSession(l.ctx, &pb.DeleteSessionRequest{
 		UserId:    uid,
 		SessionId: req.SessionID,
 	})
 	if err != nil {
-		return &types.DeleteSessionResponse{Success: false}, err
+		return nil, err
 	}
-	return &types.DeleteSessionResponse{Success: resp.Success}, nil
+	resp.Success = rpcResp.Success
+	return resp, nil
 }

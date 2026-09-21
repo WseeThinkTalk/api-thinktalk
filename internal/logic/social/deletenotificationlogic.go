@@ -1,4 +1,4 @@
-﻿package social
+package social
 
 import (
 	"context"
@@ -24,8 +24,10 @@ func NewDeleteNotificationLogic(ctx context.Context, svcCtx *svc.ServiceContext)
 	}
 }
 
-func (l *DeleteNotificationLogic) DeleteNotification(userId int64, req *types.DeleteNotificationRequest) (*types.DeleteNotificationResponse, error) {
-	_, err := l.svcCtx.MessageRPC.DeleteNotification(l.ctx, &msg.DeleteNotificationRequest{
+func (l *DeleteNotificationLogic) DeleteNotification(userId int64, req *types.DeleteNotificationRequest) (resp *types.DeleteNotificationResponse, err error) {
+	resp = new(types.DeleteNotificationResponse)
+
+	_, err = l.svcCtx.MessageRPC.DeleteNotification(l.ctx, &msg.DeleteNotificationRequest{
 		UserId:         userId,
 		NotificationId: req.NotificationId,
 	})
@@ -33,5 +35,5 @@ func (l *DeleteNotificationLogic) DeleteNotification(userId int64, req *types.De
 		l.Errorf("[DeleteNotification] rpc err: %v", err)
 		return nil, err
 	}
-	return &types.DeleteNotificationResponse{}, nil
+	return resp, nil
 }

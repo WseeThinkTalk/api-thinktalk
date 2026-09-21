@@ -1,4 +1,4 @@
-﻿// Code scaffolded by goctl. Safe to edit.
+// Code scaffolded by goctl. Safe to edit.
 // goctl 1.10.1
 
 package user
@@ -34,6 +34,8 @@ func NewRegisterLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Register
 }
 
 func (l *RegisterLogic) Register(req *types.RegisterRequest) (resp *types.RegisterResponse, err error) {
+	resp = new(types.RegisterResponse)
+
 	req.Name = strings.TrimSpace(req.Name)
 	if len(req.Name) == 0 {
 		return nil, code.RegisterNameEmpty
@@ -101,13 +103,12 @@ func (l *RegisterLogic) Register(req *types.RegisterRequest) (resp *types.Regist
 	}
 	_ = deleteActivationCode(req.Mobile, req.VerificationCode, l.svcCtx.RDB)
 
-	return &types.RegisterResponse{
-		UserId: userId.UserId,
-		Token: types.Token{
-			AccessToken:  token.AccessToken,
-			AccessExpire: token.AccessExpire,
-		},
-	}, nil
+	resp.UserId = userId.UserId
+	resp.Token = types.Token{
+		AccessToken:  token.AccessToken,
+		AccessExpire: token.AccessExpire,
+	}
+	return resp, nil
 }
 
 func CheckVerificationCode(rds *redis.Redis, mobile, code string) error {

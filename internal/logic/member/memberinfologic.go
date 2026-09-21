@@ -20,19 +20,20 @@ func NewMemberInfoLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Member
 	return &MemberInfoLogic{ctx: ctx, svcCtx: svcCtx, Logger: logx.WithContext(ctx)}
 }
 
-func (l *MemberInfoLogic) MemberInfo(userId int64) (*types.MemberInfoResponse, error) {
-	resp, err := l.svcCtx.MemberRPC.MemberInfo(l.ctx, &pb.MemberInfoRequest{
+func (l *MemberInfoLogic) MemberInfo(userId int64) (resp *types.MemberInfoResponse, err error) {
+	resp = new(types.MemberInfoResponse)
+
+	rpcResp, err := l.svcCtx.MemberRPC.MemberInfo(l.ctx, &pb.MemberInfoRequest{
 		UserId: userId,
 	})
 	if err != nil {
 		l.Errorf("[MemberInfo] rpc err: %v", err)
 		return nil, err
 	}
-	return &types.MemberInfoResponse{
-		UserId:     resp.UserId,
-		Level:      resp.Level,
-		LevelName:  resp.LevelName,
-		ExpireTime: resp.ExpireTime,
-		Status:     resp.Status,
-	}, nil
+	resp.UserId = rpcResp.UserId
+	resp.Level = rpcResp.Level
+	resp.LevelName = rpcResp.LevelName
+	resp.ExpireTime = rpcResp.ExpireTime
+	resp.Status = rpcResp.Status
+	return resp, nil
 }

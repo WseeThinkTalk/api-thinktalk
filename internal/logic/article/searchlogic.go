@@ -1,4 +1,4 @@
-﻿package article
+package article
 
 import (
 	"context"
@@ -25,6 +25,8 @@ func NewSearchLogic(ctx context.Context, svcCtx *svc.ServiceContext) *SearchLogi
 }
 
 func (l *SearchLogic) Search(req *types.SearchRequest) (resp *types.SearchResponse, err error) {
+	resp = new(types.SearchResponse)
+
 	ret, err := l.svcCtx.ArticleRPC.SearchArticles(l.ctx, &article.SearchRequest{
 		Keyword:  req.Keyword,
 		Cursor:   req.Cursor,
@@ -51,9 +53,8 @@ func (l *SearchLogic) Search(req *types.SearchRequest) (resp *types.SearchRespon
 		})
 	}
 
-	return &types.SearchResponse{
-		Articles: items,
-		Cursor:   ret.Cursor,
-		IsEnd:    ret.IsEnd,
-	}, nil
+	resp.Articles = items
+	resp.Cursor = ret.Cursor
+	resp.IsEnd = ret.IsEnd
+	return resp, nil
 }

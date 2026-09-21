@@ -1,4 +1,4 @@
-﻿package tag
+package tag
 
 import (
 	"context"
@@ -20,19 +20,20 @@ func NewTagDetailLogic(ctx context.Context, svcCtx *svc.ServiceContext) *TagDeta
 	return &TagDetailLogic{ctx: ctx, svcCtx: svcCtx, Logger: logx.WithContext(ctx)}
 }
 
-func (l *TagDetailLogic) TagDetail(req *types.TagDetailRequest) (*types.TagDetailResponse, error) {
-	resp, err := l.svcCtx.TagRPC.TagDetail(l.ctx, &tag.TagDetailRequest{
+func (l *TagDetailLogic) TagDetail(req *types.TagDetailRequest) (resp *types.TagDetailResponse, err error) {
+	resp = new(types.TagDetailResponse)
+
+	rpcResp, err := l.svcCtx.TagRPC.TagDetail(l.ctx, &tag.TagDetailRequest{
 		TagId: req.TagId,
 	})
 	if err != nil {
 		l.Errorf("[TagDetail] rpc err: %v", err)
 		return nil, err
 	}
-	return &types.TagDetailResponse{
-		TagId:         resp.TagId,
-		TagName:       resp.TagName,
-		TagDesc:       resp.TagDesc,
-		ResourceCount: resp.ResourceCount,
-		CreateTime:    resp.CreateTime,
-	}, nil
+	resp.TagId = rpcResp.TagId
+	resp.TagName = rpcResp.TagName
+	resp.TagDesc = rpcResp.TagDesc
+	resp.ResourceCount = rpcResp.ResourceCount
+	resp.CreateTime = rpcResp.CreateTime
+	return resp, nil
 }

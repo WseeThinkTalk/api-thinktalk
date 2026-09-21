@@ -20,8 +20,11 @@ func NewConcernedListLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Con
 	return &ConcernedListLogic{ctx: ctx, svcCtx: svcCtx, Logger: logx.WithContext(ctx)}
 }
 
-func (l *ConcernedListLogic) List(userId int64, req *types.ConcernedListRequest) (*types.ConcernedListResponse, error) {
-	resp, err := l.svcCtx.ConcernedRPC.ConcernedList(l.ctx, &concernedpb.ConcernedListRequest{
+func (l *ConcernedListLogic) List(userId int64, req *types.ConcernedListRequest) (resp *types.ConcernedListResponse, err error) {
+	resp = new(types.ConcernedListResponse)
+	resp.Items = make([]*types.ConcernedItem, 0)
+
+	rpcResp, err := l.svcCtx.ConcernedRPC.ConcernedList(l.ctx, &concernedpb.ConcernedListRequest{
 		UserId:   userId,
 		BizId:    req.BizId,
 		Cursor:   req.Cursor,
@@ -32,8 +35,8 @@ func (l *ConcernedListLogic) List(userId int64, req *types.ConcernedListRequest)
 		return nil, err
 	}
 
-	items := make([]*types.ConcernedItem, 0, len(resp.Items))
-	for _, item := range resp.Items {
+	items := make([]*types.ConcernedItem, 0, len(rpcResp.Items))
+	for _, item := range rpcResp.Items {
 		items = append(items, &types.ConcernedItem{
 			Id:         item.Id,
 			BizId:      item.BizId,
@@ -41,9 +44,8 @@ func (l *ConcernedListLogic) List(userId int64, req *types.ConcernedListRequest)
 			CreateTime: item.CreateTime,
 		})
 	}
-	return &types.ConcernedListResponse{
-		Items:  items,
-		Cursor: resp.Cursor,
-		IsEnd:  resp.IsEnd,
-	}, nil
+	resp.Items = items
+	resp.Cursor = rpcResp.Cursor
+	resp.IsEnd = rpcResp.IsEnd
+	return resp, nil
 }

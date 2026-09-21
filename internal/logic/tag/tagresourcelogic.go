@@ -1,4 +1,4 @@
-﻿package tag
+package tag
 
 import (
 	"context"
@@ -20,8 +20,10 @@ func NewTagResourceLogic(ctx context.Context, svcCtx *svc.ServiceContext) *TagRe
 	return &TagResourceLogic{ctx: ctx, svcCtx: svcCtx, Logger: logx.WithContext(ctx)}
 }
 
-func (l *TagResourceLogic) TagResource(userId int64, req *types.TagResourceRequest) (*types.TagResourceResponse, error) {
-	_, err := l.svcCtx.TagRPC.TagResource(l.ctx, &tag.TagResourceRequest{
+func (l *TagResourceLogic) TagResource(userId int64, req *types.TagResourceRequest) (resp *types.TagResourceResponse, err error) {
+	resp = new(types.TagResourceResponse)
+
+	_, err = l.svcCtx.TagRPC.TagResource(l.ctx, &tag.TagResourceRequest{
 		BizId:    req.BizId,
 		TargetId: req.TargetId,
 		TagId:    req.TagId,
@@ -31,5 +33,5 @@ func (l *TagResourceLogic) TagResource(userId int64, req *types.TagResourceReque
 		l.Errorf("[TagResource] rpc err: %v", err)
 		return nil, err
 	}
-	return &types.TagResourceResponse{}, nil
+	return resp, nil
 }

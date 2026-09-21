@@ -1,4 +1,4 @@
-﻿package qa
+package qa
 
 import (
 	"context"
@@ -24,8 +24,10 @@ func NewPublishQuestionLogic(ctx context.Context, svcCtx *svc.ServiceContext) *P
 	}
 }
 
-func (l *PublishQuestionLogic) PublishQuestion(userId int64, req *types.PublishQuestionRequest) (*types.PublishQuestionResponse, error) {
-	resp, err := l.svcCtx.QaRPC.PublishQuestion(l.ctx, &qa.PublishQuestionRequest{
+func (l *PublishQuestionLogic) PublishQuestion(userId int64, req *types.PublishQuestionRequest) (resp *types.PublishQuestionResponse, err error) {
+	resp = new(types.PublishQuestionResponse)
+
+	rpcResp, err := l.svcCtx.QaRPC.PublishQuestion(l.ctx, &qa.PublishQuestionRequest{
 		UserId:  userId,
 		Title:   req.Title,
 		Content: req.Content,
@@ -35,5 +37,6 @@ func (l *PublishQuestionLogic) PublishQuestion(userId int64, req *types.PublishQ
 		l.Errorf("[PublishQuestion] rpc err: %v", err)
 		return nil, err
 	}
-	return &types.PublishQuestionResponse{QuestionId: resp.QuestionId}, nil
+	resp.QuestionId = rpcResp.QuestionId
+	return resp, nil
 }

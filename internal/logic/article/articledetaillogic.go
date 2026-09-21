@@ -1,4 +1,4 @@
-﻿// Code scaffolded by goctl. Safe to edit.
+// Code scaffolded by goctl. Safe to edit.
 // goctl 1.10.1
 
 package article
@@ -30,6 +30,8 @@ func NewArticleDetailLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Art
 }
 
 func (l *ArticleDetailLogic) ArticleDetail(req *types.ArticleDetailRequest) (resp *types.ArticleDetailResponse, err error) {
+	resp = new(types.ArticleDetailResponse)
+
 	articleInfo, err := l.svcCtx.ArticleRPC.ArticleDetail(l.ctx, &article.ArticleDetailRequest{
 		ArticleId: req.ArticleId,
 	})
@@ -48,16 +50,15 @@ func (l *ArticleDetailLogic) ArticleDetail(req *types.ArticleDetailRequest) (res
 		return nil, err
 	}
 	publishTime := time.Unix(articleInfo.Article.PublishTime, 0).Format("2006-01-02 15:04:05")
-	return &types.ArticleDetailResponse{
-		ArticleId:    articleInfo.Article.Id,
-		Title:        articleInfo.Article.Title,
-		Content:      articleInfo.Article.Content,
-		Description:  articleInfo.Article.Description,
-		Cover:        articleInfo.Article.Cover,
-		AuthorId:     articleInfo.Article.AuthorId,
-		AuthorName:   userInfo.Username,
-		AuthorAvatar: userInfo.Avatar,
-		PublishTime:  publishTime,
-		LikeNum:      articleInfo.Article.LikeCount,
-	}, nil
+	resp.ArticleId = articleInfo.Article.Id
+	resp.Title = articleInfo.Article.Title
+	resp.Content = articleInfo.Article.Content
+	resp.Description = articleInfo.Article.Description
+	resp.Cover = articleInfo.Article.Cover
+	resp.AuthorId = articleInfo.Article.AuthorId
+	resp.AuthorName = userInfo.Username
+	resp.AuthorAvatar = userInfo.Avatar
+	resp.PublishTime = publishTime
+	resp.LikeNum = articleInfo.Article.LikeCount
+	return resp, nil
 }

@@ -20,8 +20,10 @@ func NewMarkAllReadLogic(ctx context.Context, svcCtx *svc.ServiceContext) *MarkA
 	return &MarkAllReadLogic{ctx: ctx, svcCtx: svcCtx, Logger: logx.WithContext(ctx)}
 }
 
-func (l *MarkAllReadLogic) MarkAllRead(userId int64, req *types.MarkAllReadRequest) (*types.MarkReadResponse, error) {
-	_, err := l.svcCtx.MessageRPC.MarkAllRead(l.ctx, &pb.MarkAllReadRequest{
+func (l *MarkAllReadLogic) MarkAllRead(userId int64, req *types.MarkAllReadRequest) (resp *types.MarkReadResponse, err error) {
+	resp = new(types.MarkReadResponse)
+
+	_, err = l.svcCtx.MessageRPC.MarkAllRead(l.ctx, &pb.MarkAllReadRequest{
 		UserId: userId,
 		Type:   req.Type,
 	})
@@ -29,5 +31,5 @@ func (l *MarkAllReadLogic) MarkAllRead(userId int64, req *types.MarkAllReadReque
 		l.Errorf("[MarkAllRead] rpc err: %v", err)
 		return nil, err
 	}
-	return &types.MarkReadResponse{}, nil
+	return resp, nil
 }

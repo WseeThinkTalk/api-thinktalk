@@ -20,16 +20,17 @@ func NewUnreadCountLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Unrea
 	return &UnreadCountLogic{ctx: ctx, svcCtx: svcCtx, Logger: logx.WithContext(ctx)}
 }
 
-func (l *UnreadCountLogic) UnreadCount(userId int64) (*types.UnreadCountResponse, error) {
-	resp, err := l.svcCtx.MessageRPC.UnreadCount(l.ctx, &pb.UnreadCountRequest{
+func (l *UnreadCountLogic) UnreadCount(userId int64) (resp *types.UnreadCountResponse, err error) {
+	resp = new(types.UnreadCountResponse)
+
+	rpcResp, err := l.svcCtx.MessageRPC.UnreadCount(l.ctx, &pb.UnreadCountRequest{
 		UserId: userId,
 	})
 	if err != nil {
 		l.Errorf("[UnreadCount] rpc err: %v", err)
 		return nil, err
 	}
-	return &types.UnreadCountResponse{
-		Total:      resp.Total,
-		TypeCounts: resp.TypeCounts,
-	}, nil
+	resp.Total = rpcResp.Total
+	resp.TypeCounts = rpcResp.TypeCounts
+	return resp, nil
 }

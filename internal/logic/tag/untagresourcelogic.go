@@ -1,4 +1,4 @@
-﻿package tag
+package tag
 
 import (
 	"context"
@@ -20,8 +20,10 @@ func NewUntagResourceLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Unt
 	return &UntagResourceLogic{ctx: ctx, svcCtx: svcCtx, Logger: logx.WithContext(ctx)}
 }
 
-func (l *UntagResourceLogic) UntagResource(userId int64, req *types.UntagResourceRequest) (*types.UntagResourceResponse, error) {
-	_, err := l.svcCtx.TagRPC.UntagResource(l.ctx, &tag.UntagResourceRequest{
+func (l *UntagResourceLogic) UntagResource(userId int64, req *types.UntagResourceRequest) (resp *types.UntagResourceResponse, err error) {
+	resp = new(types.UntagResourceResponse)
+
+	_, err = l.svcCtx.TagRPC.UntagResource(l.ctx, &tag.UntagResourceRequest{
 		BizId:    req.BizId,
 		TargetId: req.TargetId,
 		TagId:    req.TagId,
@@ -31,5 +33,5 @@ func (l *UntagResourceLogic) UntagResource(userId int64, req *types.UntagResourc
 		l.Errorf("[UntagResource] rpc err: %v", err)
 		return nil, err
 	}
-	return &types.UntagResourceResponse{}, nil
+	return resp, nil
 }

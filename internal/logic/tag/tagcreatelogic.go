@@ -1,4 +1,4 @@
-﻿package tag
+package tag
 
 import (
 	"context"
@@ -20,8 +20,10 @@ func NewTagCreateLogic(ctx context.Context, svcCtx *svc.ServiceContext) *TagCrea
 	return &TagCreateLogic{ctx: ctx, svcCtx: svcCtx, Logger: logx.WithContext(ctx)}
 }
 
-func (l *TagCreateLogic) TagCreate(userId int64, req *types.TagCreateRequest) (*types.TagCreateResponse, error) {
-	resp, err := l.svcCtx.TagRPC.CreateTag(l.ctx, &tag.CreateTagRequest{
+func (l *TagCreateLogic) TagCreate(userId int64, req *types.TagCreateRequest) (resp *types.TagCreateResponse, err error) {
+	resp = new(types.TagCreateResponse)
+
+	rpcResp, err := l.svcCtx.TagRPC.CreateTag(l.ctx, &tag.CreateTagRequest{
 		TagName: req.TagName,
 		TagDesc: req.TagDesc,
 	})
@@ -29,5 +31,6 @@ func (l *TagCreateLogic) TagCreate(userId int64, req *types.TagCreateRequest) (*
 		l.Errorf("[CreateTag] rpc err: %v", err)
 		return nil, err
 	}
-	return &types.TagCreateResponse{TagId: resp.TagId}, nil
+	resp.TagId = rpcResp.TagId
+	return resp, nil
 }

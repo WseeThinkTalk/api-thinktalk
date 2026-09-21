@@ -1,4 +1,4 @@
-﻿// Code scaffolded by goctl. Safe to edit.
+// Code scaffolded by goctl. Safe to edit.
 // goctl 1.10.1
 
 package article
@@ -29,6 +29,8 @@ func NewArticleListLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Artic
 }
 
 func (l *ArticleListLogic) ArticleList(req *types.ArticleListRequest) (resp *types.ArticleListResponse, err error) {
+	resp = new(types.ArticleListResponse)
+
 	userId := req.AuthorId
 	if userId <= 0 {
 		if val := l.ctx.Value("userId"); val != nil {
@@ -50,9 +52,8 @@ func (l *ArticleListLogic) ArticleList(req *types.ArticleListRequest) (resp *typ
 		return nil, err
 	}
 	if articles == nil || len(articles.Articles) == 0 {
-		return &types.ArticleListResponse{
-			Articles: make([]types.ArticleInfo, 0),
-		}, nil
+		resp.Articles = make([]types.ArticleInfo, 0)
+		return resp, nil
 	}
 
 	infos := make([]types.ArticleInfo, 0, len(articles.Articles))
@@ -66,7 +67,6 @@ func (l *ArticleListLogic) ArticleList(req *types.ArticleListRequest) (resp *typ
 		})
 	}
 
-	return &types.ArticleListResponse{
-		Articles: infos,
-	}, nil
+	resp.Articles = infos
+	return resp, nil
 }

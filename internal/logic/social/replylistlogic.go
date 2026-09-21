@@ -1,4 +1,4 @@
-﻿package social
+package social
 
 import (
 	"context"
@@ -21,8 +21,11 @@ func NewReplyListLogic(ctx context.Context, svcCtx *svc.ServiceContext) *ReplyLi
 	return &ReplyListLogic{ctx: ctx, svcCtx: svcCtx, Logger: logx.WithContext(ctx)}
 }
 
-func (l *ReplyListLogic) ReplyList(req *types.ReplyListRequest) (*types.ReplyListResponse, error) {
-	resp, err := l.svcCtx.ReplyRPC.ReplyList(l.ctx, &reply.ReplyListRequest{
+func (l *ReplyListLogic) ReplyList(req *types.ReplyListRequest) (resp *types.ReplyListResponse, err error) {
+	resp = new(types.ReplyListResponse)
+	resp.Items = make([]*types.ReplyItem, 0)
+
+	rpcResp, err := l.svcCtx.ReplyRPC.ReplyList(l.ctx, &reply.ReplyListRequest{
 		BizId:    req.BizId,
 		TargetId: req.TargetId,
 		Cursor:   req.Cursor,
@@ -50,9 +53,12 @@ func (l *ReplyListLogic) ReplyList(req *types.ReplyListRequest) (*types.ReplyLis
 		return u.Username, u.Avatar
 	}
 
-	items := make([]*types.ReplyItem, 0, len(resp.Items))
-	for _, item := range resp.Items {
+	items := make([]*types.ReplyItem, 0, len(rpcResp.Items))
+	for _, item := range rpcResp.Items {
 		items = append(items, convertReplyItem(item, getUserInfo))
 	}
-	return &types.ReplyListResponse{Items: items, Cursor: resp.Cursor, IsEnd: resp.IsEnd}, nil
+	resp.Items = items
+	resp.Cursor = rpcResp.Cursor
+	resp.IsEnd = rpcResp.IsEnd
+	return resp, nil
 }

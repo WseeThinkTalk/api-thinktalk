@@ -27,7 +27,9 @@ func NewCreateMemberOrderLogic(ctx context.Context, svcCtx *svc.ServiceContext) 
 	}
 }
 
-func (l *CreateMemberOrderLogic) CreateMemberOrder(req *types.CreateMemberOrderReq) (*types.CreateMemberOrderResp, error) {
+func (l *CreateMemberOrderLogic) CreateMemberOrder(req *types.CreateMemberOrderReq) (resp *types.CreateMemberOrderResp, err error) {
+	resp = new(types.CreateMemberOrderResp)
+
 	l.Infof("[CreateMemberOrder] level: %v, duration_days: %v, amount: %v", req.Level, req.DurationDays, req.Amount)
 	userId, err := l.ctx.Value("userId").(json.Number).Int64()
 	if err != nil {
@@ -68,9 +70,8 @@ func (l *CreateMemberOrderLogic) CreateMemberOrder(req *types.CreateMemberOrderR
 		payUrl = url.String()
 	}
 
-	return &types.CreateMemberOrderResp{
-		OrderSn: createResp.OrderSn,
-		Amount:  createResp.Amount,
-		PayUrl:  payUrl,
-	}, nil
+	resp.OrderSn = createResp.OrderSn
+	resp.Amount = createResp.Amount
+	resp.PayUrl = payUrl
+	return resp, nil
 }

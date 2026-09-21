@@ -20,8 +20,10 @@ func NewConcernedCheckLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Co
 	return &ConcernedCheckLogic{ctx: ctx, svcCtx: svcCtx, Logger: logx.WithContext(ctx)}
 }
 
-func (l *ConcernedCheckLogic) Check(userId int64, req *types.ConcernedCheckRequest) (*types.ConcernedCheckResponse, error) {
-	resp, err := l.svcCtx.ConcernedRPC.IsConcerned(l.ctx, &concernedpb.IsConcernedRequest{
+func (l *ConcernedCheckLogic) Check(userId int64, req *types.ConcernedCheckRequest) (resp *types.ConcernedCheckResponse, err error) {
+	resp = new(types.ConcernedCheckResponse)
+
+	rpcResp, err := l.svcCtx.ConcernedRPC.IsConcerned(l.ctx, &concernedpb.IsConcernedRequest{
 		BizId:  req.BizId,
 		ObjId:  req.ObjId,
 		UserId: userId,
@@ -30,5 +32,6 @@ func (l *ConcernedCheckLogic) Check(userId int64, req *types.ConcernedCheckReque
 		l.Errorf("[ConcernedCheck] rpc err: %v", err)
 		return nil, err
 	}
-	return &types.ConcernedCheckResponse{IsConcerned: resp.IsConcerned}, nil
+	resp.IsConcerned = rpcResp.IsConcerned
+	return resp, nil
 }

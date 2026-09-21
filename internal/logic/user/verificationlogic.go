@@ -1,4 +1,4 @@
-﻿// Code scaffolded by goctl. Safe to edit.
+// Code scaffolded by goctl. Safe to edit.
 // goctl 1.10.1
 
 package user
@@ -40,6 +40,8 @@ func NewVerificationLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Veri
 }
 
 func (l *VerificationLogic) Verification(req *types.VerificationRequest) (resp *types.VerificationResponse, err error) {
+	resp = new(types.VerificationResponse)
+
 	count, err := l.GetVerificationCount(req.Mobile)
 	if err != nil {
 		logx.Errorf("getVerificationCount mobile: %s error: %v", req.Mobile, err)
@@ -78,7 +80,7 @@ func (l *VerificationLogic) Verification(req *types.VerificationRequest) (resp *
 	if err != nil {
 		logx.Errorf("incrVerificationCount mobile: %s error: %v", req.Mobile, err)
 	}
-	return &types.VerificationResponse{}, nil
+	return resp, nil
 }
 
 func (l *VerificationLogic) GetVerificationCount(moblie string) (int, error) {

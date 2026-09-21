@@ -1,4 +1,4 @@
-﻿// Code scaffolded by goctl. Safe to edit.
+// Code scaffolded by goctl. Safe to edit.
 // goctl 1.10.1
 
 package article
@@ -28,6 +28,8 @@ func NewAdminPendingListLogic(ctx context.Context, svcCtx *svc.ServiceContext) *
 }
 
 func (l *AdminPendingListLogic) AdminPendingList(req *types.AdminPendingListRequest) (resp *types.AdminPendingListResponse, err error) {
+	resp = new(types.AdminPendingListResponse)
+
 	if req.PageSize == 0 {
 		req.PageSize = 20
 	}
@@ -57,9 +59,8 @@ func (l *AdminPendingListLogic) AdminPendingList(req *types.AdminPendingListRequ
 		})
 	}
 
-	return &types.AdminPendingListResponse{
-		Articles: items,
-		Cursor:   ret.Cursor,
-		IsEnd:    ret.IsEnd,
-	}, nil
+	resp.Articles = items
+	resp.Cursor = ret.Cursor
+	resp.IsEnd = ret.IsEnd
+	return resp, nil
 }

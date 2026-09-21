@@ -1,4 +1,4 @@
-﻿// Code scaffolded by goctl. Safe to edit.
+// Code scaffolded by goctl. Safe to edit.
 // goctl 1.10.1
 
 package article
@@ -28,6 +28,8 @@ func NewAllArticlesLogic(ctx context.Context, svcCtx *svc.ServiceContext) *AllAr
 }
 
 func (l *AllArticlesLogic) AllArticles(req *types.AllArticlesRequest) (resp *types.AllArticlesResponse, err error) {
+	resp = new(types.AllArticlesResponse)
+
 	if req.PageSize == 0 {
 		req.PageSize = 20
 	}
@@ -58,9 +60,8 @@ func (l *AllArticlesLogic) AllArticles(req *types.AllArticlesRequest) (resp *typ
 		})
 	}
 
-	return &types.AllArticlesResponse{
-		Articles: items,
-		Cursor:   ret.Cursor,
-		IsEnd:    ret.IsEnd,
-	}, nil
+	resp.Articles = items
+	resp.Cursor = ret.Cursor
+	resp.IsEnd = ret.IsEnd
+	return resp, nil
 }

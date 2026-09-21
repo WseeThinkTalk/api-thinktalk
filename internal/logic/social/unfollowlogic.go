@@ -1,4 +1,4 @@
-﻿package social
+package social
 
 import (
 	"context"
@@ -24,8 +24,10 @@ func NewUnFollowLogic(ctx context.Context, svcCtx *svc.ServiceContext) *UnFollow
 	return &UnFollowLogic{ctx: ctx, svcCtx: svcCtx, Logger: logx.WithContext(ctx)}
 }
 
-func (l *UnFollowLogic) UnFollow(userId int64, req *types.UnfollowRequest) (*types.UnfollowResponse, error) {
-	_, err := l.svcCtx.FollowRPC.UnFollow(l.ctx, &pb.UnFollowRequest{
+func (l *UnFollowLogic) UnFollow(userId int64, req *types.UnfollowRequest) (resp *types.UnfollowResponse, err error) {
+	resp = new(types.UnfollowResponse)
+
+	_, err = l.svcCtx.FollowRPC.UnFollow(l.ctx, &pb.UnFollowRequest{
 		UserId:         userId,
 		FollowedUserId: req.FollowedUserId,
 	})
@@ -55,5 +57,5 @@ func (l *UnFollowLogic) UnFollow(userId int64, req *types.UnfollowRequest) (*typ
 		}
 	})
 
-	return &types.UnfollowResponse{}, nil
+	return resp, nil
 }

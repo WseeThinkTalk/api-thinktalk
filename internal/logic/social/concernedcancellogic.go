@@ -1,4 +1,4 @@
-﻿package social
+package social
 
 import (
 	"context"
@@ -25,8 +25,10 @@ func NewConcernedCancelLogic(ctx context.Context, svcCtx *svc.ServiceContext) *C
 	return &ConcernedCancelLogic{ctx: ctx, svcCtx: svcCtx, Logger: logx.WithContext(ctx)}
 }
 
-func (l *ConcernedCancelLogic) Cancel(userId int64, req *types.ConcernedCancelRequest) (*types.ConcernedCancelResponse, error) {
-	_, err := l.svcCtx.ConcernedRPC.CancelConcerned(l.ctx, &concernedpb.CancelConcernedRequest{
+func (l *ConcernedCancelLogic) Cancel(userId int64, req *types.ConcernedCancelRequest) (resp *types.ConcernedCancelResponse, err error) {
+	resp = new(types.ConcernedCancelResponse)
+
+	_, err = l.svcCtx.ConcernedRPC.CancelConcerned(l.ctx, &concernedpb.CancelConcernedRequest{
 		BizId:  req.BizId,
 		ObjId:  req.ObjId,
 		UserId: userId,
@@ -67,5 +69,5 @@ func (l *ConcernedCancelLogic) Cancel(userId int64, req *types.ConcernedCancelRe
 		}
 	})
 
-	return &types.ConcernedCancelResponse{}, nil
+	return resp, nil
 }

@@ -20,8 +20,10 @@ func NewUpgradeMemberLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Upg
 	return &UpgradeMemberLogic{ctx: ctx, svcCtx: svcCtx, Logger: logx.WithContext(ctx)}
 }
 
-func (l *UpgradeMemberLogic) UpgradeMember(userId int64, req *types.UpgradeMemberRequest) (*types.UpgradeMemberResponse, error) {
-	_, err := l.svcCtx.MemberRPC.UpgradeMember(l.ctx, &pb.UpgradeMemberRequest{
+func (l *UpgradeMemberLogic) UpgradeMember(userId int64, req *types.UpgradeMemberRequest) (resp *types.UpgradeMemberResponse, err error) {
+	resp = new(types.UpgradeMemberResponse)
+
+	_, err = l.svcCtx.MemberRPC.UpgradeMember(l.ctx, &pb.UpgradeMemberRequest{
 		UserId:        userId,
 		Level:         req.Level,
 		DurationDays:  req.DurationDays,
@@ -31,5 +33,5 @@ func (l *UpgradeMemberLogic) UpgradeMember(userId int64, req *types.UpgradeMembe
 		l.Errorf("[UpgradeMember] rpc err: %v", err)
 		return nil, err
 	}
-	return &types.UpgradeMemberResponse{}, nil
+	return resp, nil
 }

@@ -1,4 +1,4 @@
-﻿package social
+package social
 
 import (
 	"context"
@@ -25,8 +25,10 @@ func NewConcernedAddLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Conc
 	return &ConcernedAddLogic{ctx: ctx, svcCtx: svcCtx, Logger: logx.WithContext(ctx)}
 }
 
-func (l *ConcernedAddLogic) Add(userId int64, req *types.ConcernedAddRequest) (*types.ConcernedAddResponse, error) {
-	_, err := l.svcCtx.ConcernedRPC.AddConcerned(l.ctx, &concernedpb.AddConcernedRequest{
+func (l *ConcernedAddLogic) Add(userId int64, req *types.ConcernedAddRequest) (resp *types.ConcernedAddResponse, err error) {
+	resp = new(types.ConcernedAddResponse)
+
+	_, err = l.svcCtx.ConcernedRPC.AddConcerned(l.ctx, &concernedpb.AddConcernedRequest{
 		BizId:  req.BizId,
 		ObjId:  req.ObjId,
 		UserId: userId,

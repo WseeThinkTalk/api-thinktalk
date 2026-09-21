@@ -1,4 +1,4 @@
-﻿package qa
+package qa
 
 import (
 	"context"
@@ -24,8 +24,10 @@ func NewAnswerQuestionLogic(ctx context.Context, svcCtx *svc.ServiceContext) *An
 	}
 }
 
-func (l *AnswerQuestionLogic) AnswerQuestion(userId int64, req *types.AnswerQuestionRequest) (*types.AnswerQuestionResponse, error) {
-	resp, err := l.svcCtx.QaRPC.AnswerQuestion(l.ctx, &qa.AnswerQuestionRequest{
+func (l *AnswerQuestionLogic) AnswerQuestion(userId int64, req *types.AnswerQuestionRequest) (resp *types.AnswerQuestionResponse, err error) {
+	resp = new(types.AnswerQuestionResponse)
+
+	rpcResp, err := l.svcCtx.QaRPC.AnswerQuestion(l.ctx, &qa.AnswerQuestionRequest{
 		QuestionId: req.QuestionId,
 		UserId:     userId,
 		Content:    req.Content,
@@ -34,5 +36,6 @@ func (l *AnswerQuestionLogic) AnswerQuestion(userId int64, req *types.AnswerQues
 		l.Errorf("[AnswerQuestion] rpc err: %v", err)
 		return nil, err
 	}
-	return &types.AnswerQuestionResponse{AnswerId: resp.AnswerId}, nil
+	resp.AnswerId = rpcResp.AnswerId
+	return resp, nil
 }

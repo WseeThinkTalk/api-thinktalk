@@ -20,8 +20,10 @@ func NewMarkReadLogic(ctx context.Context, svcCtx *svc.ServiceContext) *MarkRead
 	return &MarkReadLogic{ctx: ctx, svcCtx: svcCtx, Logger: logx.WithContext(ctx)}
 }
 
-func (l *MarkReadLogic) MarkRead(userId int64, req *types.ChatMarkReadRequest) (*types.ChatMarkReadResponse, error) {
-	_, err := l.svcCtx.Chat.MarkRead(l.ctx, &pb.MarkReadRequest{
+func (l *MarkReadLogic) MarkRead(userId int64, req *types.ChatMarkReadRequest) (resp *types.ChatMarkReadResponse, err error) {
+	resp = new(types.ChatMarkReadResponse)
+
+	_, err = l.svcCtx.Chat.MarkRead(l.ctx, &pb.MarkReadRequest{
 		UserId:         userId,
 		ConversationId: req.ConversationId,
 	})
@@ -30,5 +32,5 @@ func (l *MarkReadLogic) MarkRead(userId int64, req *types.ChatMarkReadRequest) (
 		return nil, err
 	}
 
-	return &types.ChatMarkReadResponse{}, nil
+	return resp, nil
 }

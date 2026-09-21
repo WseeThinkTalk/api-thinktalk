@@ -21,7 +21,9 @@ func NewConcernedCountLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Co
 	return &ConcernedCountLogic{ctx: ctx, svcCtx: svcCtx, Logger: logx.WithContext(ctx)}
 }
 
-func (l *ConcernedCountLogic) ConcernedCount(req *types.ConcernedCountRequest) (*types.ConcernedCountResponse, error) {
+func (l *ConcernedCountLogic) ConcernedCount(req *types.ConcernedCountRequest) (resp *types.ConcernedCountResponse, err error) {
+	resp = new(types.ConcernedCountResponse)
+
 	objId := req.ObjId
 	if objId == 0 {
 		userIdVal := l.ctx.Value("userId")
@@ -33,7 +35,7 @@ func (l *ConcernedCountLogic) ConcernedCount(req *types.ConcernedCountRequest) (
 		}
 	}
 
-	resp, err := l.svcCtx.ConcernedRPC.ConcernedCount(l.ctx, &concernedpb.ConcernedCountRequest{
+	rpcResp, err := l.svcCtx.ConcernedRPC.ConcernedCount(l.ctx, &concernedpb.ConcernedCountRequest{
 		BizId: req.BizId,
 		ObjId: objId,
 	})
@@ -41,5 +43,6 @@ func (l *ConcernedCountLogic) ConcernedCount(req *types.ConcernedCountRequest) (
 		l.Errorf("[ConcernedCount] rpc err: %v", err)
 		return nil, err
 	}
-	return &types.ConcernedCountResponse{ConcernedNum: resp.ConcernedNum}, nil
+	resp.ConcernedNum = rpcResp.ConcernedNum
+	return resp, nil
 }

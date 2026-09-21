@@ -1,4 +1,4 @@
-﻿package social
+package social
 
 import (
 	"context"
@@ -27,7 +27,9 @@ func NewAdminBroadcastLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Ad
 	}
 }
 
-func (l *AdminBroadcastLogic) AdminBroadcast(req *types.AdminBroadcastNotificationRequest) (*types.AdminBroadcastNotificationResponse, error) {
+func (l *AdminBroadcastLogic) AdminBroadcast(req *types.AdminBroadcastNotificationRequest) (resp *types.AdminBroadcastNotificationResponse, err error) {
+	resp = new(types.AdminBroadcastNotificationResponse)
+
 	if req.Title == "" || req.Content == "" {
 		return nil, fmt.Errorf("标题和内容不能为空")
 	}
@@ -94,8 +96,7 @@ func (l *AdminBroadcastLogic) AdminBroadcast(req *types.AdminBroadcastNotificati
 	}
 
 	l.Infof("[AdminBroadcast] done total: %d success: %d", totalCount, successCount)
-	return &types.AdminBroadcastNotificationResponse{
-		TotalCount:   totalCount,
-		SuccessCount: successCount,
-	}, nil
+	resp.TotalCount = totalCount
+	resp.SuccessCount = successCount
+	return resp, nil
 }

@@ -1,4 +1,4 @@
-﻿package tag
+package tag
 
 import (
 	"context"
@@ -20,8 +20,10 @@ func NewTagUpdateLogic(ctx context.Context, svcCtx *svc.ServiceContext) *TagUpda
 	return &TagUpdateLogic{ctx: ctx, svcCtx: svcCtx, Logger: logx.WithContext(ctx)}
 }
 
-func (l *TagUpdateLogic) TagUpdate(userId int64, req *types.TagUpdateRequest) (*types.TagUpdateResponse, error) {
-	_, err := l.svcCtx.TagRPC.UpdateTag(l.ctx, &tag.UpdateTagRequest{
+func (l *TagUpdateLogic) TagUpdate(userId int64, req *types.TagUpdateRequest) (resp *types.TagUpdateResponse, err error) {
+	resp = new(types.TagUpdateResponse)
+
+	_, err = l.svcCtx.TagRPC.UpdateTag(l.ctx, &tag.UpdateTagRequest{
 		TagId:   req.TagId,
 		TagName: req.TagName,
 		TagDesc: req.TagDesc,
@@ -30,5 +32,5 @@ func (l *TagUpdateLogic) TagUpdate(userId int64, req *types.TagUpdateRequest) (*
 		l.Errorf("[UpdateTag] rpc err: %v", err)
 		return nil, err
 	}
-	return &types.TagUpdateResponse{}, nil
+	return resp, nil
 }

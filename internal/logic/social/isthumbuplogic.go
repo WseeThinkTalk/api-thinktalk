@@ -1,4 +1,4 @@
-﻿package social
+package social
 
 import (
 	"context"
@@ -25,13 +25,15 @@ func NewIsThumbupLogic(ctx context.Context, svcCtx *svc.ServiceContext) *IsThumb
 	}
 }
 
-func (l *IsThumbupLogic) IsThumbup(req *types.IsThumbupRequest) (*types.IsThumbupResponse, error) {
+func (l *IsThumbupLogic) IsThumbup(req *types.IsThumbupRequest) (resp *types.IsThumbupResponse, err error) {
+	resp = new(types.IsThumbupResponse)
+
 	userId, err := l.ctx.Value("userId").(json.Number).Int64()
 	if err != nil {
 		return nil, err
 	}
 
-	resp, err := l.svcCtx.LikeRPC.IsThumbup(l.ctx, &like.IsThumbupRequest{
+	rpcResp, err := l.svcCtx.LikeRPC.IsThumbup(l.ctx, &like.IsThumbupRequest{
 		BizId:    req.BizId,
 		TargetId: req.TargetId,
 		UserId:   userId,
@@ -40,10 +42,9 @@ func (l *IsThumbupLogic) IsThumbup(req *types.IsThumbupRequest) (*types.IsThumbu
 		return nil, err
 	}
 
-	result := &types.IsThumbupResponse{}
-	if thumbup, ok := resp.UserThumbups[req.TargetId]; ok {
-		result.LikeType = thumbup.LikeType
-		result.ThumbupTime = thumbup.ThumbupTime
+	if thumbup, ok := rpcResp.UserThumbups[req.TargetId]; ok {
+		resp.LikeType = thumbup.LikeType
+		resp.ThumbupTime = thumbup.ThumbupTime
 	}
-	return result, nil
+	return resp, nil
 }

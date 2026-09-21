@@ -1,4 +1,4 @@
-﻿// Code scaffolded by goctl. Safe to edit.
+// Code scaffolded by goctl. Safe to edit.
 // goctl 1.10.1
 
 package article
@@ -28,6 +28,8 @@ func NewAdminAuditLogic(ctx context.Context, svcCtx *svc.ServiceContext) *AdminA
 }
 
 func (l *AdminAuditLogic) AdminAudit(req *types.AdminAuditRequest) (resp *types.AdminAuditResponse, err error) {
+	resp = new(types.AdminAuditResponse)
+
 	_, err = l.svcCtx.ArticleRPC.AdminAudit(l.ctx, &article.AdminAuditRequest{
 		ArticleId: req.ArticleId,
 		Status:    req.Status,
@@ -37,5 +39,5 @@ func (l *AdminAuditLogic) AdminAudit(req *types.AdminAuditRequest) (resp *types.
 		return nil, err
 	}
 
-	return &types.AdminAuditResponse{}, nil
+	return resp, nil
 }

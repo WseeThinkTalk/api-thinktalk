@@ -1,4 +1,4 @@
-﻿package social
+package social
 
 import (
 	"context"
@@ -20,8 +20,10 @@ func NewReplyCountLogic(ctx context.Context, svcCtx *svc.ServiceContext) *ReplyC
 	return &ReplyCountLogic{ctx: ctx, svcCtx: svcCtx, Logger: logx.WithContext(ctx)}
 }
 
-func (l *ReplyCountLogic) ReplyCount(req *types.ReplyCountRequest) (*types.ReplyCountResponse, error) {
-	resp, err := l.svcCtx.ReplyRPC.ReplyCount(l.ctx, &reply.ReplyCountRequest{
+func (l *ReplyCountLogic) ReplyCount(req *types.ReplyCountRequest) (resp *types.ReplyCountResponse, err error) {
+	resp = new(types.ReplyCountResponse)
+
+	rpcResp, err := l.svcCtx.ReplyRPC.ReplyCount(l.ctx, &reply.ReplyCountRequest{
 		BizId:    req.BizId,
 		TargetId: req.TargetId,
 	})
@@ -29,8 +31,7 @@ func (l *ReplyCountLogic) ReplyCount(req *types.ReplyCountRequest) (*types.Reply
 		l.Errorf("[ReplyCount] rpc err: %v", err)
 		return nil, err
 	}
-	return &types.ReplyCountResponse{
-		ReplyNum:     resp.ReplyNum,
-		ReplyRootNum: resp.ReplyRootNum,
-	}, nil
+	resp.ReplyNum = rpcResp.ReplyNum
+	resp.ReplyRootNum = rpcResp.ReplyRootNum
+	return resp, nil
 }

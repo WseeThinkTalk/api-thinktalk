@@ -1,4 +1,4 @@
-﻿package social
+package social
 
 import (
 	"context"
@@ -21,16 +21,18 @@ func NewReplyDetailLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Reply
 	return &ReplyDetailLogic{ctx: ctx, svcCtx: svcCtx, Logger: logx.WithContext(ctx)}
 }
 
-func (l *ReplyDetailLogic) ReplyDetail(req *types.ReplyDetailRequest) (*types.ReplyDetailResponse, error) {
-	resp, err := l.svcCtx.ReplyRPC.ReplyDetail(l.ctx, &reply.ReplyDetailRequest{
+func (l *ReplyDetailLogic) ReplyDetail(req *types.ReplyDetailRequest) (resp *types.ReplyDetailResponse, err error) {
+	resp = new(types.ReplyDetailResponse)
+
+	rpcResp, err := l.svcCtx.ReplyRPC.ReplyDetail(l.ctx, &reply.ReplyDetailRequest{
 		ReplyId: req.ReplyId,
 	})
 	if err != nil {
 		l.Errorf("[ReplyDetail] rpc err: %v", err)
 		return nil, err
 	}
-	if resp == nil || resp.Reply == nil {
-		return &types.ReplyDetailResponse{}, nil
+	if rpcResp == nil || rpcResp.Reply == nil {
+		return resp, nil
 	}
 
 	userMap := make(map[int64]*user.FindByIdResponse)
@@ -49,5 +51,6 @@ func (l *ReplyDetailLogic) ReplyDetail(req *types.ReplyDetailRequest) (*types.Re
 		return u.Username, u.Avatar
 	}
 
-	return &types.ReplyDetailResponse{Reply: convertReplyItem(resp.Reply, getUserInfo)}, nil
+	resp.Reply = convertReplyItem(rpcResp.Reply, getUserInfo)
+	return resp, nil
 }

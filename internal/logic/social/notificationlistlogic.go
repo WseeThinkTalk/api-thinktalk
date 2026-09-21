@@ -20,8 +20,11 @@ func NewNotificationListLogic(ctx context.Context, svcCtx *svc.ServiceContext) *
 	return &NotificationListLogic{ctx: ctx, svcCtx: svcCtx, Logger: logx.WithContext(ctx)}
 }
 
-func (l *NotificationListLogic) NotificationList(userId int64, req *types.NotificationRequest) (*types.NotificationResponse, error) {
-	resp, err := l.svcCtx.MessageRPC.NotificationList(l.ctx, &pb.NotificationListRequest{
+func (l *NotificationListLogic) NotificationList(userId int64, req *types.NotificationRequest) (resp *types.NotificationResponse, err error) {
+	resp = new(types.NotificationResponse)
+	resp.Items = make([]*types.NotificationItem, 0)
+
+	rpcResp, err := l.svcCtx.MessageRPC.NotificationList(l.ctx, &pb.NotificationListRequest{
 		UserId:   userId,
 		Type:     req.Type,
 		Cursor:   req.Cursor,
@@ -32,8 +35,8 @@ func (l *NotificationListLogic) NotificationList(userId int64, req *types.Notifi
 		return nil, err
 	}
 
-	items := make([]*types.NotificationItem, 0, len(resp.Items))
-	for _, item := range resp.Items {
+	items := make([]*types.NotificationItem, 0, len(rpcResp.Items))
+	for _, item := range rpcResp.Items {
 		items = append(items, &types.NotificationItem{
 			Id:            item.Id,
 			Type:          item.Type,
@@ -45,9 +48,8 @@ func (l *NotificationListLogic) NotificationList(userId int64, req *types.Notifi
 			CreateTime:    item.CreateTime,
 		})
 	}
-	return &types.NotificationResponse{
-		Items:  items,
-		Cursor: resp.Cursor,
-		IsEnd:  resp.IsEnd,
-	}, nil
+	resp.Items = items
+	resp.Cursor = rpcResp.Cursor
+	resp.IsEnd = rpcResp.IsEnd
+	return resp, nil
 }

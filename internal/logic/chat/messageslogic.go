@@ -20,12 +20,14 @@ func NewMessagesLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Messages
 	return &MessagesLogic{ctx: ctx, svcCtx: svcCtx, Logger: logx.WithContext(ctx)}
 }
 
-func (l *MessagesLogic) Messages(userId int64, req *types.MessagesRequest) (*types.MessagesResponse, error) {
+func (l *MessagesLogic) Messages(userId int64, req *types.MessagesRequest) (resp *types.MessagesResponse, err error) {
+	resp = new(types.MessagesResponse)
+
 	if req.PageSize == 0 {
 		req.PageSize = types.DefaultPageSize
 	}
 
-	resp, err := l.svcCtx.Chat.Messages(l.ctx, &pb.MessagesRequest{
+	rpcResp, err := l.svcCtx.Chat.Messages(l.ctx, &pb.MessagesRequest{
 		ConversationId: req.ConversationId,
 		Cursor:         req.Cursor,
 		PageSize:       req.PageSize,
@@ -35,8 +37,8 @@ func (l *MessagesLogic) Messages(userId int64, req *types.MessagesRequest) (*typ
 		return nil, err
 	}
 
-	items := make([]*types.MessageItem, 0, len(resp.Items))
-	for _, item := range resp.Items {
+	items := make([]*types.MessageItem, 0, len(rpcResp.Items))
+	for _, item := range rpcResp.Items {
 		items = append(items, &types.MessageItem{
 			Id:             item.Id,
 			ConversationId: item.ConversationId,
@@ -49,9 +51,8 @@ func (l *MessagesLogic) Messages(userId int64, req *types.MessagesRequest) (*typ
 		})
 	}
 
-	return &types.MessagesResponse{
-		Items:  items,
-		Cursor: resp.Cursor,
-		IsEnd:  resp.IsEnd,
-	}, nil
+	resp.Items = items
+	resp.Cursor = rpcResp.Cursor
+	resp.IsEnd = rpcResp.IsEnd
+	return resp, nil
 }

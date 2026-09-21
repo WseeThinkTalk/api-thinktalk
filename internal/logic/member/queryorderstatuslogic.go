@@ -28,7 +28,9 @@ func NewQueryOrderStatusLogic(ctx context.Context, svcCtx *svc.ServiceContext) *
 	}
 }
 
-func (l *QueryOrderStatusLogic) QueryOrderStatus(req *types.QueryOrderStatusReq) (*types.QueryOrderStatusResp, error) {
+func (l *QueryOrderStatusLogic) QueryOrderStatus(req *types.QueryOrderStatusReq) (resp *types.QueryOrderStatusResp, err error) {
+	resp = new(types.QueryOrderStatusResp)
+
 	if req.OrderSn == "" {
 		return nil, code.OrderSnEmpty
 	}
@@ -48,11 +50,9 @@ func (l *QueryOrderStatusLogic) QueryOrderStatus(req *types.QueryOrderStatusReq)
 	}
 
 	// 2. 构建返回信息
-	resp := &types.QueryOrderStatusResp{
-		OrderSn:    req.OrderSn,
-		TradeNo:    tradeResp.TradeNo,
-		TotalAmount: tradeResp.TotalAmount,
-	}
+	resp.OrderSn = req.OrderSn
+	resp.TradeNo = tradeResp.TradeNo
+	resp.TotalAmount = tradeResp.TotalAmount
 
 	// 3. 根据支付宝交易状态处理
 	switch tradeResp.TradeStatus {

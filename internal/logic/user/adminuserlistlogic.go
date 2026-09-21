@@ -1,4 +1,4 @@
-﻿package user
+package user
 
 import (
 	"context"
@@ -25,6 +25,8 @@ func NewAdminUserListLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Adm
 }
 
 func (l *AdminUserListLogic) AdminUserList(req *types.AdminUserListRequest) (resp *types.AdminUserListResponse, err error) {
+	resp = new(types.AdminUserListResponse)
+
 	rpcResp, err := l.svcCtx.UserRPC.AdminUserList(l.ctx, &user.AdminUserListRequest{
 		Keyword:  req.Keyword,
 		Cursor:   req.Cursor,
@@ -50,9 +52,8 @@ func (l *AdminUserListLogic) AdminUserList(req *types.AdminUserListRequest) (res
 		})
 	}
 
-	return &types.AdminUserListResponse{
-		Items:  items,
-		Cursor: rpcResp.Cursor,
-		IsEnd:  rpcResp.IsEnd,
-	}, nil
+	resp.Items = items
+	resp.Cursor = rpcResp.Cursor
+	resp.IsEnd = rpcResp.IsEnd
+	return resp, nil
 }

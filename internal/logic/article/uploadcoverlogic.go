@@ -47,6 +47,8 @@ func NewUploadCoverLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Uploa
 }
 
 func (l *UploadCoverLogic) UploadCover(req *http.Request) (resp *types.UploadCoverResponse, err error) {
+	resp = new(types.UploadCoverResponse)
+
 	if err := req.ParseMultipartForm(maxFileSize); err != nil {
 		return nil, code.ParseFormErr
 	}
@@ -104,11 +106,11 @@ func (l *UploadCoverLogic) UploadCover(req *http.Request) (resp *types.UploadCov
 		logx.Errorf("put object to minio failed, err: %v", err)
 		return nil, code.PutBucketErr
 	}
-	return &types.UploadCoverResponse{
-		CoverUrl: genFileURL(
-			l.svcCtx.Config.MinIO.Endpoint,
-			l.svcCtx.Config.MinIO.BucketName,
-			objectKey)}, nil
+	resp.CoverUrl = genFileURL(
+		l.svcCtx.Config.MinIO.Endpoint,
+		l.svcCtx.Config.MinIO.BucketName,
+		objectKey)
+	return resp, nil
 }
 
 func genFileURL(endpoint, bucketName, objectKey string) string {

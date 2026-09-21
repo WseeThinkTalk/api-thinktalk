@@ -1,4 +1,4 @@
-﻿package social
+package social
 
 import (
 	"context"
@@ -30,13 +30,15 @@ func NewThumbupLogic(ctx context.Context, svcCtx *svc.ServiceContext) *ThumbupLo
 	}
 }
 
-func (l *ThumbupLogic) Thumbup(req *types.ThumbupRequest) (*types.ThumbupResponse, error) {
+func (l *ThumbupLogic) Thumbup(req *types.ThumbupRequest) (resp *types.ThumbupResponse, err error) {
+	resp = new(types.ThumbupResponse)
+
 	userId, err := l.ctx.Value("userId").(json.Number).Int64()
 	if err != nil {
 		return nil, err
 	}
 
-	resp, err := l.svcCtx.LikeRPC.Thumbup(l.ctx, &like.ThumbupRequest{
+	rpcResp, err := l.svcCtx.LikeRPC.Thumbup(l.ctx, &like.ThumbupRequest{
 		BizId:    req.BizId,
 		ObjId:    req.ObjId,
 		UserId:   userId,
@@ -90,10 +92,9 @@ func (l *ThumbupLogic) Thumbup(req *types.ThumbupRequest) (*types.ThumbupRespons
 		}
 	})
 
-	return &types.ThumbupResponse{
-		BizId:      resp.BizId,
-		ObjId:      resp.ObjId,
-		LikeNum:    resp.LikeNum,
-		DislikeNum: resp.DislikeNum,
-	}, nil
+	resp.BizId = rpcResp.BizId
+	resp.ObjId = rpcResp.ObjId
+	resp.LikeNum = rpcResp.LikeNum
+	resp.DislikeNum = rpcResp.DislikeNum
+	return resp, nil
 }

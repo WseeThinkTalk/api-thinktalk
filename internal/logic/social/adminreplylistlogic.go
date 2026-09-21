@@ -1,4 +1,4 @@
-﻿package social
+package social
 
 import (
 	"context"
@@ -25,6 +25,8 @@ func NewAdminReplyListLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Ad
 }
 
 func (l *AdminReplyListLogic) AdminReplyList(req *types.AdminReplyListRequest) (resp *types.AdminReplyListResponse, err error) {
+	resp = new(types.AdminReplyListResponse)
+
 	rpcResp, err := l.svcCtx.ReplyRPC.AdminReplyList(l.ctx, &reply.AdminReplyListRequest{
 		Keyword:  req.Keyword,
 		Cursor:   req.Cursor,
@@ -65,9 +67,8 @@ func (l *AdminReplyListLogic) AdminReplyList(req *types.AdminReplyListRequest) (
 		})
 	}
 
-	return &types.AdminReplyListResponse{
-		Items:  items,
-		Cursor: rpcResp.Cursor,
-		IsEnd:  rpcResp.IsEnd,
-	}, nil
+	resp.Items = items
+	resp.Cursor = rpcResp.Cursor
+	resp.IsEnd = rpcResp.IsEnd
+	return resp, nil
 }

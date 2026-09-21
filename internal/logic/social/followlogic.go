@@ -1,4 +1,4 @@
-﻿package social
+package social
 
 import (
 	"context"
@@ -24,8 +24,10 @@ func NewFollowLogic(ctx context.Context, svcCtx *svc.ServiceContext) *FollowLogi
 	return &FollowLogic{ctx: ctx, svcCtx: svcCtx, Logger: logx.WithContext(ctx)}
 }
 
-func (l *FollowLogic) Follow(userId int64, req *types.FollowRequest) (*types.FollowResponse, error) {
-	_, err := l.svcCtx.FollowRPC.Follow(l.ctx, &pb.FollowRequest{
+func (l *FollowLogic) Follow(userId int64, req *types.FollowRequest) (resp *types.FollowResponse, err error) {
+	resp = new(types.FollowResponse)
+
+	_, err = l.svcCtx.FollowRPC.Follow(l.ctx, &pb.FollowRequest{
 		UserId:         userId,
 		FollowedUserId: req.FollowedUserId,
 	})
@@ -55,5 +57,5 @@ func (l *FollowLogic) Follow(userId int64, req *types.FollowRequest) (*types.Fol
 		}
 	})
 
-	return &types.FollowResponse{}, nil
+	return resp, nil
 }
