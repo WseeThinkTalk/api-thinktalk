@@ -50,6 +50,7 @@ type ServiceContext struct {
 	AgentClient        agent.AgentClient
 	MinIO              *minio.Client
 	AdminAuth          rest.Middleware
+	RateLimit          rest.Middleware
 	AlipayClient       *alipay.Client
 	NotificationPusher *kq.Pusher
 	Hub                *hub.Hub
@@ -152,6 +153,7 @@ func NewServiceContext(c config.Config) *ServiceContext {
 		AgentClient:        agentClientModel,
 		MinIO:              minioClient,
 		AdminAuth:          middleware.NewAdminAuthMiddleware(userRPCModel).Handle,
+		RateLimit:          middleware.NewRateLimitMiddleware(middleware.RateLimitConfig{Period: 1, Quota: 100}, bizRedis).Handle,
 		AlipayClient:       alipayClient,
 		NotificationPusher: pusher,
 		Hub:                hubInstance,

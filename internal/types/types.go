@@ -922,3 +922,60 @@ type UploadTokenResponse struct {
 	ViewUrl   string `json:"viewUrl"`   // 访问 URL
 }
 
+// VideoUploadInitRequest 视频分片上传初始化请求
+type VideoUploadInitRequest struct {
+	FileName string `json:"fileName"`
+	FileSize int64  `json:"fileSize"`
+	FileType string `json:"fileType"`
+	PartSize int64  `json:"partSize,optional"` // 单分片字节数，默认 10MB
+}
+
+// VideoUploadInitResponse 视频分片上传初始化响应
+type VideoUploadInitResponse struct {
+	VideoId   int64    `json:"videoId"`
+	UploadId  string   `json:"uploadId"`
+	ObjectKey string   `json:"objectKey"`
+	PartUrls  []string `json:"partUrls"`
+	PartSize  int64    `json:"partSize"`
+	PartCount int      `json:"partCount"`
+	ExpireSec int64    `json:"expireSec"`
+}
+
+// VideoPartItem 分片校验条目
+type VideoPartItem struct {
+	PartNumber int    `json:"partNumber"`
+	ETag       string `json:"eTag"`
+}
+
+// VideoUploadCompleteRequest 视频分片合并请求
+type VideoUploadCompleteRequest struct {
+	VideoId   int64           `json:"videoId"`
+	UploadId  string          `json:"uploadId"`
+	ObjectKey string          `json:"objectKey"`
+	Parts     []VideoPartItem `json:"parts"`
+}
+
+// VideoUploadCompleteResponse 视频分片合并响应
+type VideoUploadCompleteResponse struct {
+	VideoId  int64  `json:"videoId"`
+	Status   string `json:"status"` // processing
+	VideoUrl string `json:"videoUrl"`
+}
+
+// VideoStatusRequest 视频处理状态查询请求
+type VideoStatusRequest struct {
+	VideoId int64 `form:"videoId"`
+}
+
+// VideoStatusResponse 视频处理状态查询响应
+type VideoStatusResponse struct {
+	VideoId  int64  `json:"videoId"`
+	Status   string `json:"status"` // uploading | processing | ready | failed
+	VideoUrl string `json:"videoUrl"`
+	CoverUrl string `json:"coverUrl"`
+	Duration int64  `json:"duration"` // 时长（秒）
+	Width    int    `json:"width"`
+	Height   int    `json:"height"`
+	ErrMsg   string `json:"errMsg,omitempty"`
+}
+

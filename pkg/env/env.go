@@ -9,6 +9,9 @@ import (
 )
 
 func LoadEnv() {
+	if os.Getenv("GOLANG_PROTOBUF_REGISTRATION_CONFLICT") == "" {
+		_ = os.Setenv("GOLANG_PROTOBUF_REGISTRATION_CONFLICT", "warn")
+	}
 	dir, err := os.Getwd()
 	if err != nil {
 		_ = godotenv.Load()
