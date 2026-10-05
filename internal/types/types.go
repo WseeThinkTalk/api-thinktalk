@@ -907,3 +907,18 @@ type DeleteSessionRequest struct {
 type DeleteSessionResponse struct {
 	Success bool `json:"success"`
 }
+
+// UploadTokenRequest 获取上传凭证请求
+type UploadTokenRequest struct {
+	FileType string `form:"fileType"` // 文件类型，如 image/jpeg
+	Scene    string `form:"scene"`    // 场景目录，如 cover, avatar, article
+}
+
+// UploadTokenResponse 获取上传凭证响应
+type UploadTokenResponse struct {
+	UploadUrl string `json:"uploadUrl"` // 预签名上传 URL
+	FileKey   string `json:"fileKey"`   // 存储对象 key
+	ExpireSec int64  `json:"expireSec"` // 有效秒数
+	ViewUrl   string `json:"viewUrl"`   // 访问 URL
+}
+

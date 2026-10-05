@@ -60,7 +60,7 @@ func (l *UploadCoverLogic) UploadCover(req *http.Request) (resp *types.UploadCov
 	}
 	defer file.Close()
 
-	// Read first 512 bytes for content-type detection
+	// 读取前512字节检测文件类型
 	buf := make([]byte, 512)
 	n, _ := io.ReadFull(file, buf)
 	if n == 0 {
@@ -75,7 +75,7 @@ func (l *UploadCoverLogic) UploadCover(req *http.Request) (resp *types.UploadCov
 		return nil, fmt.Errorf("不支持的文件类型，仅允许 jpg/png/webp/gif")
 	}
 
-	// Validate image dimensions to prevent decompression bombs
+	// 校验图片分辨率
 	imgConfig, _, err := image.DecodeConfig(bytes.NewReader(buf))
 	if err == nil {
 		pixels := imgConfig.Width * imgConfig.Height
@@ -84,11 +84,10 @@ func (l *UploadCoverLogic) UploadCover(req *http.Request) (resp *types.UploadCov
 		}
 	}
 
-	// Build a reader that includes the bytes we already consumed
 	_ = req.MultipartForm.RemoveAll()
 	req.MultipartForm = nil
 
-	// Re-read the file since we consumed the first 512 bytes
+	// 重置读取游标
 	file.Seek(0, io.SeekStart)
 
 	objectKey := fmt.Sprintf("cover/%s%s", uuid.New().String(), ext)
@@ -114,6 +113,6 @@ func (l *UploadCoverLogic) UploadCover(req *http.Request) (resp *types.UploadCov
 }
 
 func genFileURL(endpoint, bucketName, objectKey string) string {
-	// Only expose the bucket/object path, not the raw MinIO endpoint
+	// 生成文件访问路径
 	return fmt.Sprintf("/static/%s/%s", bucketName, objectKey)
 }

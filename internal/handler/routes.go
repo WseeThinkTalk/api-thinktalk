@@ -57,6 +57,7 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 			{Method: http.MethodPost, Path: "/publish", Handler: article.PublishHandler(serverCtx)},
 			{Method: http.MethodGet, Path: "/search", Handler: article.SearchHandler(serverCtx)},
 			{Method: http.MethodPost, Path: "/upload/cover", Handler: article.UploadCoverHandler(serverCtx)},
+			{Method: http.MethodGet, Path: "/upload/token", Handler: article.UploadTokenHandler(serverCtx)},
 		},
 		rest.WithJwt(serverCtx.Config.Auth.AccessSecret),
 		rest.WithPrefix("/v1/article"),
