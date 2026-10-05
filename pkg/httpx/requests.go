@@ -3,7 +3,6 @@ package httpx
 import (
 	"net/http"
 	"net/textproto"
-	"strings"
 
 	"github.com/zeromicro/go-zero/core/mapping"
 	"github.com/zeromicro/go-zero/rest/httpx"
