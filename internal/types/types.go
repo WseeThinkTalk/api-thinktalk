@@ -928,17 +928,20 @@ type VideoUploadInitRequest struct {
 	FileSize int64  `json:"fileSize"`
 	FileType string `json:"fileType"`
 	PartSize int64  `json:"partSize,optional"` // 单分片字节数，默认 10MB
+	FileHash string `json:"fileHash,optional"` // 文件的全量 SHA-256 哈希值，用于秒传与断点续传
 }
 
 // VideoUploadInitResponse 视频分片上传初始化响应
 type VideoUploadInitResponse struct {
-	VideoId   int64    `json:"videoId"`
-	UploadId  string   `json:"uploadId"`
-	ObjectKey string   `json:"objectKey"`
-	PartUrls  []string `json:"partUrls"`
-	PartSize  int64    `json:"partSize"`
-	PartCount int      `json:"partCount"`
-	ExpireSec int64    `json:"expireSec"`
+	VideoId       int64    `json:"videoId"`
+	UploadId      string   `json:"uploadId"`
+	ObjectKey     string   `json:"objectKey"`
+	PartUrls      []string `json:"partUrls"`
+	PartSize      int64    `json:"partSize"`
+	PartCount     int      `json:"partCount"`
+	ExpireSec     int64    `json:"expireSec"`
+	IsQuickDone   bool     `json:"isQuickDone,optional"`   // 命中秒传标识（已就绪，前端无需上传）
+	UploadedParts []int    `json:"uploadedParts,optional"` // 已成功上传的分片编号列表（断点续传）
 }
 
 // VideoPartItem 分片校验条目
@@ -953,6 +956,7 @@ type VideoUploadCompleteRequest struct {
 	UploadId  string          `json:"uploadId"`
 	ObjectKey string          `json:"objectKey"`
 	Parts     []VideoPartItem `json:"parts"`
+	FileHash  string          `json:"fileHash,optional"` // 文件的全量 SHA-256 哈希值
 }
 
 // VideoUploadCompleteResponse 视频分片合并响应

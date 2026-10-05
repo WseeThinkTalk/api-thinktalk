@@ -59,6 +59,14 @@ func (l *UploadCompleteLogic) UploadComplete(req *types.VideoUploadCompleteReque
 		redisKey := fmt.Sprintf("biz#video#status:%d", req.VideoId)
 		statusVal := fmt.Sprintf(`{"status":"processing","videoUrl":"%s","objectKey":"%s"}`, viewUrl, req.ObjectKey)
 		_ = l.svcCtx.BizRedis.SetexCtx(l.ctx, redisKey, statusVal, 86400*7)
+
+		// 建立哈希到已完成视频的全局映射索引，后续全网相同文件直接命中秒传（TTL: 30天）
+		if req.FileHash != "" {
+			hashKey := fmt.Sprintf("biz#video#hash:%s", req.FileHash)
+			hashVal := fmt.Sprintf(`{"status":"ready","videoId":%d,"objectKey":"%s","videoUrl":"%s"}`,
+				req.VideoId, req.ObjectKey, viewUrl)
+			_ = l.svcCtx.BizRedis.SetexCtx(l.ctx, hashKey, hashVal, 86400*30)
+		}
 	}
 
 	// 4. 投递异步流媒体处理消息至 Kafka

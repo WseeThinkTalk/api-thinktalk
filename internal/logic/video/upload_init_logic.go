@@ -2,6 +2,7 @@ package video
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 	"net/http"
 	"net/url"
@@ -61,7 +62,7 @@ func NewUploadInitLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Upload
 	}
 }
 
-// UploadInit 初始化分片上传并下发直传预签名URL
+// UploadInit 初始化分片上传、支持秒传判定与断点续传探测并下发直传预签名URL
 func (l *UploadInitLogic) UploadInit(req *types.VideoUploadInitRequest) (resp *types.VideoUploadInitResponse, err error) {
 	resp = new(types.VideoUploadInitResponse)
 
@@ -74,23 +75,91 @@ func (l *UploadInitLogic) UploadInit(req *types.VideoUploadInitRequest) (resp *t
 		partSize = 10 * 1024 * 1024 // 默认 10MB
 	}
 	partCount := CalculatePartCount(req.FileSize, partSize)
-
-	ext := allowedVideoMimes[req.FileType]
-	objectKey := fmt.Sprintf("video/raw/%s/%s%s", time.Now().Format("20060102"), uuid.New().String(), ext)
 	bucket := l.svcCtx.Config.MinIO.BucketName
+	expires := 2 * time.Hour
 
-	// 1. 调用 MinIO Core 初始化 S3 分片上传
+	var (
+		videoId       int64
+		uploadID      string
+		objectKey     string
+		isResuming    bool
+		uploadedParts []int
+	)
+
 	core := minio.Core{Client: l.svcCtx.MinIO}
-	uploadID, err := core.NewMultipartUpload(l.ctx, bucket, objectKey, minio.PutObjectOptions{
-		ContentType: req.FileType,
-	})
-	if err != nil {
-		l.Errorf("初始化分片上传失败: %v", err)
-		return nil, fmt.Errorf("初始化分片上传失败")
+
+	// 1. 秒传与断点续传探测（若客户端提供了文件全量 SHA-256 哈希）
+	if req.FileHash != "" && l.svcCtx.BizRedis != nil {
+		hashKey := fmt.Sprintf("biz#video#hash:%s", req.FileHash)
+		hashVal, err := l.svcCtx.BizRedis.GetCtx(l.ctx, hashKey)
+		if err == nil && hashVal != "" {
+			var cached struct {
+				Status    string `json:"status"`
+				VideoID   int64  `json:"videoId"`
+				UploadID  string `json:"uploadId"`
+				ObjectKey string `json:"objectKey"`
+			}
+			if json.Unmarshal([]byte(hashVal), &cached) == nil {
+				// 1.1 命中秒传：全网已存在相同视频且已就绪，零流量瞬时完成！
+				if cached.Status == "ready" {
+					resp.VideoId = cached.VideoID
+					resp.ObjectKey = cached.ObjectKey
+					resp.IsQuickDone = true
+					resp.PartSize = partSize
+					resp.PartCount = partCount
+					resp.ExpireSec = int64(expires.Seconds())
+					l.Infof("[UploadInit] Instant upload matched for hash %s, videoId: %d", req.FileHash, cached.VideoID)
+					return resp, nil
+				}
+
+				// 1.2 断点续传探测：正在上传中，探测已成功上传的分片编号列表
+				if cached.Status == "uploading" && cached.UploadID != "" && cached.ObjectKey != "" {
+					partsResult, err := core.ListObjectParts(l.ctx, bucket, cached.ObjectKey, cached.UploadID, 0, 1000)
+					if err == nil {
+						uploadedParts = make([]int, 0, len(partsResult.ObjectParts))
+						for _, p := range partsResult.ObjectParts {
+							uploadedParts = append(uploadedParts, p.PartNumber)
+						}
+						videoId = cached.VideoID
+						uploadID = cached.UploadID
+						objectKey = cached.ObjectKey
+						isResuming = true
+						l.Infof("[UploadInit] Breakpoint resume detected for hash %s, videoId: %d, parts: %v",
+							req.FileHash, videoId, uploadedParts)
+					}
+				}
+			}
+		}
 	}
 
-	// 2. 批量签发每个分片的 Presigned PUT URL
-	expires := 2 * time.Hour
+	// 2. 若未复用断点会话，则创建全新的 MinIO Multipart Upload 与 Snowflake 视频ID
+	if !isResuming {
+		ext := allowedVideoMimes[req.FileType]
+		objectKey = fmt.Sprintf("video/raw/%s/%s%s", time.Now().Format("20060102"), uuid.New().String(), ext)
+		newUploadID, err := core.NewMultipartUpload(l.ctx, bucket, objectKey, minio.PutObjectOptions{
+			ContentType: req.FileType,
+		})
+		if err != nil {
+			l.Errorf("初始化分片上传失败: %v", err)
+			return nil, fmt.Errorf("初始化分片上传失败")
+		}
+		uploadID = newUploadID
+		videoId = snowflake.GenerateID()
+
+		// 若携带了哈希，记录 uploading 状态供中断重试续传
+		if req.FileHash != "" && l.svcCtx.BizRedis != nil {
+			hashKey := fmt.Sprintf("biz#video#hash:%s", req.FileHash)
+			metaJSON, _ := json.Marshal(map[string]interface{}{
+				"status":    "uploading",
+				"videoId":   videoId,
+				"uploadId":  uploadID,
+				"objectKey": objectKey,
+			})
+			_ = l.svcCtx.BizRedis.SetexCtx(l.ctx, hashKey, string(metaJSON), int(expires.Seconds()))
+		}
+	}
+
+	// 3. 批量签发每个分片的 Presigned PUT 直传 URL
 	partUrls := make([]string, partCount)
 	for i := 1; i <= partCount; i++ {
 		queryParams := make(url.Values)
@@ -105,9 +174,7 @@ func (l *UploadInitLogic) UploadInit(req *types.VideoUploadInitRequest) (resp *t
 		partUrls[i-1] = partURL.String()
 	}
 
-	videoId := snowflake.GenerateID()
-
-	// 3. 将上传元数据写入 Redis 缓存状态表（TTL: 2小时）
+	// 4. 将上传元数据写入 Redis 缓存状态表（TTL: 2小时）
 	if l.svcCtx.BizRedis != nil {
 		redisKey := fmt.Sprintf("biz#video#status:%d", videoId)
 		videoData := fmt.Sprintf(`{"status":"uploading","objectKey":"%s","uploadId":"%s"}`, objectKey, uploadID)
@@ -121,6 +188,8 @@ func (l *UploadInitLogic) UploadInit(req *types.VideoUploadInitRequest) (resp *t
 	resp.PartSize = partSize
 	resp.PartCount = partCount
 	resp.ExpireSec = int64(expires.Seconds())
+	resp.IsQuickDone = false
+	resp.UploadedParts = uploadedParts
 
 	return resp, nil
 }
