@@ -36,25 +36,26 @@ func (l *FollowListLogic) FollowList(userId int64, req *types.FollowListRequest)
 	}
 
 	// 转换关注列表项并补充对方用户信息
-	items := make([]*types.FollowItem, 0, len(rpcResp.Items))
-	for _, v := range rpcResp.Items {
-		targetName := ""
-		targetAvatar := ""
-		if userResp, err := l.svcCtx.UserRPC.FindById(l.ctx, &user.FindByIdRequest{UserId: v.FollowedUserId}); err == nil {
-			targetName = userResp.Username
-			targetAvatar = userResp.Avatar
+	if rpcResp != nil && rpcResp.Data != nil {
+		items := make([]*types.FollowItem, 0, len(rpcResp.Data.Items))
+		for _, v := range rpcResp.Data.Items {
+			targetName := ""
+			targetAvatar := ""
+			if userResp, err := l.svcCtx.UserRPC.FindById(l.ctx, &user.FindByIdRequest{UserId: v.FollowedUserId}); err == nil && userResp != nil && userResp.Data != nil {
+				targetName = userResp.Data.Username
+				targetAvatar = userResp.Data.Avatar
+			}
+			items = append(items, &types.FollowItem{
+				Id:           v.Id,
+				FollowId:     v.FollowedUserId,
+				FollowName:   targetName,
+				FollowAvatar: targetAvatar,
+				CreateTime:   v.CreateTime,
+			})
 		}
-		items = append(items, &types.FollowItem{
-			Id:               v.Id,
-			FollowedUserId:   v.FollowedUserId,
-			CreateTime:       v.CreateTime,
-			FansCount:        v.FansCount,
-			TargetUserName:   targetName,
-			TargetUserAvatar: targetAvatar,
-		})
+		resp.Items = items
+		resp.Cursor = rpcResp.Data.Cursor
+		resp.IsEnd = rpcResp.Data.IsEnd
 	}
-	resp.Items = items
-	resp.Cursor = rpcResp.Cursor
-	resp.IsEnd = rpcResp.IsEnd
 	return resp, nil
 }

@@ -19,12 +19,12 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	Member_MemberInfo_FullMethodName       = "/pb.Member/MemberInfo"
-	Member_UpgradeMember_FullMethodName    = "/pb.Member/UpgradeMember"
-	Member_CheckMemberRight_FullMethodName = "/pb.Member/CheckMemberRight"
-	Member_MemberOrderList_FullMethodName  = "/pb.Member/MemberOrderList"
-	Member_CreateOrder_FullMethodName      = "/pb.Member/CreateOrder"
-	Member_PayCallback_FullMethodName      = "/pb.Member/PayCallback"
+	Member_MemberInfo_FullMethodName       = "/user.Member/MemberInfo"
+	Member_UpgradeMember_FullMethodName    = "/user.Member/UpgradeMember"
+	Member_CheckMemberRight_FullMethodName = "/user.Member/CheckMemberRight"
+	Member_MemberOrderList_FullMethodName  = "/user.Member/MemberOrderList"
+	Member_CreateOrder_FullMethodName      = "/user.Member/CreateOrder"
+	Member_PayCallback_FullMethodName      = "/user.Member/PayCallback"
 )
 
 // MemberClient is the client API for Member service.
@@ -278,7 +278,7 @@ func _Member_PayCallback_Handler(srv interface{}, ctx context.Context, dec func(
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
 var Member_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "pb.Member",
+	ServiceName: "user.Member",
 	HandlerType: (*MemberServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{

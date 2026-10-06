@@ -34,10 +34,10 @@ func (l *QuestionDetailLogic) QuestionDetail(req *types.QuestionDetailRequest) (
 		l.Errorf("[QuestionDetail] rpc err: %v", err)
 		return nil, err
 	}
-	if rpcResp == nil || rpcResp.Question == nil {
+	if rpcResp == nil || rpcResp.Data == nil {
 		return resp, nil
 	}
-	q := rpcResp.Question
+	q := rpcResp.Data
 	resp.Question = &types.QuestionItem{
 		Id:         q.Id,
 		Title:      q.Title,

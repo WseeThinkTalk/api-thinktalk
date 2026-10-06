@@ -27,10 +27,10 @@ func (l *ReplyListLogic) ReplyList(req *types.ReplyListRequest) (resp *types.Rep
 
 	rpcResp, err := l.svcCtx.ReplyRPC.ReplyList(l.ctx, &reply.ReplyListRequest{
 		BizId:    req.BizId,
-		TargetId: req.TargetId,
+		TargetId: req.ObjId,
 		Cursor:   req.Cursor,
 		PageSize: req.PageSize,
-		SortType: req.SortType,
+		SortType: 0,
 	})
 	if err != nil {
 		l.Errorf("[ReplyList] rpc err: %v", err)
@@ -42,24 +42,26 @@ func (l *ReplyListLogic) ReplyList(req *types.ReplyListRequest) (resp *types.Rep
 		if uid == 0 {
 			return "匿名用户", ""
 		}
-		if u, ok := userMap[uid]; ok {
-			return u.Username, u.Avatar
+		if u, ok := userMap[uid]; ok && u != nil && u.Data != nil {
+			return u.Data.Username, u.Data.Avatar
 		}
 		u, err := l.svcCtx.UserRPC.FindById(l.ctx, &user.FindByIdRequest{UserId: uid})
-		if err != nil {
+		if err != nil || u == nil || u.Data == nil {
 			return "用户", ""
 		}
 		userMap[uid] = u
-		return u.Username, u.Avatar
+		return u.Data.Username, u.Data.Avatar
 	}
 
 	// 转换评论列表数据项
-	items := make([]*types.ReplyItem, 0, len(rpcResp.Items))
-	for _, v := range rpcResp.Items {
-		items = append(items, convertReplyItem(v, getUserInfo))
+	if rpcResp != nil && rpcResp.Data != nil {
+		items := make([]*types.ReplyItem, 0, len(rpcResp.Data.Items))
+		for _, v := range rpcResp.Data.Items {
+			items = append(items, convertReplyItem(v, getUserInfo))
+		}
+		resp.Items = items
+		resp.Cursor = rpcResp.Data.Cursor
+		resp.IsEnd = rpcResp.Data.IsEnd
 	}
-	resp.Items = items
-	resp.Cursor = rpcResp.Cursor
-	resp.IsEnd = rpcResp.IsEnd
 	return resp, nil
 }

@@ -23,8 +23,8 @@ const (
 
 type FollowRequest struct {
 	state          protoimpl.MessageState `protogen:"open.v1"`
-	UserId         int64                  `protobuf:"varint,1,opt,name=userId,proto3" json:"userId,omitempty"`                 // 关注者
-	FollowedUserId int64                  `protobuf:"varint,2,opt,name=followedUserId,proto3" json:"followedUserId,omitempty"` // 被关注者
+	UserId         int64                  `protobuf:"varint,1,opt,name=userId,proto3" json:"userId,omitempty"`
+	FollowedUserId int64                  `protobuf:"varint,2,opt,name=followedUserId,proto3" json:"followedUserId,omitempty"`
 	unknownFields  protoimpl.UnknownFields
 	sizeCache      protoimpl.SizeCache
 }
@@ -75,6 +75,8 @@ func (x *FollowRequest) GetFollowedUserId() int64 {
 
 type FollowResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
+	Code          int64                  `protobuf:"varint,1,opt,name=code,proto3" json:"code,omitempty"`
+	Msg           string                 `protobuf:"bytes,2,opt,name=msg,proto3" json:"msg,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -107,6 +109,20 @@ func (x *FollowResponse) ProtoReflect() protoreflect.Message {
 // Deprecated: Use FollowResponse.ProtoReflect.Descriptor instead.
 func (*FollowResponse) Descriptor() ([]byte, []int) {
 	return file_follow_proto_rawDescGZIP(), []int{1}
+}
+
+func (x *FollowResponse) GetCode() int64 {
+	if x != nil {
+		return x.Code
+	}
+	return 0
+}
+
+func (x *FollowResponse) GetMsg() string {
+	if x != nil {
+		return x.Msg
+	}
+	return ""
 }
 
 type UnFollowRequest struct {
@@ -163,6 +179,8 @@ func (x *UnFollowRequest) GetFollowedUserId() int64 {
 
 type UnFollowResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
+	Code          int64                  `protobuf:"varint,1,opt,name=code,proto3" json:"code,omitempty"`
+	Msg           string                 `protobuf:"bytes,2,opt,name=msg,proto3" json:"msg,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -197,9 +215,23 @@ func (*UnFollowResponse) Descriptor() ([]byte, []int) {
 	return file_follow_proto_rawDescGZIP(), []int{3}
 }
 
+func (x *UnFollowResponse) GetCode() int64 {
+	if x != nil {
+		return x.Code
+	}
+	return 0
+}
+
+func (x *UnFollowResponse) GetMsg() string {
+	if x != nil {
+		return x.Msg
+	}
+	return ""
+}
+
 type FollowListRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Id            int64                  `protobuf:"varint,1,opt,name=Id,proto3" json:"Id,omitempty"`
+	Id            int64                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
 	UserId        int64                  `protobuf:"varint,2,opt,name=userId,proto3" json:"userId,omitempty"`
 	Cursor        int64                  `protobuf:"varint,3,opt,name=cursor,proto3" json:"cursor,omitempty"`
 	PageSize      int64                  `protobuf:"varint,4,opt,name=pageSize,proto3" json:"pageSize,omitempty"`
@@ -267,10 +299,10 @@ func (x *FollowListRequest) GetPageSize() int64 {
 
 type FollowItem struct {
 	state          protoimpl.MessageState `protogen:"open.v1"`
-	Id             int64                  `protobuf:"varint,1,opt,name=Id,proto3" json:"Id,omitempty"`
-	FollowedUserId int64                  `protobuf:"varint,2,opt,name=followedUserId,proto3" json:"followedUserId,omitempty"` // 被关注者
-	FansCount      int64                  `protobuf:"varint,3,opt,name=fansCount,proto3" json:"fansCount,omitempty"`           // 粉丝数
-	CreateTime     int64                  `protobuf:"varint,4,opt,name=createTime,proto3" json:"createTime,omitempty"`         // 关注时间
+	Id             int64                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
+	FollowedUserId int64                  `protobuf:"varint,2,opt,name=followedUserId,proto3" json:"followedUserId,omitempty"`
+	FansCount      int64                  `protobuf:"varint,3,opt,name=fansCount,proto3" json:"fansCount,omitempty"`
+	CreateTime     int64                  `protobuf:"varint,4,opt,name=createTime,proto3" json:"createTime,omitempty"`
 	unknownFields  protoimpl.UnknownFields
 	sizeCache      protoimpl.SizeCache
 }
@@ -333,19 +365,86 @@ func (x *FollowItem) GetCreateTime() int64 {
 	return 0
 }
 
-type FollowListResponse struct {
+type FollowListData struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Items         []*FollowItem          `protobuf:"bytes,1,rep,name=items,proto3" json:"items,omitempty"`
 	Cursor        int64                  `protobuf:"varint,2,opt,name=cursor,proto3" json:"cursor,omitempty"`
 	IsEnd         bool                   `protobuf:"varint,3,opt,name=isEnd,proto3" json:"isEnd,omitempty"`
-	Id            int64                  `protobuf:"varint,4,opt,name=Id,proto3" json:"Id,omitempty"`
+	Id            int64                  `protobuf:"varint,4,opt,name=id,proto3" json:"id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *FollowListData) Reset() {
+	*x = FollowListData{}
+	mi := &file_follow_proto_msgTypes[6]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *FollowListData) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*FollowListData) ProtoMessage() {}
+
+func (x *FollowListData) ProtoReflect() protoreflect.Message {
+	mi := &file_follow_proto_msgTypes[6]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use FollowListData.ProtoReflect.Descriptor instead.
+func (*FollowListData) Descriptor() ([]byte, []int) {
+	return file_follow_proto_rawDescGZIP(), []int{6}
+}
+
+func (x *FollowListData) GetItems() []*FollowItem {
+	if x != nil {
+		return x.Items
+	}
+	return nil
+}
+
+func (x *FollowListData) GetCursor() int64 {
+	if x != nil {
+		return x.Cursor
+	}
+	return 0
+}
+
+func (x *FollowListData) GetIsEnd() bool {
+	if x != nil {
+		return x.IsEnd
+	}
+	return false
+}
+
+func (x *FollowListData) GetId() int64 {
+	if x != nil {
+		return x.Id
+	}
+	return 0
+}
+
+type FollowListResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Code          int64                  `protobuf:"varint,1,opt,name=code,proto3" json:"code,omitempty"`
+	Msg           string                 `protobuf:"bytes,2,opt,name=msg,proto3" json:"msg,omitempty"`
+	Data          *FollowListData        `protobuf:"bytes,3,opt,name=data,proto3" json:"data,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
 func (x *FollowListResponse) Reset() {
 	*x = FollowListResponse{}
-	mi := &file_follow_proto_msgTypes[6]
+	mi := &file_follow_proto_msgTypes[7]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -357,7 +456,7 @@ func (x *FollowListResponse) String() string {
 func (*FollowListResponse) ProtoMessage() {}
 
 func (x *FollowListResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_follow_proto_msgTypes[6]
+	mi := &file_follow_proto_msgTypes[7]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -370,50 +469,43 @@ func (x *FollowListResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use FollowListResponse.ProtoReflect.Descriptor instead.
 func (*FollowListResponse) Descriptor() ([]byte, []int) {
-	return file_follow_proto_rawDescGZIP(), []int{6}
+	return file_follow_proto_rawDescGZIP(), []int{7}
 }
 
-func (x *FollowListResponse) GetItems() []*FollowItem {
+func (x *FollowListResponse) GetCode() int64 {
 	if x != nil {
-		return x.Items
+		return x.Code
+	}
+	return 0
+}
+
+func (x *FollowListResponse) GetMsg() string {
+	if x != nil {
+		return x.Msg
+	}
+	return ""
+}
+
+func (x *FollowListResponse) GetData() *FollowListData {
+	if x != nil {
+		return x.Data
 	}
 	return nil
 }
 
-func (x *FollowListResponse) GetCursor() int64 {
-	if x != nil {
-		return x.Cursor
-	}
-	return 0
-}
-
-func (x *FollowListResponse) GetIsEnd() bool {
-	if x != nil {
-		return x.IsEnd
-	}
-	return false
-}
-
-func (x *FollowListResponse) GetId() int64 {
-	if x != nil {
-		return x.Id
-	}
-	return 0
-}
-
 type FansListRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	UserId        int64                  `protobuf:"varint,1,opt,name=userId,proto3" json:"userId,omitempty"`
-	Cursor        int64                  `protobuf:"varint,2,opt,name=cursor,proto3" json:"cursor,omitempty"`
-	PageSize      int64                  `protobuf:"varint,3,opt,name=pageSize,proto3" json:"pageSize,omitempty"`
-	Id            int64                  `protobuf:"varint,4,opt,name=Id,proto3" json:"Id,omitempty"`
+	Id            int64                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
+	UserId        int64                  `protobuf:"varint,2,opt,name=userId,proto3" json:"userId,omitempty"`
+	Cursor        int64                  `protobuf:"varint,3,opt,name=cursor,proto3" json:"cursor,omitempty"`
+	PageSize      int64                  `protobuf:"varint,4,opt,name=pageSize,proto3" json:"pageSize,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
 func (x *FansListRequest) Reset() {
 	*x = FansListRequest{}
-	mi := &file_follow_proto_msgTypes[7]
+	mi := &file_follow_proto_msgTypes[8]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -425,7 +517,7 @@ func (x *FansListRequest) String() string {
 func (*FansListRequest) ProtoMessage() {}
 
 func (x *FansListRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_follow_proto_msgTypes[7]
+	mi := &file_follow_proto_msgTypes[8]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -438,7 +530,14 @@ func (x *FansListRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use FansListRequest.ProtoReflect.Descriptor instead.
 func (*FansListRequest) Descriptor() ([]byte, []int) {
-	return file_follow_proto_rawDescGZIP(), []int{7}
+	return file_follow_proto_rawDescGZIP(), []int{8}
+}
+
+func (x *FansListRequest) GetId() int64 {
+	if x != nil {
+		return x.Id
+	}
+	return 0
 }
 
 func (x *FansListRequest) GetUserId() int64 {
@@ -462,27 +561,21 @@ func (x *FansListRequest) GetPageSize() int64 {
 	return 0
 }
 
-func (x *FansListRequest) GetId() int64 {
-	if x != nil {
-		return x.Id
-	}
-	return 0
-}
-
 type FansItem struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	UserId        int64                  `protobuf:"varint,1,opt,name=userId,proto3" json:"userId,omitempty"`
-	FansUserId    int64                  `protobuf:"varint,2,opt,name=fansUserId,proto3" json:"fansUserId,omitempty"`
-	FollowCount   int64                  `protobuf:"varint,3,opt,name=followCount,proto3" json:"followCount,omitempty"`
-	FansCount     int64                  `protobuf:"varint,4,opt,name=fansCount,proto3" json:"fansCount,omitempty"`
-	CreateTime    int64                  `protobuf:"varint,5,opt,name=createTime,proto3" json:"createTime,omitempty"`
+	Id            int64                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
+	UserId        int64                  `protobuf:"varint,2,opt,name=userId,proto3" json:"userId,omitempty"`
+	FansUserId    int64                  `protobuf:"varint,3,opt,name=fansUserId,proto3" json:"fansUserId,omitempty"`
+	FollowCount   int64                  `protobuf:"varint,4,opt,name=followCount,proto3" json:"followCount,omitempty"`
+	FansCount     int64                  `protobuf:"varint,5,opt,name=fansCount,proto3" json:"fansCount,omitempty"`
+	CreateTime    int64                  `protobuf:"varint,6,opt,name=createTime,proto3" json:"createTime,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
 func (x *FansItem) Reset() {
 	*x = FansItem{}
-	mi := &file_follow_proto_msgTypes[8]
+	mi := &file_follow_proto_msgTypes[9]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -494,7 +587,7 @@ func (x *FansItem) String() string {
 func (*FansItem) ProtoMessage() {}
 
 func (x *FansItem) ProtoReflect() protoreflect.Message {
-	mi := &file_follow_proto_msgTypes[8]
+	mi := &file_follow_proto_msgTypes[9]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -507,7 +600,14 @@ func (x *FansItem) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use FansItem.ProtoReflect.Descriptor instead.
 func (*FansItem) Descriptor() ([]byte, []int) {
-	return file_follow_proto_rawDescGZIP(), []int{8}
+	return file_follow_proto_rawDescGZIP(), []int{9}
+}
+
+func (x *FansItem) GetId() int64 {
+	if x != nil {
+		return x.Id
+	}
+	return 0
 }
 
 func (x *FansItem) GetUserId() int64 {
@@ -545,19 +645,86 @@ func (x *FansItem) GetCreateTime() int64 {
 	return 0
 }
 
-type FansListResponse struct {
+type FansListData struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Items         []*FansItem            `protobuf:"bytes,1,rep,name=items,proto3" json:"items,omitempty"`
 	Cursor        int64                  `protobuf:"varint,2,opt,name=cursor,proto3" json:"cursor,omitempty"`
 	IsEnd         bool                   `protobuf:"varint,3,opt,name=isEnd,proto3" json:"isEnd,omitempty"`
-	Id            int64                  `protobuf:"varint,4,opt,name=Id,proto3" json:"Id,omitempty"`
+	Id            int64                  `protobuf:"varint,4,opt,name=id,proto3" json:"id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *FansListData) Reset() {
+	*x = FansListData{}
+	mi := &file_follow_proto_msgTypes[10]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *FansListData) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*FansListData) ProtoMessage() {}
+
+func (x *FansListData) ProtoReflect() protoreflect.Message {
+	mi := &file_follow_proto_msgTypes[10]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use FansListData.ProtoReflect.Descriptor instead.
+func (*FansListData) Descriptor() ([]byte, []int) {
+	return file_follow_proto_rawDescGZIP(), []int{10}
+}
+
+func (x *FansListData) GetItems() []*FansItem {
+	if x != nil {
+		return x.Items
+	}
+	return nil
+}
+
+func (x *FansListData) GetCursor() int64 {
+	if x != nil {
+		return x.Cursor
+	}
+	return 0
+}
+
+func (x *FansListData) GetIsEnd() bool {
+	if x != nil {
+		return x.IsEnd
+	}
+	return false
+}
+
+func (x *FansListData) GetId() int64 {
+	if x != nil {
+		return x.Id
+	}
+	return 0
+}
+
+type FansListResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Code          int64                  `protobuf:"varint,1,opt,name=code,proto3" json:"code,omitempty"`
+	Msg           string                 `protobuf:"bytes,2,opt,name=msg,proto3" json:"msg,omitempty"`
+	Data          *FansListData          `protobuf:"bytes,3,opt,name=data,proto3" json:"data,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
 func (x *FansListResponse) Reset() {
 	*x = FansListResponse{}
-	mi := &file_follow_proto_msgTypes[9]
+	mi := &file_follow_proto_msgTypes[11]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -569,7 +736,7 @@ func (x *FansListResponse) String() string {
 func (*FansListResponse) ProtoMessage() {}
 
 func (x *FansListResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_follow_proto_msgTypes[9]
+	mi := &file_follow_proto_msgTypes[11]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -582,94 +749,100 @@ func (x *FansListResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use FansListResponse.ProtoReflect.Descriptor instead.
 func (*FansListResponse) Descriptor() ([]byte, []int) {
-	return file_follow_proto_rawDescGZIP(), []int{9}
+	return file_follow_proto_rawDescGZIP(), []int{11}
 }
 
-func (x *FansListResponse) GetItems() []*FansItem {
+func (x *FansListResponse) GetCode() int64 {
 	if x != nil {
-		return x.Items
+		return x.Code
+	}
+	return 0
+}
+
+func (x *FansListResponse) GetMsg() string {
+	if x != nil {
+		return x.Msg
+	}
+	return ""
+}
+
+func (x *FansListResponse) GetData() *FansListData {
+	if x != nil {
+		return x.Data
 	}
 	return nil
-}
-
-func (x *FansListResponse) GetCursor() int64 {
-	if x != nil {
-		return x.Cursor
-	}
-	return 0
-}
-
-func (x *FansListResponse) GetIsEnd() bool {
-	if x != nil {
-		return x.IsEnd
-	}
-	return false
-}
-
-func (x *FansListResponse) GetId() int64 {
-	if x != nil {
-		return x.Id
-	}
-	return 0
 }
 
 var File_follow_proto protoreflect.FileDescriptor
 
 const file_follow_proto_rawDesc = "" +
 	"\n" +
-	"\ffollow.proto\x12\aservice\"O\n" +
+	"\ffollow.proto\x12\x04user\"O\n" +
 	"\rFollowRequest\x12\x16\n" +
 	"\x06userId\x18\x01 \x01(\x03R\x06userId\x12&\n" +
-	"\x0efollowedUserId\x18\x02 \x01(\x03R\x0efollowedUserId\"\x10\n" +
-	"\x0eFollowResponse\"Q\n" +
+	"\x0efollowedUserId\x18\x02 \x01(\x03R\x0efollowedUserId\"6\n" +
+	"\x0eFollowResponse\x12\x12\n" +
+	"\x04code\x18\x01 \x01(\x03R\x04code\x12\x10\n" +
+	"\x03msg\x18\x02 \x01(\tR\x03msg\"Q\n" +
 	"\x0fUnFollowRequest\x12\x16\n" +
 	"\x06userId\x18\x01 \x01(\x03R\x06userId\x12&\n" +
-	"\x0efollowedUserId\x18\x02 \x01(\x03R\x0efollowedUserId\"\x12\n" +
-	"\x10UnFollowResponse\"o\n" +
+	"\x0efollowedUserId\x18\x02 \x01(\x03R\x0efollowedUserId\"8\n" +
+	"\x10UnFollowResponse\x12\x12\n" +
+	"\x04code\x18\x01 \x01(\x03R\x04code\x12\x10\n" +
+	"\x03msg\x18\x02 \x01(\tR\x03msg\"o\n" +
 	"\x11FollowListRequest\x12\x0e\n" +
-	"\x02Id\x18\x01 \x01(\x03R\x02Id\x12\x16\n" +
+	"\x02id\x18\x01 \x01(\x03R\x02id\x12\x16\n" +
 	"\x06userId\x18\x02 \x01(\x03R\x06userId\x12\x16\n" +
 	"\x06cursor\x18\x03 \x01(\x03R\x06cursor\x12\x1a\n" +
 	"\bpageSize\x18\x04 \x01(\x03R\bpageSize\"\x82\x01\n" +
 	"\n" +
 	"FollowItem\x12\x0e\n" +
-	"\x02Id\x18\x01 \x01(\x03R\x02Id\x12&\n" +
+	"\x02id\x18\x01 \x01(\x03R\x02id\x12&\n" +
 	"\x0efollowedUserId\x18\x02 \x01(\x03R\x0efollowedUserId\x12\x1c\n" +
 	"\tfansCount\x18\x03 \x01(\x03R\tfansCount\x12\x1e\n" +
 	"\n" +
 	"createTime\x18\x04 \x01(\x03R\n" +
-	"createTime\"}\n" +
-	"\x12FollowListResponse\x12)\n" +
-	"\x05items\x18\x01 \x03(\v2\x13.service.FollowItemR\x05items\x12\x16\n" +
+	"createTime\"v\n" +
+	"\x0eFollowListData\x12&\n" +
+	"\x05items\x18\x01 \x03(\v2\x10.user.FollowItemR\x05items\x12\x16\n" +
 	"\x06cursor\x18\x02 \x01(\x03R\x06cursor\x12\x14\n" +
 	"\x05isEnd\x18\x03 \x01(\bR\x05isEnd\x12\x0e\n" +
-	"\x02Id\x18\x04 \x01(\x03R\x02Id\"m\n" +
-	"\x0fFansListRequest\x12\x16\n" +
-	"\x06userId\x18\x01 \x01(\x03R\x06userId\x12\x16\n" +
-	"\x06cursor\x18\x02 \x01(\x03R\x06cursor\x12\x1a\n" +
-	"\bpageSize\x18\x03 \x01(\x03R\bpageSize\x12\x0e\n" +
-	"\x02Id\x18\x04 \x01(\x03R\x02Id\"\xa2\x01\n" +
-	"\bFansItem\x12\x16\n" +
-	"\x06userId\x18\x01 \x01(\x03R\x06userId\x12\x1e\n" +
+	"\x02id\x18\x04 \x01(\x03R\x02id\"d\n" +
+	"\x12FollowListResponse\x12\x12\n" +
+	"\x04code\x18\x01 \x01(\x03R\x04code\x12\x10\n" +
+	"\x03msg\x18\x02 \x01(\tR\x03msg\x12(\n" +
+	"\x04data\x18\x03 \x01(\v2\x14.user.FollowListDataR\x04data\"m\n" +
+	"\x0fFansListRequest\x12\x0e\n" +
+	"\x02id\x18\x01 \x01(\x03R\x02id\x12\x16\n" +
+	"\x06userId\x18\x02 \x01(\x03R\x06userId\x12\x16\n" +
+	"\x06cursor\x18\x03 \x01(\x03R\x06cursor\x12\x1a\n" +
+	"\bpageSize\x18\x04 \x01(\x03R\bpageSize\"\xb2\x01\n" +
+	"\bFansItem\x12\x0e\n" +
+	"\x02id\x18\x01 \x01(\x03R\x02id\x12\x16\n" +
+	"\x06userId\x18\x02 \x01(\x03R\x06userId\x12\x1e\n" +
 	"\n" +
-	"fansUserId\x18\x02 \x01(\x03R\n" +
+	"fansUserId\x18\x03 \x01(\x03R\n" +
 	"fansUserId\x12 \n" +
-	"\vfollowCount\x18\x03 \x01(\x03R\vfollowCount\x12\x1c\n" +
-	"\tfansCount\x18\x04 \x01(\x03R\tfansCount\x12\x1e\n" +
+	"\vfollowCount\x18\x04 \x01(\x03R\vfollowCount\x12\x1c\n" +
+	"\tfansCount\x18\x05 \x01(\x03R\tfansCount\x12\x1e\n" +
 	"\n" +
-	"createTime\x18\x05 \x01(\x03R\n" +
-	"createTime\"y\n" +
-	"\x10FansListResponse\x12'\n" +
-	"\x05items\x18\x01 \x03(\v2\x11.service.FansItemR\x05items\x12\x16\n" +
+	"createTime\x18\x06 \x01(\x03R\n" +
+	"createTime\"r\n" +
+	"\fFansListData\x12$\n" +
+	"\x05items\x18\x01 \x03(\v2\x0e.user.FansItemR\x05items\x12\x16\n" +
 	"\x06cursor\x18\x02 \x01(\x03R\x06cursor\x12\x14\n" +
 	"\x05isEnd\x18\x03 \x01(\bR\x05isEnd\x12\x0e\n" +
-	"\x02Id\x18\x04 \x01(\x03R\x02Id2\x8c\x02\n" +
-	"\x06Follow\x129\n" +
-	"\x06Follow\x12\x16.service.FollowRequest\x1a\x17.service.FollowResponse\x12?\n" +
-	"\bUnFollow\x12\x18.service.UnFollowRequest\x1a\x19.service.UnFollowResponse\x12E\n" +
+	"\x02id\x18\x04 \x01(\x03R\x02id\"`\n" +
+	"\x10FansListResponse\x12\x12\n" +
+	"\x04code\x18\x01 \x01(\x03R\x04code\x12\x10\n" +
+	"\x03msg\x18\x02 \x01(\tR\x03msg\x12&\n" +
+	"\x04data\x18\x03 \x01(\v2\x12.user.FansListDataR\x04data2\xf4\x01\n" +
+	"\x06Follow\x123\n" +
+	"\x06Follow\x12\x13.user.FollowRequest\x1a\x14.user.FollowResponse\x129\n" +
+	"\bUnFollow\x12\x15.user.UnFollowRequest\x1a\x16.user.UnFollowResponse\x12?\n" +
 	"\n" +
-	"FollowList\x12\x1a.service.FollowListRequest\x1a\x1b.service.FollowListResponse\x12?\n" +
-	"\bFansList\x12\x18.service.FansListRequest\x1a\x19.service.FansListResponseB\x06Z\x04./pbb\x06proto3"
+	"FollowList\x12\x17.user.FollowListRequest\x1a\x18.user.FollowListResponse\x129\n" +
+	"\bFansList\x12\x15.user.FansListRequest\x1a\x16.user.FansListResponseB#Z!api-thinktalk/client/follow/pb;pbb\x06proto3"
 
 var (
 	file_follow_proto_rawDescOnce sync.Once
@@ -683,35 +856,39 @@ func file_follow_proto_rawDescGZIP() []byte {
 	return file_follow_proto_rawDescData
 }
 
-var file_follow_proto_msgTypes = make([]protoimpl.MessageInfo, 10)
+var file_follow_proto_msgTypes = make([]protoimpl.MessageInfo, 12)
 var file_follow_proto_goTypes = []any{
-	(*FollowRequest)(nil),      // 0: service.FollowRequest
-	(*FollowResponse)(nil),     // 1: service.FollowResponse
-	(*UnFollowRequest)(nil),    // 2: service.UnFollowRequest
-	(*UnFollowResponse)(nil),   // 3: service.UnFollowResponse
-	(*FollowListRequest)(nil),  // 4: service.FollowListRequest
-	(*FollowItem)(nil),         // 5: service.FollowItem
-	(*FollowListResponse)(nil), // 6: service.FollowListResponse
-	(*FansListRequest)(nil),    // 7: service.FansListRequest
-	(*FansItem)(nil),           // 8: service.FansItem
-	(*FansListResponse)(nil),   // 9: service.FansListResponse
+	(*FollowRequest)(nil),      // 0: user.FollowRequest
+	(*FollowResponse)(nil),     // 1: user.FollowResponse
+	(*UnFollowRequest)(nil),    // 2: user.UnFollowRequest
+	(*UnFollowResponse)(nil),   // 3: user.UnFollowResponse
+	(*FollowListRequest)(nil),  // 4: user.FollowListRequest
+	(*FollowItem)(nil),         // 5: user.FollowItem
+	(*FollowListData)(nil),     // 6: user.FollowListData
+	(*FollowListResponse)(nil), // 7: user.FollowListResponse
+	(*FansListRequest)(nil),    // 8: user.FansListRequest
+	(*FansItem)(nil),           // 9: user.FansItem
+	(*FansListData)(nil),       // 10: user.FansListData
+	(*FansListResponse)(nil),   // 11: user.FansListResponse
 }
 var file_follow_proto_depIdxs = []int32{
-	5, // 0: service.FollowListResponse.items:type_name -> service.FollowItem
-	8, // 1: service.FansListResponse.items:type_name -> service.FansItem
-	0, // 2: service.Follow.Follow:input_type -> service.FollowRequest
-	2, // 3: service.Follow.UnFollow:input_type -> service.UnFollowRequest
-	4, // 4: service.Follow.FollowList:input_type -> service.FollowListRequest
-	7, // 5: service.Follow.FansList:input_type -> service.FansListRequest
-	1, // 6: service.Follow.Follow:output_type -> service.FollowResponse
-	3, // 7: service.Follow.UnFollow:output_type -> service.UnFollowResponse
-	6, // 8: service.Follow.FollowList:output_type -> service.FollowListResponse
-	9, // 9: service.Follow.FansList:output_type -> service.FansListResponse
-	6, // [6:10] is the sub-list for method output_type
-	2, // [2:6] is the sub-list for method input_type
-	2, // [2:2] is the sub-list for extension type_name
-	2, // [2:2] is the sub-list for extension extendee
-	0, // [0:2] is the sub-list for field type_name
+	5,  // 0: user.FollowListData.items:type_name -> user.FollowItem
+	6,  // 1: user.FollowListResponse.data:type_name -> user.FollowListData
+	9,  // 2: user.FansListData.items:type_name -> user.FansItem
+	10, // 3: user.FansListResponse.data:type_name -> user.FansListData
+	0,  // 4: user.Follow.Follow:input_type -> user.FollowRequest
+	2,  // 5: user.Follow.UnFollow:input_type -> user.UnFollowRequest
+	4,  // 6: user.Follow.FollowList:input_type -> user.FollowListRequest
+	8,  // 7: user.Follow.FansList:input_type -> user.FansListRequest
+	1,  // 8: user.Follow.Follow:output_type -> user.FollowResponse
+	3,  // 9: user.Follow.UnFollow:output_type -> user.UnFollowResponse
+	7,  // 10: user.Follow.FollowList:output_type -> user.FollowListResponse
+	11, // 11: user.Follow.FansList:output_type -> user.FansListResponse
+	8,  // [8:12] is the sub-list for method output_type
+	4,  // [4:8] is the sub-list for method input_type
+	4,  // [4:4] is the sub-list for extension type_name
+	4,  // [4:4] is the sub-list for extension extendee
+	0,  // [0:4] is the sub-list for field type_name
 }
 
 func init() { file_follow_proto_init() }
@@ -725,7 +902,7 @@ func file_follow_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_follow_proto_rawDesc), len(file_follow_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   10,
+			NumMessages:   12,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

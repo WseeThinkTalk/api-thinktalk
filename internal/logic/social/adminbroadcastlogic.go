@@ -53,18 +53,17 @@ func (l *AdminBroadcastLogic) AdminBroadcast(req *types.AdminBroadcastNotificati
 			l.Errorf("[AdminBroadcast] AdminUserList err: %v cursor: %d", err, cursor)
 			return nil, err
 		}
-
-		if len(rpcResp.Items) == 0 {
+		if rpcResp == nil || rpcResp.Data == nil || len(rpcResp.Data.Users) == 0 {
 			break
 		}
 
-		totalCount += int64(len(rpcResp.Items))
+		totalCount += int64(len(rpcResp.Data.Users))
 
 		// 异步推送通知到每个用户
 		title := req.Title
 		content := req.Content
 		pusher := l.svcCtx.NotificationPusher
-		for _, v := range rpcResp.Items {
+		for _, v := range rpcResp.Data.Users {
 			userId := v.UserId
 			threading.GoSafe(func() {
 				notif := map[string]interface{}{
@@ -87,12 +86,12 @@ func (l *AdminBroadcastLogic) AdminBroadcast(req *types.AdminBroadcastNotificati
 			})
 		}
 
-		successCount += int64(len(rpcResp.Items))
+		successCount += int64(len(rpcResp.Data.Users))
 
-		if rpcResp.IsEnd {
+		if rpcResp.Data.IsEnd {
 			break
 		}
-		cursor = rpcResp.Cursor
+		cursor = rpcResp.Data.Cursor
 	}
 
 	l.Infof("[AdminBroadcast] done total: %d success: %d", totalCount, successCount)

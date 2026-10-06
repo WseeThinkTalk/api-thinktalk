@@ -80,7 +80,7 @@ func NewServiceContext(c config.Config) *ServiceContext {
 	userClient := zrpc.MustNewClient(c.UserRpc, zrpc.WithUnaryClientInterceptor(interceptors.ClientErrorInterceptor()))
 	contentClient := zrpc.MustNewClient(c.ContentRpc, zrpc.WithUnaryClientInterceptor(interceptors.ClientErrorInterceptor()))
 	socialClient := zrpc.MustNewClient(c.SocialRpc, zrpc.WithUnaryClientInterceptor(interceptors.ClientErrorInterceptor()))
-	agentConn := zrpc.MustNewClient(c.AgentRpc).Conn()
+	agentClient := zrpc.MustNewClient(c.AgentRpc)
 
 	userRPCModel := user.NewUserClient(userClient.Conn())
 	articleRPCModel := article.NewArticleClient(contentClient.Conn())
@@ -94,7 +94,7 @@ func NewServiceContext(c config.Config) *ServiceContext {
 	memberRPCModel := member.NewMemberClient(userClient.Conn())
 	replyRPCModel := reply.NewReplyClient(socialClient.Conn())
 	chatRPCModel := chat.NewChatClient(socialClient.Conn())
-	agentClientModel := agent.NewAgentClient(agentConn)
+	agentClientModel := agent.NewAgentClient(agentClient.Conn())
 
 	// MinIO
 	var minioClient *minio.Client

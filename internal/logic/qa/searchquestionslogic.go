@@ -37,20 +37,22 @@ func (l *SearchQuestionsLogic) SearchQuestions(req *types.SearchQuestionsRequest
 		return nil, err
 	}
 	// 转换问答搜索结果项
-	items := make([]*types.SearchQuestionItem, 0, len(rpcResp.Items))
-	for _, v := range rpcResp.Items {
-		items = append(items, &types.SearchQuestionItem{
-			Id:         v.Id,
-			Title:      v.Title,
-			Content:    v.Content,
-			AuthorId:   v.AuthorId,
-			AnswerNum:  v.AnswerNum,
-			TagIds:     v.TagIds,
-			CreateTime: v.CreateTime,
-		})
+	if rpcResp != nil && rpcResp.Data != nil {
+		items := make([]*types.SearchQuestionItem, 0, len(rpcResp.Data.Items))
+		for _, v := range rpcResp.Data.Items {
+			items = append(items, &types.SearchQuestionItem{
+				Id:         v.Id,
+				Title:      v.Title,
+				Content:    v.Content,
+				AuthorId:   v.AuthorId,
+				AnswerNum:  v.AnswerNum,
+				TagIds:     v.TagIds,
+				CreateTime: v.CreateTime,
+			})
+		}
+		resp.Items = items
+		resp.Cursor = rpcResp.Data.Cursor
+		resp.IsEnd = rpcResp.Data.IsEnd
 	}
-	resp.Items = items
-	resp.Cursor = rpcResp.Cursor
-	resp.IsEnd = rpcResp.IsEnd
 	return resp, nil
 }

@@ -36,17 +36,19 @@ func (l *ConcernedListLogic) List(userId int64, req *types.ConcernedListRequest)
 	}
 
 	// 转换关注动态记录项
-	items := make([]*types.ConcernedItem, 0, len(rpcResp.Items))
-	for _, v := range rpcResp.Items {
-		items = append(items, &types.ConcernedItem{
-			Id:         v.Id,
-			BizId:      v.BizId,
-			ObjId:      v.ObjId,
-			CreateTime: v.CreateTime,
-		})
+	if rpcResp != nil && rpcResp.Data != nil {
+		items := make([]*types.ConcernedItem, 0, len(rpcResp.Data.Items))
+		for _, v := range rpcResp.Data.Items {
+			items = append(items, &types.ConcernedItem{
+				Id:         v.Id,
+				BizId:      v.BizId,
+				ObjId:      v.ObjId,
+				CreateTime: v.CreateTime,
+			})
+		}
+		resp.Items = items
+		resp.Cursor = rpcResp.Data.Cursor
+		resp.IsEnd = rpcResp.Data.IsEnd
 	}
-	resp.Items = items
-	resp.Cursor = rpcResp.Cursor
-	resp.IsEnd = rpcResp.IsEnd
 	return resp, nil
 }

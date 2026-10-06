@@ -68,12 +68,13 @@ func (l *LoginLogic) Login(req *types.LoginRequest) (resp *types.LoginResponse, 
 		logx.Errorf("findByMobile error: %v", err)
 		return nil, err
 	}
-	if mobile == nil || mobile.UserId == 0 {
+	if mobile == nil || mobile.Data == nil || mobile.Data.UserId == 0 {
 		return nil, xcode.AccessDenied
 	}
 
+	userData := mobile.Data
 	if isPassMode {
-		valid, needsUpgrade := encrypt.VerifyPassword(req.Password, mobile.Password)
+		valid, needsUpgrade := encrypt.VerifyPassword(req.Password, userData.Password)
 		if !valid {
 			return nil, xcode.AccessDenied
 		}
@@ -81,7 +82,7 @@ func (l *LoginLogic) Login(req *types.LoginRequest) (resp *types.LoginResponse, 
 			newHash, hashErr := encrypt.HashPassword(req.Password)
 			if hashErr == nil {
 				_, _ = l.svcCtx.UserRPC.UpgradePassword(l.ctx, &user.UpgradePasswordRequest{
-					UserId:       mobile.UserId,
+					UserId:       userData.UserId,
 					PasswordHash: newHash,
 				})
 			}
@@ -92,7 +93,7 @@ func (l *LoginLogic) Login(req *types.LoginRequest) (resp *types.LoginResponse, 
 		AccessSecret: l.svcCtx.Config.Auth.AccessSecret,
 		AccessExpire: l.svcCtx.Config.Auth.AccessExpire,
 		Fields: map[string]interface{}{
-			"userId": mobile.UserId,
+			"userId": userData.UserId,
 		},
 	})
 	if err != nil {
@@ -104,7 +105,7 @@ func (l *LoginLogic) Login(req *types.LoginRequest) (resp *types.LoginResponse, 
 		_ = deleteActivationCode(req.Mobile, req.VerificationCode, l.svcCtx.RDB)
 	}
 
-	resp.UserId = mobile.UserId
+	resp.UserId = userData.UserId
 	resp.Token = types.Token{
 		AccessToken:  token.AccessToken,
 		AccessExpire: token.AccessExpire,

@@ -23,7 +23,7 @@ func NewMarkReadLogic(ctx context.Context, svcCtx *svc.ServiceContext) *MarkRead
 func (l *MarkReadLogic) MarkRead(userId int64, req *types.ChatMarkReadRequest) (resp *types.ChatMarkReadResponse, err error) {
 	resp = new(types.ChatMarkReadResponse)
 
-	_, err = l.svcCtx.Chat.MarkRead(l.ctx, &pb.MarkReadRequest{
+	_, err = l.svcCtx.Chat.MarkRead(l.ctx, &pb.ChatMarkReadRequest{
 		UserId:         userId,
 		ConversationId: req.ConversationId,
 	})

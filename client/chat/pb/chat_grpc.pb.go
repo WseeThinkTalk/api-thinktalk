@@ -19,27 +19,22 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	Chat_SendMessage_FullMethodName   = "/service.Chat/SendMessage"
-	Chat_Conversations_FullMethodName = "/service.Chat/Conversations"
-	Chat_Messages_FullMethodName      = "/service.Chat/Messages"
-	Chat_MarkRead_FullMethodName      = "/service.Chat/MarkRead"
-	Chat_UnreadCount_FullMethodName   = "/service.Chat/UnreadCount"
+	Chat_SendMessage_FullMethodName   = "/social.Chat/SendMessage"
+	Chat_Conversations_FullMethodName = "/social.Chat/Conversations"
+	Chat_Messages_FullMethodName      = "/social.Chat/Messages"
+	Chat_MarkRead_FullMethodName      = "/social.Chat/MarkRead"
+	Chat_UnreadCount_FullMethodName   = "/social.Chat/UnreadCount"
 )
 
 // ChatClient is the client API for Chat service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type ChatClient interface {
-	// 发送消息
 	SendMessage(ctx context.Context, in *SendMessageRequest, opts ...grpc.CallOption) (*SendMessageResponse, error)
-	// 会话列表
 	Conversations(ctx context.Context, in *ConversationsRequest, opts ...grpc.CallOption) (*ConversationsResponse, error)
-	// 消息列表
 	Messages(ctx context.Context, in *MessagesRequest, opts ...grpc.CallOption) (*MessagesResponse, error)
-	// 标记已读
-	MarkRead(ctx context.Context, in *MarkReadRequest, opts ...grpc.CallOption) (*MarkReadResponse, error)
-	// 未读计数
-	UnreadCount(ctx context.Context, in *UnreadCountRequest, opts ...grpc.CallOption) (*UnreadCountResponse, error)
+	MarkRead(ctx context.Context, in *ChatMarkReadRequest, opts ...grpc.CallOption) (*ChatMarkReadResponse, error)
+	UnreadCount(ctx context.Context, in *ChatUnreadCountRequest, opts ...grpc.CallOption) (*ChatUnreadCountResponse, error)
 }
 
 type chatClient struct {
@@ -80,9 +75,9 @@ func (c *chatClient) Messages(ctx context.Context, in *MessagesRequest, opts ...
 	return out, nil
 }
 
-func (c *chatClient) MarkRead(ctx context.Context, in *MarkReadRequest, opts ...grpc.CallOption) (*MarkReadResponse, error) {
+func (c *chatClient) MarkRead(ctx context.Context, in *ChatMarkReadRequest, opts ...grpc.CallOption) (*ChatMarkReadResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(MarkReadResponse)
+	out := new(ChatMarkReadResponse)
 	err := c.cc.Invoke(ctx, Chat_MarkRead_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
@@ -90,9 +85,9 @@ func (c *chatClient) MarkRead(ctx context.Context, in *MarkReadRequest, opts ...
 	return out, nil
 }
 
-func (c *chatClient) UnreadCount(ctx context.Context, in *UnreadCountRequest, opts ...grpc.CallOption) (*UnreadCountResponse, error) {
+func (c *chatClient) UnreadCount(ctx context.Context, in *ChatUnreadCountRequest, opts ...grpc.CallOption) (*ChatUnreadCountResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(UnreadCountResponse)
+	out := new(ChatUnreadCountResponse)
 	err := c.cc.Invoke(ctx, Chat_UnreadCount_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
@@ -104,16 +99,11 @@ func (c *chatClient) UnreadCount(ctx context.Context, in *UnreadCountRequest, op
 // All implementations must embed UnimplementedChatServer
 // for forward compatibility.
 type ChatServer interface {
-	// 发送消息
 	SendMessage(context.Context, *SendMessageRequest) (*SendMessageResponse, error)
-	// 会话列表
 	Conversations(context.Context, *ConversationsRequest) (*ConversationsResponse, error)
-	// 消息列表
 	Messages(context.Context, *MessagesRequest) (*MessagesResponse, error)
-	// 标记已读
-	MarkRead(context.Context, *MarkReadRequest) (*MarkReadResponse, error)
-	// 未读计数
-	UnreadCount(context.Context, *UnreadCountRequest) (*UnreadCountResponse, error)
+	MarkRead(context.Context, *ChatMarkReadRequest) (*ChatMarkReadResponse, error)
+	UnreadCount(context.Context, *ChatUnreadCountRequest) (*ChatUnreadCountResponse, error)
 	mustEmbedUnimplementedChatServer()
 }
 
@@ -133,10 +123,10 @@ func (UnimplementedChatServer) Conversations(context.Context, *ConversationsRequ
 func (UnimplementedChatServer) Messages(context.Context, *MessagesRequest) (*MessagesResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "method Messages not implemented")
 }
-func (UnimplementedChatServer) MarkRead(context.Context, *MarkReadRequest) (*MarkReadResponse, error) {
+func (UnimplementedChatServer) MarkRead(context.Context, *ChatMarkReadRequest) (*ChatMarkReadResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "method MarkRead not implemented")
 }
-func (UnimplementedChatServer) UnreadCount(context.Context, *UnreadCountRequest) (*UnreadCountResponse, error) {
+func (UnimplementedChatServer) UnreadCount(context.Context, *ChatUnreadCountRequest) (*ChatUnreadCountResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "method UnreadCount not implemented")
 }
 func (UnimplementedChatServer) mustEmbedUnimplementedChatServer() {}
@@ -215,7 +205,7 @@ func _Chat_Messages_Handler(srv interface{}, ctx context.Context, dec func(inter
 }
 
 func _Chat_MarkRead_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(MarkReadRequest)
+	in := new(ChatMarkReadRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -227,13 +217,13 @@ func _Chat_MarkRead_Handler(srv interface{}, ctx context.Context, dec func(inter
 		FullMethod: Chat_MarkRead_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(ChatServer).MarkRead(ctx, req.(*MarkReadRequest))
+		return srv.(ChatServer).MarkRead(ctx, req.(*ChatMarkReadRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
 func _Chat_UnreadCount_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(UnreadCountRequest)
+	in := new(ChatUnreadCountRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -245,7 +235,7 @@ func _Chat_UnreadCount_Handler(srv interface{}, ctx context.Context, dec func(in
 		FullMethod: Chat_UnreadCount_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(ChatServer).UnreadCount(ctx, req.(*UnreadCountRequest))
+		return srv.(ChatServer).UnreadCount(ctx, req.(*ChatUnreadCountRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -254,7 +244,7 @@ func _Chat_UnreadCount_Handler(srv interface{}, ctx context.Context, dec func(in
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
 var Chat_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "service.Chat",
+	ServiceName: "social.Chat",
 	HandlerType: (*ChatServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{

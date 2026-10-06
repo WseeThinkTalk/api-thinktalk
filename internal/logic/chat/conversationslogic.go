@@ -24,8 +24,8 @@ func NewConversationsLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Con
 func (l *ConversationsLogic) Conversations(userId int64, req *types.ConversationsRequest) (resp *types.ConversationsResponse, err error) {
 	resp = new(types.ConversationsResponse)
 
-	if req.PageSize == 0 {
-		req.PageSize = types.DefaultPageSize
+	if req.PageSize <= 0 {
+		req.PageSize = 20
 	}
 
 	rpcResp, err := l.svcCtx.Chat.Conversations(l.ctx, &pb.ConversationsRequest{
@@ -39,28 +39,30 @@ func (l *ConversationsLogic) Conversations(userId int64, req *types.Conversation
 	}
 
 	// 转换会话列表并补充对方用户信息
-	items := make([]*types.ConversationItem, 0, len(rpcResp.Items))
-	for _, v := range rpcResp.Items {
-		targetName := ""
-		targetAvatar := ""
-		if userResp, err := l.svcCtx.UserRPC.FindById(l.ctx, &user.FindByIdRequest{UserId: v.TargetUserId}); err == nil {
-			targetName = userResp.Username
-			targetAvatar = userResp.Avatar
+	if rpcResp != nil && rpcResp.Data != nil {
+		items := make([]*types.ConversationItem, 0, len(rpcResp.Data.Items))
+		for _, v := range rpcResp.Data.Items {
+			targetName := ""
+			targetAvatar := ""
+			if userResp, err := l.svcCtx.UserRPC.FindById(l.ctx, &user.FindByIdRequest{UserId: v.TargetUserId}); err == nil && userResp != nil && userResp.Data != nil {
+				targetName = userResp.Data.Username
+				targetAvatar = userResp.Data.Avatar
+			}
+
+			items = append(items, &types.ConversationItem{
+				Id:               v.Id,
+				TargetUserId:     v.TargetUserId,
+				TargetUserName:   targetName,
+				TargetUserAvatar: targetAvatar,
+				LastMessage:      v.LastMessage,
+				LastMessageTime:  v.LastMessageTime,
+				UnreadCount:      v.UnreadCount,
+			})
 		}
 
-		items = append(items, &types.ConversationItem{
-			Id:               v.Id,
-			TargetUserId:     v.TargetUserId,
-			TargetUserName:   targetName,
-			TargetUserAvatar: targetAvatar,
-			LastMessage:      v.LastMessage,
-			LastMessageTime:  v.LastMessageTime,
-			UnreadCount:      v.UnreadCount,
-		})
+		resp.Items = items
+		resp.Cursor = rpcResp.Data.Cursor
+		resp.IsEnd = rpcResp.Data.IsEnd
 	}
-
-	resp.Items = items
-	resp.Cursor = rpcResp.Cursor
-	resp.IsEnd = rpcResp.IsEnd
 	return resp, nil
 }

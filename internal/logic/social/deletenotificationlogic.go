@@ -29,7 +29,7 @@ func (l *DeleteNotificationLogic) DeleteNotification(userId int64, req *types.De
 
 	_, err = l.svcCtx.MessageRPC.DeleteNotification(l.ctx, &msg.DeleteNotificationRequest{
 		UserId:         userId,
-		NotificationId: req.NotificationId,
+		NotificationId: req.Id,
 	})
 	if err != nil {
 		l.Errorf("[DeleteNotification] rpc err: %v", err)

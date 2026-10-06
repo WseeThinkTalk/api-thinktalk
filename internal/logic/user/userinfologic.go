@@ -46,13 +46,15 @@ func (l *UserInfoLogic) UserInfo() (resp *types.UserInfoResponse, err error) {
 		return nil, err
 	}
 
-	resp.UserId = id.UserId
-	resp.Username = id.Username
-	resp.Avatar = id.Avatar
-	resp.Role = id.Role
-	resp.DisplayId = id.DisplayId
-	resp.Bio = id.Bio
-	resp.Gender = id.Gender
-	resp.ProfileCover = id.ProfileCover
+	if id != nil && id.Data != nil {
+		resp.UserId = id.Data.UserId
+		resp.Username = id.Data.Username
+		resp.Avatar = id.Data.Avatar
+		resp.Role = id.Data.Role
+		resp.DisplayId = id.Data.DisplayId
+		resp.Bio = id.Data.Bio
+		resp.Gender = id.Data.Gender
+		resp.ProfileCover = id.Data.ProfileCover
+	}
 	return resp, nil
 }

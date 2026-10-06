@@ -29,7 +29,7 @@ func (l *FollowLogic) Follow(userId int64, req *types.FollowRequest) (resp *type
 
 	_, err = l.svcCtx.FollowRPC.Follow(l.ctx, &pb.FollowRequest{
 		UserId:         userId,
-		FollowedUserId: req.FollowedUserId,
+		FollowedUserId: req.FollowId,
 	})
 	if err != nil {
 		l.Errorf("[Follow] rpc err: %v", err)
@@ -38,12 +38,12 @@ func (l *FollowLogic) Follow(userId int64, req *types.FollowRequest) (resp *type
 
 	threading.GoSafe(func() {
 		triggerName := "某用户"
-		if userResp, err := l.svcCtx.UserRPC.FindById(context.Background(), &user.FindByIdRequest{UserId: userId}); err == nil {
-			triggerName = userResp.Username
+		if userResp, err := l.svcCtx.UserRPC.FindById(context.Background(), &user.FindByIdRequest{UserId: userId}); err == nil && userResp != nil && userResp.Data != nil {
+			triggerName = userResp.Data.Username
 		}
 
 		msg := &types.NotificationMsg{
-			UserId:        req.FollowedUserId,
+			UserId:        req.FollowId,
 			Type:          3, // Follow
 			Title:         "新关注",
 			Content:       fmt.Sprintf("用户 %s 关注了您", triggerName),

@@ -38,6 +38,8 @@ func (l *DeleteSessionLogic) DeleteSession(req *types.DeleteSessionRequest) (res
 	if err != nil {
 		return nil, err
 	}
-	resp.Success = rpcResp.Success
+	if rpcResp != nil && rpcResp.Data != nil {
+		resp.Success = rpcResp.Data.Success
+	}
 	return resp, nil
 }

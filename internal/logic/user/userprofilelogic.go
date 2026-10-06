@@ -33,9 +33,11 @@ func (l *UserProfileLogic) UserProfile(req *types.UserProfileRequest) (resp *typ
 		return nil, err
 	}
 
-	resp.UserId = id.UserId
-	resp.Username = id.Username
-	resp.Avatar = id.Avatar
-	resp.Bio = id.Bio
+	if id != nil && id.Data != nil {
+		resp.UserId = id.Data.UserId
+		resp.Username = id.Data.Username
+		resp.Avatar = id.Data.Avatar
+		resp.Bio = id.Data.Bio
+	}
 	return resp, nil
 }

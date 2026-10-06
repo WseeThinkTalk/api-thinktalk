@@ -23,7 +23,7 @@ func NewUnreadCountLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Unrea
 func (l *UnreadCountLogic) UnreadCount(userId int64) (resp *types.ChatUnreadCountResponse, err error) {
 	resp = new(types.ChatUnreadCountResponse)
 
-	rpcResp, err := l.svcCtx.Chat.UnreadCount(l.ctx, &pb.UnreadCountRequest{
+	rpcResp, err := l.svcCtx.Chat.UnreadCount(l.ctx, &pb.ChatUnreadCountRequest{
 		UserId: userId,
 	})
 	if err != nil {
@@ -31,6 +31,8 @@ func (l *UnreadCountLogic) UnreadCount(userId int64) (resp *types.ChatUnreadCoun
 		return nil, err
 	}
 
-	resp.Total = rpcResp.Total
+	if rpcResp != nil && rpcResp.Data != nil {
+		resp.Total = rpcResp.Data.Total
+	}
 	return resp, nil
 }

@@ -3,9 +3,9 @@ package member
 import (
 	"context"
 
-	"api-thinktalk/client/member/pb"
 	"api-thinktalk/internal/svc"
 	"api-thinktalk/internal/types"
+	member "api-thinktalk/client/member/pb"
 
 	"github.com/zeromicro/go-zero/core/logx"
 )
@@ -23,17 +23,18 @@ func NewMemberInfoLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Member
 func (l *MemberInfoLogic) MemberInfo(userId int64) (resp *types.MemberInfoResponse, err error) {
 	resp = new(types.MemberInfoResponse)
 
-	rpcResp, err := l.svcCtx.MemberRPC.MemberInfo(l.ctx, &pb.MemberInfoRequest{
+	rpcResp, err := l.svcCtx.MemberRPC.MemberInfo(l.ctx, &member.MemberInfoRequest{
 		UserId: userId,
 	})
 	if err != nil {
 		l.Errorf("[MemberInfo] rpc err: %v", err)
 		return nil, err
 	}
-	resp.UserId = rpcResp.UserId
-	resp.Level = rpcResp.Level
-	resp.LevelName = rpcResp.LevelName
-	resp.ExpireTime = rpcResp.ExpireTime
-	resp.Status = rpcResp.Status
+	if rpcResp != nil && rpcResp.Data != nil {
+		resp.UserId = rpcResp.Data.UserId
+		resp.MemberLevel = rpcResp.Data.Level
+		resp.ExpireAt = rpcResp.Data.ExpireTime
+		resp.IsActive = rpcResp.Data.Status == 1
+	}
 	return resp, nil
 }

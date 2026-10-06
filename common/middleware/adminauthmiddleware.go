@@ -41,7 +41,7 @@ func (m *AdminAuthMiddleware) Handle(next http.HandlerFunc) http.HandlerFunc {
 			return
 		}
 
-		if u.Role != 1 {
+		if u == nil || u.Data == nil || u.Data.Role != 1 {
 			w.Header().Set("Content-Type", "application/json")
 			w.WriteHeader(http.StatusForbidden)
 			_, _ = w.Write([]byte(`{"code":403,"msg":"权限不足，需要管理员权限"}`))

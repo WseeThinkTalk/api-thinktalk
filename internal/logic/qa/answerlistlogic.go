@@ -37,21 +37,23 @@ func (l *AnswerListLogic) AnswerList(req *types.AnswerListRequest) (resp *types.
 		return nil, err
 	}
 	// 转换回答列表项
-	items := make([]*types.AnswerItem, 0, len(rpcResp.Items))
-	for _, v := range rpcResp.Items {
-		items = append(items, &types.AnswerItem{
-			Id:         v.Id,
-			QuestionId: v.QuestionId,
-			AuthorId:   v.AuthorId,
-			Content:    v.Content,
-			IsAccepted: v.IsAccepted,
-			LikeNum:    v.LikeNum,
-			ReplyNum:   v.ReplyNum,
-			CreateTime: v.CreateTime,
-		})
+	if rpcResp != nil && rpcResp.Data != nil {
+		items := make([]*types.AnswerItem, 0, len(rpcResp.Data.Items))
+		for _, v := range rpcResp.Data.Items {
+			items = append(items, &types.AnswerItem{
+				Id:         v.Id,
+				QuestionId: v.QuestionId,
+				AuthorId:   v.AuthorId,
+				Content:    v.Content,
+				IsAccepted: v.IsAccepted,
+				LikeNum:    v.LikeNum,
+				ReplyNum:   v.ReplyNum,
+				CreateTime: v.CreateTime,
+			})
+		}
+		resp.Items = items
+		resp.Cursor = rpcResp.Data.Cursor
+		resp.IsEnd = rpcResp.Data.IsEnd
 	}
-	resp.Items = items
-	resp.Cursor = rpcResp.Cursor
-	resp.IsEnd = rpcResp.IsEnd
 	return resp, nil
 }

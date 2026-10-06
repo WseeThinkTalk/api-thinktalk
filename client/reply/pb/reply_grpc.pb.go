@@ -19,29 +19,23 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	Reply_CreateReply_FullMethodName    = "/service.Reply/CreateReply"
-	Reply_DeleteReply_FullMethodName    = "/service.Reply/DeleteReply"
-	Reply_ReplyDetail_FullMethodName    = "/service.Reply/ReplyDetail"
-	Reply_ReplyList_FullMethodName      = "/service.Reply/ReplyList"
-	Reply_ReplyCount_FullMethodName     = "/service.Reply/ReplyCount"
-	Reply_AdminReplyList_FullMethodName = "/service.Reply/AdminReplyList"
+	Reply_CreateReply_FullMethodName    = "/social.Reply/CreateReply"
+	Reply_DeleteReply_FullMethodName    = "/social.Reply/DeleteReply"
+	Reply_ReplyDetail_FullMethodName    = "/social.Reply/ReplyDetail"
+	Reply_ReplyList_FullMethodName      = "/social.Reply/ReplyList"
+	Reply_ReplyCount_FullMethodName     = "/social.Reply/ReplyCount"
+	Reply_AdminReplyList_FullMethodName = "/social.Reply/AdminReplyList"
 )
 
 // ReplyClient is the client API for Reply service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type ReplyClient interface {
-	// 发表评论
 	CreateReply(ctx context.Context, in *CreateReplyRequest, opts ...grpc.CallOption) (*CreateReplyResponse, error)
-	// 删除评论
 	DeleteReply(ctx context.Context, in *DeleteReplyRequest, opts ...grpc.CallOption) (*DeleteReplyResponse, error)
-	// 评论详情
 	ReplyDetail(ctx context.Context, in *ReplyDetailRequest, opts ...grpc.CallOption) (*ReplyDetailResponse, error)
-	// 评论列表
 	ReplyList(ctx context.Context, in *ReplyListRequest, opts ...grpc.CallOption) (*ReplyListResponse, error)
-	// 评论计数
 	ReplyCount(ctx context.Context, in *ReplyCountRequest, opts ...grpc.CallOption) (*ReplyCountResponse, error)
-	// 管理员评论列表
 	AdminReplyList(ctx context.Context, in *AdminReplyListRequest, opts ...grpc.CallOption) (*AdminReplyListResponse, error)
 }
 
@@ -117,17 +111,11 @@ func (c *replyClient) AdminReplyList(ctx context.Context, in *AdminReplyListRequ
 // All implementations must embed UnimplementedReplyServer
 // for forward compatibility.
 type ReplyServer interface {
-	// 发表评论
 	CreateReply(context.Context, *CreateReplyRequest) (*CreateReplyResponse, error)
-	// 删除评论
 	DeleteReply(context.Context, *DeleteReplyRequest) (*DeleteReplyResponse, error)
-	// 评论详情
 	ReplyDetail(context.Context, *ReplyDetailRequest) (*ReplyDetailResponse, error)
-	// 评论列表
 	ReplyList(context.Context, *ReplyListRequest) (*ReplyListResponse, error)
-	// 评论计数
 	ReplyCount(context.Context, *ReplyCountRequest) (*ReplyCountResponse, error)
-	// 管理员评论列表
 	AdminReplyList(context.Context, *AdminReplyListRequest) (*AdminReplyListResponse, error)
 	mustEmbedUnimplementedReplyServer()
 }
@@ -290,7 +278,7 @@ func _Reply_AdminReplyList_Handler(srv interface{}, ctx context.Context, dec fun
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
 var Reply_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "service.Reply",
+	ServiceName: "social.Reply",
 	HandlerType: (*ReplyServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{

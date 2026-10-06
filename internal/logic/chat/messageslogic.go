@@ -23,8 +23,8 @@ func NewMessagesLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Messages
 func (l *MessagesLogic) Messages(userId int64, req *types.MessagesRequest) (resp *types.MessagesResponse, err error) {
 	resp = new(types.MessagesResponse)
 
-	if req.PageSize == 0 {
-		req.PageSize = types.DefaultPageSize
+	if req.PageSize <= 0 {
+		req.PageSize = 20
 	}
 
 	rpcResp, err := l.svcCtx.Chat.Messages(l.ctx, &pb.MessagesRequest{
@@ -38,22 +38,24 @@ func (l *MessagesLogic) Messages(userId int64, req *types.MessagesRequest) (resp
 	}
 
 	// 转换聊天消息数据项
-	items := make([]*types.MessageItem, 0, len(rpcResp.Items))
-	for _, v := range rpcResp.Items {
-		items = append(items, &types.MessageItem{
-			Id:             v.Id,
-			ConversationId: v.ConversationId,
-			SenderId:       v.SenderId,
-			ReceiverId:     v.ReceiverId,
-			Content:        v.Content,
-			MsgType:        v.MsgType,
-			IsRead:         v.IsRead,
-			CreateTime:     v.CreateTime,
-		})
-	}
+	if rpcResp != nil && rpcResp.Data != nil {
+		items := make([]*types.MessageItem, 0, len(rpcResp.Data.Items))
+		for _, v := range rpcResp.Data.Items {
+			items = append(items, &types.MessageItem{
+				Id:             v.Id,
+				ConversationId: v.ConversationId,
+				SenderId:       v.SenderId,
+				ReceiverId:     v.ReceiverId,
+				Content:        v.Content,
+				MsgType:        v.MsgType,
+				IsRead:         v.IsRead,
+				CreateTime:     v.CreateTime,
+			})
+		}
 
-	resp.Items = items
-	resp.Cursor = rpcResp.Cursor
-	resp.IsEnd = rpcResp.IsEnd
+		resp.Items = items
+		resp.Cursor = rpcResp.Data.Cursor
+		resp.IsEnd = rpcResp.Data.IsEnd
+	}
 	return resp, nil
 }

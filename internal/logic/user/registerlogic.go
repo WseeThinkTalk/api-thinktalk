@@ -5,9 +5,9 @@ package user
 
 import (
 	"api-thinktalk/pkg/code"
-	user "api-thinktalk/client/user/service"
 	"api-thinktalk/pkg/encrypt"
 	"api-thinktalk/pkg/jwt"
+	user "api-thinktalk/client/user/service"
 	"context"
 	"strings"
 
@@ -77,10 +77,10 @@ func (l *RegisterLogic) Register(req *types.RegisterRequest) (resp *types.Regist
 		logx.Errorf("findByMobile error: %v", err)
 		return nil, err
 	}
-	if Mobile != nil && Mobile.UserId > 0 {
+	if Mobile != nil && Mobile.Data != nil && Mobile.Data.UserId > 0 {
 		return nil, code.MobileHasRegistered
 	}
-	userId, err := l.svcCtx.UserRPC.Register(l.ctx, &user.RegisterRequest{
+	userIdResp, err := l.svcCtx.UserRPC.Register(l.ctx, &user.RegisterRequest{
 		Mobile:   mobile,
 		Username: req.Name,
 		Password: req.Password,
@@ -89,12 +89,16 @@ func (l *RegisterLogic) Register(req *types.RegisterRequest) (resp *types.Regist
 		logx.Errorf("register error: %v", err)
 		return nil, err
 	}
+	var registeredUserId int64
+	if userIdResp != nil && userIdResp.Data != nil {
+		registeredUserId = userIdResp.Data.UserId
+	}
 
 	token, err := jwt.BuildTokens(jwt.TokenOptions{
 		AccessSecret: l.svcCtx.Config.Auth.AccessSecret,
 		AccessExpire: l.svcCtx.Config.Auth.AccessExpire,
 		Fields: map[string]interface{}{
-			"userId": userId.UserId,
+			"userId": registeredUserId,
 		},
 	})
 	if err != nil {
@@ -103,7 +107,7 @@ func (l *RegisterLogic) Register(req *types.RegisterRequest) (resp *types.Regist
 	}
 	_ = deleteActivationCode(req.Mobile, req.VerificationCode, l.svcCtx.RDB)
 
-	resp.UserId = userId.UserId
+	resp.UserId = registeredUserId
 	resp.Token = types.Token{
 		AccessToken:  token.AccessToken,
 		AccessExpire: token.AccessExpire,

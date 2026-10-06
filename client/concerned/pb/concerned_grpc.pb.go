@@ -19,26 +19,21 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	Concerned_AddConcerned_FullMethodName    = "/service.Concerned/AddConcerned"
-	Concerned_CancelConcerned_FullMethodName = "/service.Concerned/CancelConcerned"
-	Concerned_IsConcerned_FullMethodName     = "/service.Concerned/IsConcerned"
-	Concerned_ConcernedList_FullMethodName   = "/service.Concerned/ConcernedList"
-	Concerned_ConcernedCount_FullMethodName  = "/service.Concerned/ConcernedCount"
+	Concerned_AddConcerned_FullMethodName    = "/social.Concerned/AddConcerned"
+	Concerned_CancelConcerned_FullMethodName = "/social.Concerned/CancelConcerned"
+	Concerned_IsConcerned_FullMethodName     = "/social.Concerned/IsConcerned"
+	Concerned_ConcernedList_FullMethodName   = "/social.Concerned/ConcernedList"
+	Concerned_ConcernedCount_FullMethodName  = "/social.Concerned/ConcernedCount"
 )
 
 // ConcernedClient is the client API for Concerned service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type ConcernedClient interface {
-	// 收藏
 	AddConcerned(ctx context.Context, in *AddConcernedRequest, opts ...grpc.CallOption) (*AddConcernedResponse, error)
-	// 取消收藏
 	CancelConcerned(ctx context.Context, in *CancelConcernedRequest, opts ...grpc.CallOption) (*CancelConcernedResponse, error)
-	// 是否已收藏
 	IsConcerned(ctx context.Context, in *IsConcernedRequest, opts ...grpc.CallOption) (*IsConcernedResponse, error)
-	// 收藏列表
 	ConcernedList(ctx context.Context, in *ConcernedListRequest, opts ...grpc.CallOption) (*ConcernedListResponse, error)
-	// 收藏计数
 	ConcernedCount(ctx context.Context, in *ConcernedCountRequest, opts ...grpc.CallOption) (*ConcernedCountResponse, error)
 }
 
@@ -104,15 +99,10 @@ func (c *concernedClient) ConcernedCount(ctx context.Context, in *ConcernedCount
 // All implementations must embed UnimplementedConcernedServer
 // for forward compatibility.
 type ConcernedServer interface {
-	// 收藏
 	AddConcerned(context.Context, *AddConcernedRequest) (*AddConcernedResponse, error)
-	// 取消收藏
 	CancelConcerned(context.Context, *CancelConcernedRequest) (*CancelConcernedResponse, error)
-	// 是否已收藏
 	IsConcerned(context.Context, *IsConcernedRequest) (*IsConcernedResponse, error)
-	// 收藏列表
 	ConcernedList(context.Context, *ConcernedListRequest) (*ConcernedListResponse, error)
-	// 收藏计数
 	ConcernedCount(context.Context, *ConcernedCountRequest) (*ConcernedCountResponse, error)
 	mustEmbedUnimplementedConcernedServer()
 }
@@ -254,7 +244,7 @@ func _Concerned_ConcernedCount_Handler(srv interface{}, ctx context.Context, dec
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
 var Concerned_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "service.Concerned",
+	ServiceName: "social.Concerned",
 	HandlerType: (*ConcernedServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{

@@ -6,7 +6,7 @@ import (
 	"net/http"
 
 	"api-thinktalk/internal/svc"
-	"api-thinktalk/client/member/pb"
+	member "api-thinktalk/client/member/pb"
 
 	"github.com/smartwalle/alipay/v3"
 	"github.com/zeromicro/go-zero/core/logx"
@@ -42,7 +42,7 @@ func (l *AlipayNotifyLogic) AlipayNotify(req *http.Request) error {
 	// 2. 只有交易成功才处理
 	if noti.TradeStatus == alipay.TradeStatusSuccess {
 		// 3. 调用 MemberRPC 的 PayCallback 完成订单状态更新与会员权益下发
-		_, err := l.svcCtx.MemberRPC.PayCallback(l.ctx, &pb.PayCallbackRequest{
+		_, err := l.svcCtx.MemberRPC.PayCallback(l.ctx, &member.PayCallbackRequest{
 			OrderSn:       noti.OutTradeNo,
 			TransactionId: noti.TradeNo,
 		})

@@ -19,13 +19,13 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	User_Register_FullMethodName        = "/service.User/Register"
-	User_FindById_FullMethodName        = "/service.User/FindById"
-	User_FindByMobile_FullMethodName    = "/service.User/FindByMobile"
-	User_SendSms_FullMethodName         = "/service.User/SendSms"
-	User_UpdateProfile_FullMethodName   = "/service.User/UpdateProfile"
-	User_UpgradePassword_FullMethodName = "/service.User/UpgradePassword"
-	User_AdminUserList_FullMethodName   = "/service.User/AdminUserList"
+	User_Register_FullMethodName        = "/user.User/Register"
+	User_FindById_FullMethodName        = "/user.User/FindById"
+	User_FindByMobile_FullMethodName    = "/user.User/FindByMobile"
+	User_SendSms_FullMethodName         = "/user.User/SendSms"
+	User_UpdateProfile_FullMethodName   = "/user.User/UpdateProfile"
+	User_UpgradePassword_FullMethodName = "/user.User/UpgradePassword"
+	User_AdminUserList_FullMethodName   = "/user.User/AdminUserList"
 )
 
 // UserClient is the client API for User service.
@@ -312,7 +312,7 @@ func _User_AdminUserList_Handler(srv interface{}, ctx context.Context, dec func(
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
 var User_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "service.User",
+	ServiceName: "user.User",
 	HandlerType: (*UserServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{

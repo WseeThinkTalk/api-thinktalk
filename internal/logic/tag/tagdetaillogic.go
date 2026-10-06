@@ -24,16 +24,19 @@ func (l *TagDetailLogic) TagDetail(req *types.TagDetailRequest) (resp *types.Tag
 	resp = new(types.TagDetailResponse)
 
 	rpcResp, err := l.svcCtx.TagRPC.TagDetail(l.ctx, &tag.TagDetailRequest{
-		TagId: req.TagId,
+		TagId: req.Id,
 	})
 	if err != nil {
 		l.Errorf("[TagDetail] rpc err: %v", err)
 		return nil, err
 	}
-	resp.TagId = rpcResp.TagId
-	resp.TagName = rpcResp.TagName
-	resp.TagDesc = rpcResp.TagDesc
-	resp.ResourceCount = rpcResp.ResourceCount
-	resp.CreateTime = rpcResp.CreateTime
+	if rpcResp != nil && rpcResp.Data != nil {
+		resp.Tag = &types.TagItem{
+			Id:          rpcResp.Data.TagId,
+			Name:        rpcResp.Data.TagName,
+			Description: rpcResp.Data.TagDesc,
+			UseCount:    rpcResp.Data.ResourceCount,
+		}
+	}
 	return resp, nil
 }

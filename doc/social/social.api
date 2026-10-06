@@ -109,6 +109,11 @@ type (
 		Cursor   int64 `form:"cursor"`
 		PageSize int64 `form:"page_size"`
 	}
+	NotificationRequest {
+		Type     int32 `form:"type,optional"`
+		Cursor   int64 `form:"cursor,optional"`
+		PageSize int64 `form:"page_size,optional"`
+	}
 	NotificationItem {
 		Id         int64  `json:"id"`
 		UserId     int64  `json:"user_id"`
@@ -123,7 +128,21 @@ type (
 		IsRead     bool   `json:"is_read"`
 		CreateTime int64  `json:"create_time"`
 	}
+	NotificationMsg {
+		UserId        int64  `json:"user_id"`
+		Type          int32  `json:"type"`
+		Title         string `json:"title"`
+		Content       string `json:"content"`
+		RefId         int64  `json:"ref_id"`
+		BizId         string `json:"biz_id"`
+		TriggerUserId int64  `json:"trigger_user_id"`
+	}
 	NotificationListResponse {
+		Items  []*NotificationItem `json:"items"`
+		Cursor int64               `json:"cursor"`
+		IsEnd  bool                `json:"is_end"`
+	}
+	NotificationResponse {
 		Items  []*NotificationItem `json:"items"`
 		Cursor int64               `json:"cursor"`
 		IsEnd  bool                `json:"is_end"`
@@ -210,6 +229,14 @@ type (
 		Content string `json:"content"`
 	}
 	AdminBroadcastResponse {}
+	AdminBroadcastNotificationRequest {
+		Title   string `json:"title"`
+		Content string `json:"content"`
+	}
+	AdminBroadcastNotificationResponse {
+		SuccessCount int64 `json:"success_count"`
+		TotalCount   int64 `json:"total_count"`
+	}
 )
 
 @server (
@@ -276,7 +303,7 @@ service api {
 )
 service api {
 	@handler NotificationListHandler
-	get /list (NotificationListRequest) returns (NotificationListResponse)
+	get /list (NotificationRequest) returns (NotificationResponse)
 
 	@handler UnreadCountHandler
 	get /unread (UnreadCountRequest) returns (UnreadCountResponse)
@@ -343,5 +370,5 @@ service api {
 )
 service api {
 	@handler AdminBroadcastHandler
-	post /broadcast (AdminBroadcastRequest) returns (AdminBroadcastResponse)
+	post /broadcast (AdminBroadcastNotificationRequest) returns (AdminBroadcastNotificationResponse)
 }

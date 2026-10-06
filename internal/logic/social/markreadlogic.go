@@ -25,7 +25,7 @@ func (l *MarkReadLogic) MarkRead(userId int64, req *types.MarkReadRequest) (resp
 
 	_, err = l.svcCtx.MessageRPC.MarkRead(l.ctx, &pb.MarkReadRequest{
 		UserId:         userId,
-		NotificationId: req.NotificationId,
+		NotificationId: req.Id,
 	})
 	if err != nil {
 		l.Errorf("[MarkRead] rpc err: %v", err)

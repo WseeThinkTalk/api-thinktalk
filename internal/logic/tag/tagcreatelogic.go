@@ -24,13 +24,15 @@ func (l *TagCreateLogic) TagCreate(userId int64, req *types.TagCreateRequest) (r
 	resp = new(types.TagCreateResponse)
 
 	rpcResp, err := l.svcCtx.TagRPC.CreateTag(l.ctx, &tag.CreateTagRequest{
-		TagName: req.TagName,
-		TagDesc: req.TagDesc,
+		TagName: req.Name,
+		TagDesc: req.Description,
 	})
 	if err != nil {
 		l.Errorf("[CreateTag] rpc err: %v", err)
 		return nil, err
 	}
-	resp.TagId = rpcResp.TagId
+	if rpcResp != nil && rpcResp.Data != nil {
+		resp.Id = rpcResp.Data.TagId
+	}
 	return resp, nil
 }

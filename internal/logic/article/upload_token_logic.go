@@ -62,9 +62,9 @@ func (l *UploadTokenLogic) UploadToken(req *types.UploadTokenRequest) (resp *typ
 
 	// 组装返回结果
 	resp.UploadUrl = presignedURL.String()
-	resp.FileKey = objectKey
-	resp.ExpireSec = int64(expires.Seconds())
-	resp.ViewUrl = fmt.Sprintf("/static/%s/%s", l.svcCtx.Config.MinIO.BucketName, objectKey)
+	resp.ObjectKey = objectKey
+	resp.ExpiresIn = int64(expires.Seconds())
+	resp.DownloadUrl = fmt.Sprintf("/static/%s/%s", l.svcCtx.Config.MinIO.BucketName, objectKey)
 
 	return resp, nil
 }

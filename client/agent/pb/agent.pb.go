@@ -211,6 +211,8 @@ func (x *StopRequest) GetSessionId() string {
 
 type StopResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
+	Code          int64                  `protobuf:"varint,1,opt,name=code,proto3" json:"code,omitempty"`
+	Msg           string                 `protobuf:"bytes,2,opt,name=msg,proto3" json:"msg,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -243,6 +245,20 @@ func (x *StopResponse) ProtoReflect() protoreflect.Message {
 // Deprecated: Use StopResponse.ProtoReflect.Descriptor instead.
 func (*StopResponse) Descriptor() ([]byte, []int) {
 	return file_agent_proto_rawDescGZIP(), []int{3}
+}
+
+func (x *StopResponse) GetCode() int64 {
+	if x != nil {
+		return x.Code
+	}
+	return 0
+}
+
+func (x *StopResponse) GetMsg() string {
+	if x != nil {
+		return x.Msg
+	}
+	return ""
 }
 
 type SessionSummary struct {
@@ -365,16 +381,62 @@ func (x *ListSessionsRequest) GetUserId() int64 {
 	return 0
 }
 
-type ListSessionsResponse struct {
+type ListSessionsData struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Sessions      []*SessionSummary      `protobuf:"bytes,1,rep,name=sessions,proto3" json:"sessions,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
+func (x *ListSessionsData) Reset() {
+	*x = ListSessionsData{}
+	mi := &file_agent_proto_msgTypes[6]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ListSessionsData) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ListSessionsData) ProtoMessage() {}
+
+func (x *ListSessionsData) ProtoReflect() protoreflect.Message {
+	mi := &file_agent_proto_msgTypes[6]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ListSessionsData.ProtoReflect.Descriptor instead.
+func (*ListSessionsData) Descriptor() ([]byte, []int) {
+	return file_agent_proto_rawDescGZIP(), []int{6}
+}
+
+func (x *ListSessionsData) GetSessions() []*SessionSummary {
+	if x != nil {
+		return x.Sessions
+	}
+	return nil
+}
+
+type ListSessionsResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Code          int64                  `protobuf:"varint,1,opt,name=code,proto3" json:"code,omitempty"`
+	Msg           string                 `protobuf:"bytes,2,opt,name=msg,proto3" json:"msg,omitempty"`
+	Data          *ListSessionsData      `protobuf:"bytes,3,opt,name=data,proto3" json:"data,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
 func (x *ListSessionsResponse) Reset() {
 	*x = ListSessionsResponse{}
-	mi := &file_agent_proto_msgTypes[6]
+	mi := &file_agent_proto_msgTypes[7]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -386,7 +448,7 @@ func (x *ListSessionsResponse) String() string {
 func (*ListSessionsResponse) ProtoMessage() {}
 
 func (x *ListSessionsResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_agent_proto_msgTypes[6]
+	mi := &file_agent_proto_msgTypes[7]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -399,12 +461,26 @@ func (x *ListSessionsResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListSessionsResponse.ProtoReflect.Descriptor instead.
 func (*ListSessionsResponse) Descriptor() ([]byte, []int) {
-	return file_agent_proto_rawDescGZIP(), []int{6}
+	return file_agent_proto_rawDescGZIP(), []int{7}
 }
 
-func (x *ListSessionsResponse) GetSessions() []*SessionSummary {
+func (x *ListSessionsResponse) GetCode() int64 {
 	if x != nil {
-		return x.Sessions
+		return x.Code
+	}
+	return 0
+}
+
+func (x *ListSessionsResponse) GetMsg() string {
+	if x != nil {
+		return x.Msg
+	}
+	return ""
+}
+
+func (x *ListSessionsResponse) GetData() *ListSessionsData {
+	if x != nil {
+		return x.Data
 	}
 	return nil
 }
@@ -419,7 +495,7 @@ type DeleteSessionRequest struct {
 
 func (x *DeleteSessionRequest) Reset() {
 	*x = DeleteSessionRequest{}
-	mi := &file_agent_proto_msgTypes[7]
+	mi := &file_agent_proto_msgTypes[8]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -431,7 +507,7 @@ func (x *DeleteSessionRequest) String() string {
 func (*DeleteSessionRequest) ProtoMessage() {}
 
 func (x *DeleteSessionRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_agent_proto_msgTypes[7]
+	mi := &file_agent_proto_msgTypes[8]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -444,7 +520,7 @@ func (x *DeleteSessionRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DeleteSessionRequest.ProtoReflect.Descriptor instead.
 func (*DeleteSessionRequest) Descriptor() ([]byte, []int) {
-	return file_agent_proto_rawDescGZIP(), []int{7}
+	return file_agent_proto_rawDescGZIP(), []int{8}
 }
 
 func (x *DeleteSessionRequest) GetUserId() int64 {
@@ -461,16 +537,62 @@ func (x *DeleteSessionRequest) GetSessionId() string {
 	return ""
 }
 
-type DeleteSessionResponse struct {
+type DeleteSessionData struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Success       bool                   `protobuf:"varint,1,opt,name=success,proto3" json:"success,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
+func (x *DeleteSessionData) Reset() {
+	*x = DeleteSessionData{}
+	mi := &file_agent_proto_msgTypes[9]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *DeleteSessionData) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*DeleteSessionData) ProtoMessage() {}
+
+func (x *DeleteSessionData) ProtoReflect() protoreflect.Message {
+	mi := &file_agent_proto_msgTypes[9]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use DeleteSessionData.ProtoReflect.Descriptor instead.
+func (*DeleteSessionData) Descriptor() ([]byte, []int) {
+	return file_agent_proto_rawDescGZIP(), []int{9}
+}
+
+func (x *DeleteSessionData) GetSuccess() bool {
+	if x != nil {
+		return x.Success
+	}
+	return false
+}
+
+type DeleteSessionResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Code          int64                  `protobuf:"varint,1,opt,name=code,proto3" json:"code,omitempty"`
+	Msg           string                 `protobuf:"bytes,2,opt,name=msg,proto3" json:"msg,omitempty"`
+	Data          *DeleteSessionData     `protobuf:"bytes,3,opt,name=data,proto3" json:"data,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
 func (x *DeleteSessionResponse) Reset() {
 	*x = DeleteSessionResponse{}
-	mi := &file_agent_proto_msgTypes[8]
+	mi := &file_agent_proto_msgTypes[10]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -482,7 +604,7 @@ func (x *DeleteSessionResponse) String() string {
 func (*DeleteSessionResponse) ProtoMessage() {}
 
 func (x *DeleteSessionResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_agent_proto_msgTypes[8]
+	mi := &file_agent_proto_msgTypes[10]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -495,14 +617,28 @@ func (x *DeleteSessionResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DeleteSessionResponse.ProtoReflect.Descriptor instead.
 func (*DeleteSessionResponse) Descriptor() ([]byte, []int) {
-	return file_agent_proto_rawDescGZIP(), []int{8}
+	return file_agent_proto_rawDescGZIP(), []int{10}
 }
 
-func (x *DeleteSessionResponse) GetSuccess() bool {
+func (x *DeleteSessionResponse) GetCode() int64 {
 	if x != nil {
-		return x.Success
+		return x.Code
 	}
-	return false
+	return 0
+}
+
+func (x *DeleteSessionResponse) GetMsg() string {
+	if x != nil {
+		return x.Msg
+	}
+	return ""
+}
+
+func (x *DeleteSessionResponse) GetData() *DeleteSessionData {
+	if x != nil {
+		return x.Data
+	}
+	return nil
 }
 
 type HistoryMessage struct {
@@ -515,7 +651,7 @@ type HistoryMessage struct {
 
 func (x *HistoryMessage) Reset() {
 	*x = HistoryMessage{}
-	mi := &file_agent_proto_msgTypes[9]
+	mi := &file_agent_proto_msgTypes[11]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -527,7 +663,7 @@ func (x *HistoryMessage) String() string {
 func (*HistoryMessage) ProtoMessage() {}
 
 func (x *HistoryMessage) ProtoReflect() protoreflect.Message {
-	mi := &file_agent_proto_msgTypes[9]
+	mi := &file_agent_proto_msgTypes[11]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -540,7 +676,7 @@ func (x *HistoryMessage) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use HistoryMessage.ProtoReflect.Descriptor instead.
 func (*HistoryMessage) Descriptor() ([]byte, []int) {
-	return file_agent_proto_rawDescGZIP(), []int{9}
+	return file_agent_proto_rawDescGZIP(), []int{11}
 }
 
 func (x *HistoryMessage) GetRole() string {
@@ -567,7 +703,7 @@ type GetHistoryRequest struct {
 
 func (x *GetHistoryRequest) Reset() {
 	*x = GetHistoryRequest{}
-	mi := &file_agent_proto_msgTypes[10]
+	mi := &file_agent_proto_msgTypes[12]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -579,7 +715,7 @@ func (x *GetHistoryRequest) String() string {
 func (*GetHistoryRequest) ProtoMessage() {}
 
 func (x *GetHistoryRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_agent_proto_msgTypes[10]
+	mi := &file_agent_proto_msgTypes[12]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -592,7 +728,7 @@ func (x *GetHistoryRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetHistoryRequest.ProtoReflect.Descriptor instead.
 func (*GetHistoryRequest) Descriptor() ([]byte, []int) {
-	return file_agent_proto_rawDescGZIP(), []int{10}
+	return file_agent_proto_rawDescGZIP(), []int{12}
 }
 
 func (x *GetHistoryRequest) GetUserId() int64 {
@@ -609,7 +745,7 @@ func (x *GetHistoryRequest) GetSessionId() string {
 	return ""
 }
 
-type GetHistoryResponse struct {
+type GetHistoryData struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	SessionId     string                 `protobuf:"bytes,1,opt,name=session_id,json=sessionId,proto3" json:"session_id,omitempty"`
 	Title         string                 `protobuf:"bytes,2,opt,name=title,proto3" json:"title,omitempty"`
@@ -620,9 +756,83 @@ type GetHistoryResponse struct {
 	sizeCache     protoimpl.SizeCache
 }
 
+func (x *GetHistoryData) Reset() {
+	*x = GetHistoryData{}
+	mi := &file_agent_proto_msgTypes[13]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetHistoryData) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetHistoryData) ProtoMessage() {}
+
+func (x *GetHistoryData) ProtoReflect() protoreflect.Message {
+	mi := &file_agent_proto_msgTypes[13]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetHistoryData.ProtoReflect.Descriptor instead.
+func (*GetHistoryData) Descriptor() ([]byte, []int) {
+	return file_agent_proto_rawDescGZIP(), []int{13}
+}
+
+func (x *GetHistoryData) GetSessionId() string {
+	if x != nil {
+		return x.SessionId
+	}
+	return ""
+}
+
+func (x *GetHistoryData) GetTitle() string {
+	if x != nil {
+		return x.Title
+	}
+	return ""
+}
+
+func (x *GetHistoryData) GetMessages() []*HistoryMessage {
+	if x != nil {
+		return x.Messages
+	}
+	return nil
+}
+
+func (x *GetHistoryData) GetCreatedAt() int64 {
+	if x != nil {
+		return x.CreatedAt
+	}
+	return 0
+}
+
+func (x *GetHistoryData) GetUpdatedAt() int64 {
+	if x != nil {
+		return x.UpdatedAt
+	}
+	return 0
+}
+
+type GetHistoryResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Code          int64                  `protobuf:"varint,1,opt,name=code,proto3" json:"code,omitempty"`
+	Msg           string                 `protobuf:"bytes,2,opt,name=msg,proto3" json:"msg,omitempty"`
+	Data          *GetHistoryData        `protobuf:"bytes,3,opt,name=data,proto3" json:"data,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
 func (x *GetHistoryResponse) Reset() {
 	*x = GetHistoryResponse{}
-	mi := &file_agent_proto_msgTypes[11]
+	mi := &file_agent_proto_msgTypes[14]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -634,7 +844,7 @@ func (x *GetHistoryResponse) String() string {
 func (*GetHistoryResponse) ProtoMessage() {}
 
 func (x *GetHistoryResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_agent_proto_msgTypes[11]
+	mi := &file_agent_proto_msgTypes[14]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -647,42 +857,28 @@ func (x *GetHistoryResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetHistoryResponse.ProtoReflect.Descriptor instead.
 func (*GetHistoryResponse) Descriptor() ([]byte, []int) {
-	return file_agent_proto_rawDescGZIP(), []int{11}
+	return file_agent_proto_rawDescGZIP(), []int{14}
 }
 
-func (x *GetHistoryResponse) GetSessionId() string {
+func (x *GetHistoryResponse) GetCode() int64 {
 	if x != nil {
-		return x.SessionId
+		return x.Code
+	}
+	return 0
+}
+
+func (x *GetHistoryResponse) GetMsg() string {
+	if x != nil {
+		return x.Msg
 	}
 	return ""
 }
 
-func (x *GetHistoryResponse) GetTitle() string {
+func (x *GetHistoryResponse) GetData() *GetHistoryData {
 	if x != nil {
-		return x.Title
-	}
-	return ""
-}
-
-func (x *GetHistoryResponse) GetMessages() []*HistoryMessage {
-	if x != nil {
-		return x.Messages
+		return x.Data
 	}
 	return nil
-}
-
-func (x *GetHistoryResponse) GetCreatedAt() int64 {
-	if x != nil {
-		return x.CreatedAt
-	}
-	return 0
-}
-
-func (x *GetHistoryResponse) GetUpdatedAt() int64 {
-	if x != nil {
-		return x.UpdatedAt
-	}
-	return 0
 }
 
 var File_agent_proto protoreflect.FileDescriptor
@@ -704,8 +900,10 @@ const file_agent_proto_rawDesc = "" +
 	"\vStopRequest\x12\x17\n" +
 	"\auser_id\x18\x01 \x01(\x03R\x06userId\x12\x1d\n" +
 	"\n" +
-	"session_id\x18\x02 \x01(\tR\tsessionId\"\x0e\n" +
-	"\fStopResponse\"\xa8\x01\n" +
+	"session_id\x18\x02 \x01(\tR\tsessionId\"4\n" +
+	"\fStopResponse\x12\x12\n" +
+	"\x04code\x18\x01 \x01(\x03R\x04code\x12\x10\n" +
+	"\x03msg\x18\x02 \x01(\tR\x03msg\"\xa8\x01\n" +
 	"\x0eSessionSummary\x12\x1d\n" +
 	"\n" +
 	"session_id\x18\x01 \x01(\tR\tsessionId\x12\x14\n" +
@@ -716,23 +914,31 @@ const file_agent_proto_rawDesc = "" +
 	"\n" +
 	"updated_at\x18\x05 \x01(\x03R\tupdatedAt\".\n" +
 	"\x13ListSessionsRequest\x12\x17\n" +
-	"\auser_id\x18\x01 \x01(\x03R\x06userId\"I\n" +
-	"\x14ListSessionsResponse\x121\n" +
-	"\bsessions\x18\x01 \x03(\v2\x15.agent.SessionSummaryR\bsessions\"N\n" +
+	"\auser_id\x18\x01 \x01(\x03R\x06userId\"E\n" +
+	"\x10ListSessionsData\x121\n" +
+	"\bsessions\x18\x01 \x03(\v2\x15.agent.SessionSummaryR\bsessions\"i\n" +
+	"\x14ListSessionsResponse\x12\x12\n" +
+	"\x04code\x18\x01 \x01(\x03R\x04code\x12\x10\n" +
+	"\x03msg\x18\x02 \x01(\tR\x03msg\x12+\n" +
+	"\x04data\x18\x03 \x01(\v2\x17.agent.ListSessionsDataR\x04data\"N\n" +
 	"\x14DeleteSessionRequest\x12\x17\n" +
 	"\auser_id\x18\x01 \x01(\x03R\x06userId\x12\x1d\n" +
 	"\n" +
-	"session_id\x18\x02 \x01(\tR\tsessionId\"1\n" +
-	"\x15DeleteSessionResponse\x12\x18\n" +
-	"\asuccess\x18\x01 \x01(\bR\asuccess\">\n" +
+	"session_id\x18\x02 \x01(\tR\tsessionId\"-\n" +
+	"\x11DeleteSessionData\x12\x18\n" +
+	"\asuccess\x18\x01 \x01(\bR\asuccess\"k\n" +
+	"\x15DeleteSessionResponse\x12\x12\n" +
+	"\x04code\x18\x01 \x01(\x03R\x04code\x12\x10\n" +
+	"\x03msg\x18\x02 \x01(\tR\x03msg\x12,\n" +
+	"\x04data\x18\x03 \x01(\v2\x18.agent.DeleteSessionDataR\x04data\">\n" +
 	"\x0eHistoryMessage\x12\x12\n" +
 	"\x04role\x18\x01 \x01(\tR\x04role\x12\x18\n" +
 	"\acontent\x18\x02 \x01(\tR\acontent\"K\n" +
 	"\x11GetHistoryRequest\x12\x17\n" +
 	"\auser_id\x18\x01 \x01(\x03R\x06userId\x12\x1d\n" +
 	"\n" +
-	"session_id\x18\x02 \x01(\tR\tsessionId\"\xba\x01\n" +
-	"\x12GetHistoryResponse\x12\x1d\n" +
+	"session_id\x18\x02 \x01(\tR\tsessionId\"\xb6\x01\n" +
+	"\x0eGetHistoryData\x12\x1d\n" +
 	"\n" +
 	"session_id\x18\x01 \x01(\tR\tsessionId\x12\x14\n" +
 	"\x05title\x18\x02 \x01(\tR\x05title\x121\n" +
@@ -740,14 +946,18 @@ const file_agent_proto_rawDesc = "" +
 	"\n" +
 	"created_at\x18\x04 \x01(\x03R\tcreatedAt\x12\x1d\n" +
 	"\n" +
-	"updated_at\x18\x05 \x01(\x03R\tupdatedAt2\xc0\x02\n" +
+	"updated_at\x18\x05 \x01(\x03R\tupdatedAt\"e\n" +
+	"\x12GetHistoryResponse\x12\x12\n" +
+	"\x04code\x18\x01 \x01(\x03R\x04code\x12\x10\n" +
+	"\x03msg\x18\x02 \x01(\tR\x03msg\x12)\n" +
+	"\x04data\x18\x03 \x01(\v2\x15.agent.GetHistoryDataR\x04data2\xc0\x02\n" +
 	"\x05Agent\x12.\n" +
 	"\x04Chat\x12\x12.agent.ChatRequest\x1a\x10.agent.ChatEvent0\x01\x12/\n" +
 	"\x04Stop\x12\x12.agent.StopRequest\x1a\x13.agent.StopResponse\x12G\n" +
 	"\fListSessions\x12\x1a.agent.ListSessionsRequest\x1a\x1b.agent.ListSessionsResponse\x12J\n" +
 	"\rDeleteSession\x12\x1b.agent.DeleteSessionRequest\x1a\x1c.agent.DeleteSessionResponse\x12A\n" +
 	"\n" +
-	"GetHistory\x12\x18.agent.GetHistoryRequest\x1a\x19.agent.GetHistoryResponseB\x06Z\x04./pbb\x06proto3"
+	"GetHistory\x12\x18.agent.GetHistoryRequest\x1a\x19.agent.GetHistoryResponseB\"Z api-thinktalk/client/agent/pb;pbb\x06proto3"
 
 var (
 	file_agent_proto_rawDescOnce sync.Once
@@ -761,7 +971,7 @@ func file_agent_proto_rawDescGZIP() []byte {
 	return file_agent_proto_rawDescData
 }
 
-var file_agent_proto_msgTypes = make([]protoimpl.MessageInfo, 12)
+var file_agent_proto_msgTypes = make([]protoimpl.MessageInfo, 15)
 var file_agent_proto_goTypes = []any{
 	(*ChatRequest)(nil),           // 0: agent.ChatRequest
 	(*ChatEvent)(nil),             // 1: agent.ChatEvent
@@ -769,31 +979,37 @@ var file_agent_proto_goTypes = []any{
 	(*StopResponse)(nil),          // 3: agent.StopResponse
 	(*SessionSummary)(nil),        // 4: agent.SessionSummary
 	(*ListSessionsRequest)(nil),   // 5: agent.ListSessionsRequest
-	(*ListSessionsResponse)(nil),  // 6: agent.ListSessionsResponse
-	(*DeleteSessionRequest)(nil),  // 7: agent.DeleteSessionRequest
-	(*DeleteSessionResponse)(nil), // 8: agent.DeleteSessionResponse
-	(*HistoryMessage)(nil),        // 9: agent.HistoryMessage
-	(*GetHistoryRequest)(nil),     // 10: agent.GetHistoryRequest
-	(*GetHistoryResponse)(nil),    // 11: agent.GetHistoryResponse
+	(*ListSessionsData)(nil),      // 6: agent.ListSessionsData
+	(*ListSessionsResponse)(nil),  // 7: agent.ListSessionsResponse
+	(*DeleteSessionRequest)(nil),  // 8: agent.DeleteSessionRequest
+	(*DeleteSessionData)(nil),     // 9: agent.DeleteSessionData
+	(*DeleteSessionResponse)(nil), // 10: agent.DeleteSessionResponse
+	(*HistoryMessage)(nil),        // 11: agent.HistoryMessage
+	(*GetHistoryRequest)(nil),     // 12: agent.GetHistoryRequest
+	(*GetHistoryData)(nil),        // 13: agent.GetHistoryData
+	(*GetHistoryResponse)(nil),    // 14: agent.GetHistoryResponse
 }
 var file_agent_proto_depIdxs = []int32{
-	4,  // 0: agent.ListSessionsResponse.sessions:type_name -> agent.SessionSummary
-	9,  // 1: agent.GetHistoryResponse.messages:type_name -> agent.HistoryMessage
-	0,  // 2: agent.Agent.Chat:input_type -> agent.ChatRequest
-	2,  // 3: agent.Agent.Stop:input_type -> agent.StopRequest
-	5,  // 4: agent.Agent.ListSessions:input_type -> agent.ListSessionsRequest
-	7,  // 5: agent.Agent.DeleteSession:input_type -> agent.DeleteSessionRequest
-	10, // 6: agent.Agent.GetHistory:input_type -> agent.GetHistoryRequest
-	1,  // 7: agent.Agent.Chat:output_type -> agent.ChatEvent
-	3,  // 8: agent.Agent.Stop:output_type -> agent.StopResponse
-	6,  // 9: agent.Agent.ListSessions:output_type -> agent.ListSessionsResponse
-	8,  // 10: agent.Agent.DeleteSession:output_type -> agent.DeleteSessionResponse
-	11, // 11: agent.Agent.GetHistory:output_type -> agent.GetHistoryResponse
-	7,  // [7:12] is the sub-list for method output_type
-	2,  // [2:7] is the sub-list for method input_type
-	2,  // [2:2] is the sub-list for extension type_name
-	2,  // [2:2] is the sub-list for extension extendee
-	0,  // [0:2] is the sub-list for field type_name
+	4,  // 0: agent.ListSessionsData.sessions:type_name -> agent.SessionSummary
+	6,  // 1: agent.ListSessionsResponse.data:type_name -> agent.ListSessionsData
+	9,  // 2: agent.DeleteSessionResponse.data:type_name -> agent.DeleteSessionData
+	11, // 3: agent.GetHistoryData.messages:type_name -> agent.HistoryMessage
+	13, // 4: agent.GetHistoryResponse.data:type_name -> agent.GetHistoryData
+	0,  // 5: agent.Agent.Chat:input_type -> agent.ChatRequest
+	2,  // 6: agent.Agent.Stop:input_type -> agent.StopRequest
+	5,  // 7: agent.Agent.ListSessions:input_type -> agent.ListSessionsRequest
+	8,  // 8: agent.Agent.DeleteSession:input_type -> agent.DeleteSessionRequest
+	12, // 9: agent.Agent.GetHistory:input_type -> agent.GetHistoryRequest
+	1,  // 10: agent.Agent.Chat:output_type -> agent.ChatEvent
+	3,  // 11: agent.Agent.Stop:output_type -> agent.StopResponse
+	7,  // 12: agent.Agent.ListSessions:output_type -> agent.ListSessionsResponse
+	10, // 13: agent.Agent.DeleteSession:output_type -> agent.DeleteSessionResponse
+	14, // 14: agent.Agent.GetHistory:output_type -> agent.GetHistoryResponse
+	10, // [10:15] is the sub-list for method output_type
+	5,  // [5:10] is the sub-list for method input_type
+	5,  // [5:5] is the sub-list for extension type_name
+	5,  // [5:5] is the sub-list for extension extendee
+	0,  // [0:5] is the sub-list for field type_name
 }
 
 func init() { file_agent_proto_init() }
@@ -807,7 +1023,7 @@ func file_agent_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_agent_proto_rawDesc), len(file_agent_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   12,
+			NumMessages:   15,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

@@ -11,17 +11,16 @@ func convertReplyItem(pb *reply.ReplyItem, getUserInfo func(int64) (string, stri
 	}
 	name, avatar := getUserInfo(pb.ReplyUserId)
 	item := &types.ReplyItem{
-		ReplyId:         pb.ReplyId,
-		BizId:           pb.BizId,
-		TargetId:        pb.TargetId,
-		ReplyUserId:     pb.ReplyUserId,
-		BeReplyUserId:   pb.BeReplyUserId,
-		ParentId:        pb.ParentId,
-		Content:         pb.Content,
-		LikeNum:         pb.LikeNum,
-		CreateTime:      pb.CreateTime,
-		ReplyUserName:   name,
-		ReplyUserAvatar: avatar,
+		Id:         pb.ReplyId,
+		BizId:      pb.BizId,
+		ObjId:      pb.TargetId,
+		UserId:     pb.ReplyUserId,
+		Username:   name,
+		Avatar:     avatar,
+		Content:    pb.Content,
+		ParentId:   pb.ParentId,
+		LikeNum:    pb.LikeNum,
+		CreateTime: pb.CreateTime,
 	}
 	// 递归转换子评论列表
 	for _, v := range pb.SubReplies {

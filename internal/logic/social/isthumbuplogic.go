@@ -35,16 +35,17 @@ func (l *IsThumbupLogic) IsThumbup(req *types.IsThumbupRequest) (resp *types.IsT
 
 	rpcResp, err := l.svcCtx.LikeRPC.IsThumbup(l.ctx, &like.IsThumbupRequest{
 		BizId:    req.BizId,
-		TargetId: req.TargetId,
+		TargetId: req.ObjId,
 		UserId:   userId,
 	})
 	if err != nil {
 		return nil, err
 	}
 
-	if thumbup, ok := rpcResp.UserThumbups[req.TargetId]; ok {
-		resp.LikeType = thumbup.LikeType
-		resp.ThumbupTime = thumbup.ThumbupTime
+	if rpcResp != nil && rpcResp.Data != nil && rpcResp.Data.UserThumbups != nil {
+		if thumbup, ok := rpcResp.Data.UserThumbups[req.ObjId]; ok && thumbup != nil {
+			resp.HasLiked = thumbup.LikeType == 1
+		}
 	}
 	return resp, nil
 }

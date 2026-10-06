@@ -19,26 +19,21 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	Message_NotificationList_FullMethodName   = "/service.Message/NotificationList"
-	Message_UnreadCount_FullMethodName        = "/service.Message/UnreadCount"
-	Message_MarkRead_FullMethodName           = "/service.Message/MarkRead"
-	Message_MarkAllRead_FullMethodName        = "/service.Message/MarkAllRead"
-	Message_DeleteNotification_FullMethodName = "/service.Message/DeleteNotification"
+	Message_NotificationList_FullMethodName   = "/social.Message/NotificationList"
+	Message_UnreadCount_FullMethodName        = "/social.Message/UnreadCount"
+	Message_MarkRead_FullMethodName           = "/social.Message/MarkRead"
+	Message_MarkAllRead_FullMethodName        = "/social.Message/MarkAllRead"
+	Message_DeleteNotification_FullMethodName = "/social.Message/DeleteNotification"
 )
 
 // MessageClient is the client API for Message service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type MessageClient interface {
-	// 通知列表
 	NotificationList(ctx context.Context, in *NotificationListRequest, opts ...grpc.CallOption) (*NotificationListResponse, error)
-	// 未读计数
 	UnreadCount(ctx context.Context, in *UnreadCountRequest, opts ...grpc.CallOption) (*UnreadCountResponse, error)
-	// 标记已读
 	MarkRead(ctx context.Context, in *MarkReadRequest, opts ...grpc.CallOption) (*MarkReadResponse, error)
-	// 全部已读
 	MarkAllRead(ctx context.Context, in *MarkAllReadRequest, opts ...grpc.CallOption) (*MarkAllReadResponse, error)
-	// 删除通知
 	DeleteNotification(ctx context.Context, in *DeleteNotificationRequest, opts ...grpc.CallOption) (*DeleteNotificationResponse, error)
 }
 
@@ -104,15 +99,10 @@ func (c *messageClient) DeleteNotification(ctx context.Context, in *DeleteNotifi
 // All implementations must embed UnimplementedMessageServer
 // for forward compatibility.
 type MessageServer interface {
-	// 通知列表
 	NotificationList(context.Context, *NotificationListRequest) (*NotificationListResponse, error)
-	// 未读计数
 	UnreadCount(context.Context, *UnreadCountRequest) (*UnreadCountResponse, error)
-	// 标记已读
 	MarkRead(context.Context, *MarkReadRequest) (*MarkReadResponse, error)
-	// 全部已读
 	MarkAllRead(context.Context, *MarkAllReadRequest) (*MarkAllReadResponse, error)
-	// 删除通知
 	DeleteNotification(context.Context, *DeleteNotificationRequest) (*DeleteNotificationResponse, error)
 	mustEmbedUnimplementedMessageServer()
 }
@@ -254,7 +244,7 @@ func _Message_DeleteNotification_Handler(srv interface{}, ctx context.Context, d
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
 var Message_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "service.Message",
+	ServiceName: "social.Message",
 	HandlerType: (*MessageServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{

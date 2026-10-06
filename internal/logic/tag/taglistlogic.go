@@ -32,18 +32,19 @@ func (l *TagListLogic) TagList(req *types.TagListRequest) (resp *types.TagListRe
 		return nil, err
 	}
 	// 转换标签列表数据项
-	items := make([]*types.TagItem, 0, len(rpcResp.Items))
-	for _, v := range rpcResp.Items {
-		items = append(items, &types.TagItem{
-			TagId:         v.TagId,
-			TagName:       v.TagName,
-			TagDesc:       v.TagDesc,
-			ResourceCount: v.ResourceCount,
-			CreateTime:    v.CreateTime,
-		})
+	if rpcResp != nil && rpcResp.Data != nil {
+		items := make([]*types.TagItem, 0, len(rpcResp.Data.Items))
+		for _, v := range rpcResp.Data.Items {
+			items = append(items, &types.TagItem{
+				Id:          v.TagId,
+				Name:        v.TagName,
+				Description: v.TagDesc,
+				UseCount:    v.ResourceCount,
+			})
+		}
+		resp.Items = items
+		resp.Cursor = rpcResp.Data.Cursor
+		resp.IsEnd = rpcResp.Data.IsEnd
 	}
-	resp.Items = items
-	resp.Cursor = rpcResp.Cursor
-	resp.IsEnd = rpcResp.IsEnd
 	return resp, nil
 }

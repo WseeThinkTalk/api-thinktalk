@@ -19,23 +19,19 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	Follow_Follow_FullMethodName     = "/service.Follow/Follow"
-	Follow_UnFollow_FullMethodName   = "/service.Follow/UnFollow"
-	Follow_FollowList_FullMethodName = "/service.Follow/FollowList"
-	Follow_FansList_FullMethodName   = "/service.Follow/FansList"
+	Follow_Follow_FullMethodName     = "/user.Follow/Follow"
+	Follow_UnFollow_FullMethodName   = "/user.Follow/UnFollow"
+	Follow_FollowList_FullMethodName = "/user.Follow/FollowList"
+	Follow_FansList_FullMethodName   = "/user.Follow/FansList"
 )
 
 // FollowClient is the client API for Follow service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type FollowClient interface {
-	// 关注
 	Follow(ctx context.Context, in *FollowRequest, opts ...grpc.CallOption) (*FollowResponse, error)
-	// 取消关注
 	UnFollow(ctx context.Context, in *UnFollowRequest, opts ...grpc.CallOption) (*UnFollowResponse, error)
-	// 关注列表
 	FollowList(ctx context.Context, in *FollowListRequest, opts ...grpc.CallOption) (*FollowListResponse, error)
-	// 粉丝列表
 	FansList(ctx context.Context, in *FansListRequest, opts ...grpc.CallOption) (*FansListResponse, error)
 }
 
@@ -91,13 +87,9 @@ func (c *followClient) FansList(ctx context.Context, in *FansListRequest, opts .
 // All implementations must embed UnimplementedFollowServer
 // for forward compatibility.
 type FollowServer interface {
-	// 关注
 	Follow(context.Context, *FollowRequest) (*FollowResponse, error)
-	// 取消关注
 	UnFollow(context.Context, *UnFollowRequest) (*UnFollowResponse, error)
-	// 关注列表
 	FollowList(context.Context, *FollowListRequest) (*FollowListResponse, error)
-	// 粉丝列表
 	FansList(context.Context, *FansListRequest) (*FansListResponse, error)
 	mustEmbedUnimplementedFollowServer()
 }
@@ -218,7 +210,7 @@ func _Follow_FansList_Handler(srv interface{}, ctx context.Context, dec func(int
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
 var Follow_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "service.Follow",
+	ServiceName: "user.Follow",
 	HandlerType: (*FollowServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{

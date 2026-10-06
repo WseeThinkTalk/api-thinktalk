@@ -32,6 +32,8 @@ func (l *ConcernedCheckLogic) Check(userId int64, req *types.ConcernedCheckReque
 		l.Errorf("[ConcernedCheck] rpc err: %v", err)
 		return nil, err
 	}
-	resp.IsConcerned = rpcResp.IsConcerned
+	if rpcResp != nil && rpcResp.Data != nil {
+		resp.IsConcerned = rpcResp.Data.IsConcerned
+	}
 	return resp, nil
 }

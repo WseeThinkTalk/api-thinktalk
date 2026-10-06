@@ -43,6 +43,8 @@ func (l *ConcernedCountLogic) ConcernedCount(req *types.ConcernedCountRequest) (
 		l.Errorf("[ConcernedCount] rpc err: %v", err)
 		return nil, err
 	}
-	resp.ConcernedNum = rpcResp.ConcernedNum
+	if rpcResp != nil && rpcResp.Data != nil {
+		resp.Count = rpcResp.Data.ConcernedNum
+	}
 	return resp, nil
 }

@@ -37,6 +37,8 @@ func (l *PublishQuestionLogic) PublishQuestion(userId int64, req *types.PublishQ
 		l.Errorf("[PublishQuestion] rpc err: %v", err)
 		return nil, err
 	}
-	resp.QuestionId = rpcResp.QuestionId
+	if rpcResp != nil && rpcResp.Data != nil {
+		resp.QuestionId = rpcResp.Data.QuestionId
+	}
 	return resp, nil
 }

@@ -3,9 +3,9 @@ package member
 import (
 	"context"
 
-	"api-thinktalk/client/member/pb"
 	"api-thinktalk/internal/svc"
 	"api-thinktalk/internal/types"
+	member "api-thinktalk/client/member/pb"
 
 	"github.com/zeromicro/go-zero/core/logx"
 )
@@ -23,11 +23,13 @@ func NewUpgradeMemberLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Upg
 func (l *UpgradeMemberLogic) UpgradeMember(userId int64, req *types.UpgradeMemberRequest) (resp *types.UpgradeMemberResponse, err error) {
 	resp = new(types.UpgradeMemberResponse)
 
-	_, err = l.svcCtx.MemberRPC.UpgradeMember(l.ctx, &pb.UpgradeMemberRequest{
+	_, err = l.svcCtx.MemberRPC.UpgradeMember(l.ctx, &member.UpgradeMemberRequest{
 		UserId:        userId,
 		Level:         req.Level,
 		DurationDays:  req.DurationDays,
 		TransactionId: req.TransactionId,
+		Amount:        req.Amount,
+		PayChannel:    req.PayChannel,
 	})
 	if err != nil {
 		l.Errorf("[UpgradeMember] rpc err: %v", err)

@@ -18,8 +18,10 @@ func ReplyCountHandler(svcCtx *svc.ServiceContext) http.HandlerFunc {
 		if v := q.Get("biz_id"); v != "" {
 			req.BizId = v
 		}
-		if v := q.Get("target_id"); v != "" {
-			json.Unmarshal([]byte(v), &req.TargetId)
+		if v := q.Get("obj_id"); v != "" {
+			json.Unmarshal([]byte(v), &req.ObjId)
+		} else if v := q.Get("target_id"); v != "" {
+			json.Unmarshal([]byte(v), &req.ObjId)
 		}
 		l := logic.NewReplyCountLogic(r.Context(), svcCtx)
 		resp, err := l.ReplyCount(&req)

@@ -65,6 +65,8 @@ func (l *PublishLogic) Publish(req *types.PublishRequest) (resp *types.PublishRe
 		return nil, err
 	}
 
-	resp.ArticleId = pret.ArticleId
+	if pret != nil && pret.Data != nil {
+		resp.ArticleId = pret.Data.ArticleId
+	}
 	return resp, nil
 }

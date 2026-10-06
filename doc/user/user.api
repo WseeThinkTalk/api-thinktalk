@@ -38,6 +38,9 @@ type (
 		Gender       int32  `json:"gender"`
 		ProfileCover string `json:"profile_cover"`
 	}
+	UserProfileRequest {
+		UserId int64 `form:"user_id,optional"`
+	}
 	UserProfileResponse {
 		UserId       int64  `json:"user_id"`
 		Username     string `json:"username"`
@@ -57,8 +60,9 @@ type (
 	}
 	UpdateProfileResponse {}
 	AdminUserListRequest {
-		Cursor   int64 `form:"cursor,optional"`
-		PageSize int64 `form:"page_size,optional"`
+		Keyword  string `form:"keyword,optional"`
+		Cursor   int64  `form:"cursor,optional"`
+		PageSize int64  `form:"page_size,optional"`
 	}
 	AdminUserInfo {
 		UserId       int64  `json:"user_id"`
@@ -106,7 +110,7 @@ service api {
 	post /profile/update (UpdateProfileRequest) returns (UpdateProfileResponse)
 
 	@handler UserProfileHandler
-	get /profile returns (UserProfileResponse)
+	get /profile (UserProfileRequest) returns (UserProfileResponse)
 }
 
 @server (

@@ -24,9 +24,9 @@ func (l *TagUpdateLogic) TagUpdate(userId int64, req *types.TagUpdateRequest) (r
 	resp = new(types.TagUpdateResponse)
 
 	_, err = l.svcCtx.TagRPC.UpdateTag(l.ctx, &tag.UpdateTagRequest{
-		TagId:   req.TagId,
-		TagName: req.TagName,
-		TagDesc: req.TagDesc,
+		TagId:   req.Id,
+		TagName: req.Name,
+		TagDesc: req.Description,
 	})
 	if err != nil {
 		l.Errorf("[UpdateTag] rpc err: %v", err)

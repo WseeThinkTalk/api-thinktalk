@@ -42,15 +42,15 @@ func (l *ConcernedCancelLogic) Cancel(userId int64, req *types.ConcernedCancelRe
 		var targetUserId int64
 		if req.BizId == "article" {
 			artResp, err := l.svcCtx.ArticleRPC.ArticleDetail(context.Background(), &pb.ArticleDetailRequest{ArticleId: req.ObjId})
-			if err == nil && artResp.Article != nil {
-				targetUserId = artResp.Article.AuthorId
+			if err == nil && artResp != nil && artResp.Data != nil {
+				targetUserId = artResp.Data.AuthorId
 			}
 		}
 
 		if targetUserId > 0 {
 			triggerName := "某用户"
-			if userResp, err := l.svcCtx.UserRPC.FindById(context.Background(), &user.FindByIdRequest{UserId: userId}); err == nil {
-				triggerName = userResp.Username
+			if userResp, err := l.svcCtx.UserRPC.FindById(context.Background(), &user.FindByIdRequest{UserId: userId}); err == nil && userResp != nil && userResp.Data != nil {
+				triggerName = userResp.Data.Username
 			}
 
 			msg := &types.NotificationMsg{

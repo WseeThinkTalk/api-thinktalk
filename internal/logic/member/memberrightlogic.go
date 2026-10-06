@@ -3,9 +3,9 @@ package member
 import (
 	"context"
 
-	"api-thinktalk/client/member/pb"
 	"api-thinktalk/internal/svc"
 	"api-thinktalk/internal/types"
+	member "api-thinktalk/client/member/pb"
 
 	"github.com/zeromicro/go-zero/core/logx"
 )
@@ -23,7 +23,7 @@ func NewMemberRightLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Membe
 func (l *MemberRightLogic) CheckRight(userId int64, req *types.MemberRightRequest) (resp *types.MemberRightResponse, err error) {
 	resp = new(types.MemberRightResponse)
 
-	rpcResp, err := l.svcCtx.MemberRPC.CheckMemberRight(l.ctx, &pb.CheckMemberRightRequest{
+	rpcResp, err := l.svcCtx.MemberRPC.CheckMemberRight(l.ctx, &member.CheckMemberRightRequest{
 		UserId:   userId,
 		RightKey: req.RightKey,
 	})
@@ -31,7 +31,9 @@ func (l *MemberRightLogic) CheckRight(userId int64, req *types.MemberRightReques
 		l.Errorf("[CheckMemberRight] rpc err: %v", err)
 		return nil, err
 	}
-	resp.HasRight = rpcResp.HasRight
-	resp.Level = rpcResp.Level
+	if rpcResp != nil && rpcResp.Data != nil {
+		resp.HasRight = rpcResp.Data.HasRight
+		resp.Level = rpcResp.Data.Level
+	}
 	return resp, nil
 }

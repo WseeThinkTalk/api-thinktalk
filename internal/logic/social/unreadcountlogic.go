@@ -30,7 +30,8 @@ func (l *UnreadCountLogic) UnreadCount(userId int64) (resp *types.UnreadCountRes
 		l.Errorf("[UnreadCount] rpc err: %v", err)
 		return nil, err
 	}
-	resp.Total = rpcResp.Total
-	resp.TypeCounts = rpcResp.TypeCounts
+	if rpcResp != nil && rpcResp.Data != nil {
+		resp.Count = rpcResp.Data.Total
+	}
 	return resp, nil
 }

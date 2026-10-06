@@ -19,41 +19,31 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	Tag_CreateTag_FullMethodName      = "/service.Tag/CreateTag"
-	Tag_UpdateTag_FullMethodName      = "/service.Tag/UpdateTag"
-	Tag_DeleteTag_FullMethodName      = "/service.Tag/DeleteTag"
-	Tag_TagDetail_FullMethodName      = "/service.Tag/TagDetail"
-	Tag_TagList_FullMethodName        = "/service.Tag/TagList"
-	Tag_HotTags_FullMethodName        = "/service.Tag/HotTags"
-	Tag_TagResource_FullMethodName    = "/service.Tag/TagResource"
-	Tag_UntagResource_FullMethodName  = "/service.Tag/UntagResource"
-	Tag_ResourcesByTag_FullMethodName = "/service.Tag/ResourcesByTag"
-	Tag_TagsByResource_FullMethodName = "/service.Tag/TagsByResource"
+	Tag_CreateTag_FullMethodName      = "/content.Tag/CreateTag"
+	Tag_UpdateTag_FullMethodName      = "/content.Tag/UpdateTag"
+	Tag_DeleteTag_FullMethodName      = "/content.Tag/DeleteTag"
+	Tag_TagDetail_FullMethodName      = "/content.Tag/TagDetail"
+	Tag_TagList_FullMethodName        = "/content.Tag/TagList"
+	Tag_HotTags_FullMethodName        = "/content.Tag/HotTags"
+	Tag_TagResource_FullMethodName    = "/content.Tag/TagResource"
+	Tag_UntagResource_FullMethodName  = "/content.Tag/UntagResource"
+	Tag_ResourcesByTag_FullMethodName = "/content.Tag/ResourcesByTag"
+	Tag_TagsByResource_FullMethodName = "/content.Tag/TagsByResource"
 )
 
 // TagClient is the client API for Tag service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type TagClient interface {
-	// 创建标签
 	CreateTag(ctx context.Context, in *CreateTagRequest, opts ...grpc.CallOption) (*CreateTagResponse, error)
-	// 更新标签
 	UpdateTag(ctx context.Context, in *UpdateTagRequest, opts ...grpc.CallOption) (*UpdateTagResponse, error)
-	// 删除标签
 	DeleteTag(ctx context.Context, in *DeleteTagRequest, opts ...grpc.CallOption) (*DeleteTagResponse, error)
-	// 标签详情
 	TagDetail(ctx context.Context, in *TagDetailRequest, opts ...grpc.CallOption) (*TagDetailResponse, error)
-	// 标签列表
 	TagList(ctx context.Context, in *TagListRequest, opts ...grpc.CallOption) (*TagListResponse, error)
-	// 热门标签
 	HotTags(ctx context.Context, in *HotTagsRequest, opts ...grpc.CallOption) (*HotTagsResponse, error)
-	// 资源打标签
 	TagResource(ctx context.Context, in *TagResourceRequest, opts ...grpc.CallOption) (*TagResourceResponse, error)
-	// 资源去标签
 	UntagResource(ctx context.Context, in *UntagResourceRequest, opts ...grpc.CallOption) (*UntagResourceResponse, error)
-	// 标签下的资源列表
 	ResourcesByTag(ctx context.Context, in *ResourcesByTagRequest, opts ...grpc.CallOption) (*ResourcesByTagResponse, error)
-	// 资源关联的标签列表
 	TagsByResource(ctx context.Context, in *TagsByResourceRequest, opts ...grpc.CallOption) (*TagsByResourceResponse, error)
 }
 
@@ -169,25 +159,15 @@ func (c *tagClient) TagsByResource(ctx context.Context, in *TagsByResourceReques
 // All implementations must embed UnimplementedTagServer
 // for forward compatibility.
 type TagServer interface {
-	// 创建标签
 	CreateTag(context.Context, *CreateTagRequest) (*CreateTagResponse, error)
-	// 更新标签
 	UpdateTag(context.Context, *UpdateTagRequest) (*UpdateTagResponse, error)
-	// 删除标签
 	DeleteTag(context.Context, *DeleteTagRequest) (*DeleteTagResponse, error)
-	// 标签详情
 	TagDetail(context.Context, *TagDetailRequest) (*TagDetailResponse, error)
-	// 标签列表
 	TagList(context.Context, *TagListRequest) (*TagListResponse, error)
-	// 热门标签
 	HotTags(context.Context, *HotTagsRequest) (*HotTagsResponse, error)
-	// 资源打标签
 	TagResource(context.Context, *TagResourceRequest) (*TagResourceResponse, error)
-	// 资源去标签
 	UntagResource(context.Context, *UntagResourceRequest) (*UntagResourceResponse, error)
-	// 标签下的资源列表
 	ResourcesByTag(context.Context, *ResourcesByTagRequest) (*ResourcesByTagResponse, error)
-	// 资源关联的标签列表
 	TagsByResource(context.Context, *TagsByResourceRequest) (*TagsByResourceResponse, error)
 	mustEmbedUnimplementedTagServer()
 }
@@ -434,7 +414,7 @@ func _Tag_TagsByResource_Handler(srv interface{}, ctx context.Context, dec func(
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
 var Tag_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "service.Tag",
+	ServiceName: "content.Tag",
 	HandlerType: (*TagServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{

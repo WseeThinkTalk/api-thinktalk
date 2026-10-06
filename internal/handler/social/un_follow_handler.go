@@ -15,7 +15,7 @@ import (
 func UnFollowHandler(svcCtx *svc.ServiceContext) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		uid := httpx.GetUserID(r)
-		var req types.UnfollowRequest
+		var req types.UnFollowRequest
 		json.NewDecoder(r.Body).Decode(&req)
 		l := logic.NewUnFollowLogic(r.Context(), svcCtx)
 		resp, err := l.UnFollow(uid, &req)

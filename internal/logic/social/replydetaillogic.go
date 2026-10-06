@@ -25,13 +25,13 @@ func (l *ReplyDetailLogic) ReplyDetail(req *types.ReplyDetailRequest) (resp *typ
 	resp = new(types.ReplyDetailResponse)
 
 	rpcResp, err := l.svcCtx.ReplyRPC.ReplyDetail(l.ctx, &reply.ReplyDetailRequest{
-		ReplyId: req.ReplyId,
+		ReplyId: req.Id,
 	})
 	if err != nil {
 		l.Errorf("[ReplyDetail] rpc err: %v", err)
 		return nil, err
 	}
-	if rpcResp == nil || rpcResp.Reply == nil {
+	if rpcResp == nil || rpcResp.Data == nil {
 		return resp, nil
 	}
 
@@ -40,17 +40,17 @@ func (l *ReplyDetailLogic) ReplyDetail(req *types.ReplyDetailRequest) (resp *typ
 		if uid == 0 {
 			return "匿名用户", ""
 		}
-		if u, ok := userMap[uid]; ok {
-			return u.Username, u.Avatar
+		if u, ok := userMap[uid]; ok && u != nil && u.Data != nil {
+			return u.Data.Username, u.Data.Avatar
 		}
 		u, err := l.svcCtx.UserRPC.FindById(l.ctx, &user.FindByIdRequest{UserId: uid})
-		if err != nil {
+		if err != nil || u == nil || u.Data == nil {
 			return "用户", ""
 		}
 		userMap[uid] = u
-		return u.Username, u.Avatar
+		return u.Data.Username, u.Data.Avatar
 	}
 
-	resp.Reply = convertReplyItem(rpcResp.Reply, getUserInfo)
+	resp.Reply = convertReplyItem(rpcResp.Data, getUserInfo)
 	return resp, nil
 }

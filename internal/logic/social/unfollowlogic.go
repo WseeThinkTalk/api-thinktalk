@@ -24,12 +24,12 @@ func NewUnFollowLogic(ctx context.Context, svcCtx *svc.ServiceContext) *UnFollow
 	return &UnFollowLogic{ctx: ctx, svcCtx: svcCtx, Logger: logx.WithContext(ctx)}
 }
 
-func (l *UnFollowLogic) UnFollow(userId int64, req *types.UnfollowRequest) (resp *types.UnfollowResponse, err error) {
-	resp = new(types.UnfollowResponse)
+func (l *UnFollowLogic) UnFollow(userId int64, req *types.UnFollowRequest) (resp *types.UnFollowResponse, err error) {
+	resp = new(types.UnFollowResponse)
 
 	_, err = l.svcCtx.FollowRPC.UnFollow(l.ctx, &pb.UnFollowRequest{
 		UserId:         userId,
-		FollowedUserId: req.FollowedUserId,
+		FollowedUserId: req.FollowId,
 	})
 	if err != nil {
 		l.Errorf("[UnFollow] rpc err: %v", err)
@@ -38,12 +38,12 @@ func (l *UnFollowLogic) UnFollow(userId int64, req *types.UnfollowRequest) (resp
 
 	threading.GoSafe(func() {
 		triggerName := "某用户"
-		if userResp, err := l.svcCtx.UserRPC.FindById(context.Background(), &user.FindByIdRequest{UserId: userId}); err == nil {
-			triggerName = userResp.Username
+		if userResp, err := l.svcCtx.UserRPC.FindById(context.Background(), &user.FindByIdRequest{UserId: userId}); err == nil && userResp != nil && userResp.Data != nil {
+			triggerName = userResp.Data.Username
 		}
 
 		msg := &types.NotificationMsg{
-			UserId:        req.FollowedUserId,
+			UserId:        req.FollowId,
 			Type:          4, // UnFollow
 			Title:         "取消关注",
 			Content:       fmt.Sprintf("用户 %s 取消了关注", triggerName),

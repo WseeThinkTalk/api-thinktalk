@@ -18,17 +18,16 @@ func ReplyListHandler(svcCtx *svc.ServiceContext) http.HandlerFunc {
 		if v := q.Get("biz_id"); v != "" {
 			req.BizId = v
 		}
-		if v := q.Get("target_id"); v != "" {
-			json.Unmarshal([]byte(v), &req.TargetId)
+		if v := q.Get("obj_id"); v != "" {
+			json.Unmarshal([]byte(v), &req.ObjId)
+		} else if v := q.Get("target_id"); v != "" {
+			json.Unmarshal([]byte(v), &req.ObjId)
 		}
 		if v := q.Get("cursor"); v != "" {
 			json.Unmarshal([]byte(v), &req.Cursor)
 		}
 		if v := q.Get("page_size"); v != "" {
 			json.Unmarshal([]byte(v), &req.PageSize)
-		}
-		if v := q.Get("sort_type"); v != "" {
-			json.Unmarshal([]byte(v), &req.SortType)
 		}
 		l := logic.NewReplyListLogic(r.Context(), svcCtx)
 		resp, err := l.ReplyList(&req)

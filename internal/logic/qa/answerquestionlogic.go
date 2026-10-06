@@ -36,6 +36,8 @@ func (l *AnswerQuestionLogic) AnswerQuestion(userId int64, req *types.AnswerQues
 		l.Errorf("[AnswerQuestion] rpc err: %v", err)
 		return nil, err
 	}
-	resp.AnswerId = rpcResp.AnswerId
+	if rpcResp != nil && rpcResp.Data != nil {
+		resp.AnswerId = rpcResp.Data.AnswerId
+	}
 	return resp, nil
 }

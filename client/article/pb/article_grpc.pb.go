@@ -19,13 +19,13 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	Article_Publish_FullMethodName          = "/pb.Article/Publish"
-	Article_Articles_FullMethodName         = "/pb.Article/Articles"
-	Article_ArticleDelete_FullMethodName    = "/pb.Article/ArticleDelete"
-	Article_ArticleDetail_FullMethodName    = "/pb.Article/ArticleDetail"
-	Article_SearchArticles_FullMethodName   = "/pb.Article/SearchArticles"
-	Article_AdminPendingList_FullMethodName = "/pb.Article/AdminPendingList"
-	Article_AdminAudit_FullMethodName       = "/pb.Article/AdminAudit"
+	Article_Publish_FullMethodName          = "/content.Article/Publish"
+	Article_Articles_FullMethodName         = "/content.Article/Articles"
+	Article_ArticleDelete_FullMethodName    = "/content.Article/ArticleDelete"
+	Article_ArticleDetail_FullMethodName    = "/content.Article/ArticleDetail"
+	Article_SearchArticles_FullMethodName   = "/content.Article/SearchArticles"
+	Article_AdminPendingList_FullMethodName = "/content.Article/AdminPendingList"
+	Article_AdminAudit_FullMethodName       = "/content.Article/AdminAudit"
 )
 
 // ArticleClient is the client API for Article service.
@@ -312,7 +312,7 @@ func _Article_AdminAudit_Handler(srv interface{}, ctx context.Context, dec func(
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
 var Article_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "pb.Article",
+	ServiceName: "content.Article",
 	HandlerType: (*ArticleServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{

@@ -23,15 +23,17 @@ func NewUntagResourceLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Unt
 func (l *UntagResourceLogic) UntagResource(userId int64, req *types.UntagResourceRequest) (resp *types.UntagResourceResponse, err error) {
 	resp = new(types.UntagResourceResponse)
 
-	_, err = l.svcCtx.TagRPC.UntagResource(l.ctx, &tag.UntagResourceRequest{
-		BizId:    req.BizId,
-		TargetId: req.TargetId,
-		TagId:    req.TagId,
-		UserId:   userId,
-	})
-	if err != nil {
-		l.Errorf("[UntagResource] rpc err: %v", err)
-		return nil, err
+	for _, tagId := range req.TagIds {
+		_, err = l.svcCtx.TagRPC.UntagResource(l.ctx, &tag.UntagResourceRequest{
+			BizId:    req.ResourceType,
+			TargetId: req.ResourceId,
+			TagId:    tagId,
+			UserId:   userId,
+		})
+		if err != nil {
+			l.Errorf("[UntagResource] rpc err: %v", err)
+			return nil, err
+		}
 	}
 	return resp, nil
 }

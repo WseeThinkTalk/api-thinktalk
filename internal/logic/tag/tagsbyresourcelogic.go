@@ -24,24 +24,25 @@ func (l *TagsByResourceLogic) TagsByResource(req *types.TagsByResourceRequest) (
 	resp = new(types.TagsByResourceResponse)
 
 	rpcResp, err := l.svcCtx.TagRPC.TagsByResource(l.ctx, &tag.TagsByResourceRequest{
-		BizId:    req.BizId,
-		TargetId: req.TargetId,
+		BizId:    req.ResourceType,
+		TargetId: req.ResourceId,
 	})
 	if err != nil {
 		l.Errorf("[TagsByResource] rpc err: %v", err)
 		return nil, err
 	}
 	// 转换资源标签列表数据项
-	items := make([]*types.TagItem, 0, len(rpcResp.Items))
-	for _, v := range rpcResp.Items {
-		items = append(items, &types.TagItem{
-			TagId:         v.TagId,
-			TagName:       v.TagName,
-			TagDesc:       v.TagDesc,
-			ResourceCount: v.ResourceCount,
-			CreateTime:    v.CreateTime,
-		})
+	if rpcResp != nil && rpcResp.Data != nil {
+		items := make([]*types.TagItem, 0, len(rpcResp.Data))
+		for _, v := range rpcResp.Data {
+			items = append(items, &types.TagItem{
+				Id:          v.TagId,
+				Name:        v.TagName,
+				Description: v.TagDesc,
+				UseCount:    v.ResourceCount,
+			})
+		}
+		resp.Tags = items
 	}
-	resp.Items = items
 	return resp, nil
 }

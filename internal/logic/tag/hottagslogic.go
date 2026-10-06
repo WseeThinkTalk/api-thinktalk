@@ -31,16 +31,17 @@ func (l *HotTagsLogic) HotTags(req *types.HotTagsRequest) (resp *types.HotTagsRe
 		return nil, err
 	}
 	// 转换热门标签项
-	items := make([]*types.TagItem, 0, len(rpcResp.Items))
-	for _, v := range rpcResp.Items {
-		items = append(items, &types.TagItem{
-			TagId:         v.TagId,
-			TagName:       v.TagName,
-			TagDesc:       v.TagDesc,
-			ResourceCount: v.ResourceCount,
-			CreateTime:    v.CreateTime,
-		})
+	if rpcResp != nil && rpcResp.Data != nil {
+		items := make([]*types.TagItem, 0, len(rpcResp.Data))
+		for _, v := range rpcResp.Data {
+			items = append(items, &types.TagItem{
+				Id:          v.TagId,
+				Name:        v.TagName,
+				Description: v.TagDesc,
+				UseCount:    v.ResourceCount,
+			})
+		}
+		resp.Items = items
 	}
-	resp.Items = items
 	return resp, nil
 }

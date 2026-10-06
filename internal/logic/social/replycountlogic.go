@@ -25,13 +25,14 @@ func (l *ReplyCountLogic) ReplyCount(req *types.ReplyCountRequest) (resp *types.
 
 	rpcResp, err := l.svcCtx.ReplyRPC.ReplyCount(l.ctx, &reply.ReplyCountRequest{
 		BizId:    req.BizId,
-		TargetId: req.TargetId,
+		TargetId: req.ObjId,
 	})
 	if err != nil {
 		l.Errorf("[ReplyCount] rpc err: %v", err)
 		return nil, err
 	}
-	resp.ReplyNum = rpcResp.ReplyNum
-	resp.ReplyRootNum = rpcResp.ReplyRootNum
+	if rpcResp != nil && rpcResp.Data != nil {
+		resp.Count = rpcResp.Data.ReplyNum
+	}
 	return resp, nil
 }

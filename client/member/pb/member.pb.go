@@ -65,7 +65,7 @@ func (x *MemberInfoRequest) GetUserId() int64 {
 	return 0
 }
 
-type MemberInfoResponse struct {
+type MemberInfoData struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	UserId        int64                  `protobuf:"varint,1,opt,name=userId,proto3" json:"userId,omitempty"`
 	Level         int32                  `protobuf:"varint,2,opt,name=level,proto3" json:"level,omitempty"`
@@ -76,9 +76,83 @@ type MemberInfoResponse struct {
 	sizeCache     protoimpl.SizeCache
 }
 
+func (x *MemberInfoData) Reset() {
+	*x = MemberInfoData{}
+	mi := &file_member_proto_msgTypes[1]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *MemberInfoData) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*MemberInfoData) ProtoMessage() {}
+
+func (x *MemberInfoData) ProtoReflect() protoreflect.Message {
+	mi := &file_member_proto_msgTypes[1]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use MemberInfoData.ProtoReflect.Descriptor instead.
+func (*MemberInfoData) Descriptor() ([]byte, []int) {
+	return file_member_proto_rawDescGZIP(), []int{1}
+}
+
+func (x *MemberInfoData) GetUserId() int64 {
+	if x != nil {
+		return x.UserId
+	}
+	return 0
+}
+
+func (x *MemberInfoData) GetLevel() int32 {
+	if x != nil {
+		return x.Level
+	}
+	return 0
+}
+
+func (x *MemberInfoData) GetLevelName() string {
+	if x != nil {
+		return x.LevelName
+	}
+	return ""
+}
+
+func (x *MemberInfoData) GetExpireTime() int64 {
+	if x != nil {
+		return x.ExpireTime
+	}
+	return 0
+}
+
+func (x *MemberInfoData) GetStatus() int32 {
+	if x != nil {
+		return x.Status
+	}
+	return 0
+}
+
+type MemberInfoResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Code          int64                  `protobuf:"varint,1,opt,name=code,proto3" json:"code,omitempty"`
+	Msg           string                 `protobuf:"bytes,2,opt,name=msg,proto3" json:"msg,omitempty"`
+	Data          *MemberInfoData        `protobuf:"bytes,3,opt,name=data,proto3" json:"data,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
 func (x *MemberInfoResponse) Reset() {
 	*x = MemberInfoResponse{}
-	mi := &file_member_proto_msgTypes[1]
+	mi := &file_member_proto_msgTypes[2]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -90,7 +164,7 @@ func (x *MemberInfoResponse) String() string {
 func (*MemberInfoResponse) ProtoMessage() {}
 
 func (x *MemberInfoResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_member_proto_msgTypes[1]
+	mi := &file_member_proto_msgTypes[2]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -103,42 +177,28 @@ func (x *MemberInfoResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use MemberInfoResponse.ProtoReflect.Descriptor instead.
 func (*MemberInfoResponse) Descriptor() ([]byte, []int) {
-	return file_member_proto_rawDescGZIP(), []int{1}
+	return file_member_proto_rawDescGZIP(), []int{2}
 }
 
-func (x *MemberInfoResponse) GetUserId() int64 {
+func (x *MemberInfoResponse) GetCode() int64 {
 	if x != nil {
-		return x.UserId
+		return x.Code
 	}
 	return 0
 }
 
-func (x *MemberInfoResponse) GetLevel() int32 {
+func (x *MemberInfoResponse) GetMsg() string {
 	if x != nil {
-		return x.Level
-	}
-	return 0
-}
-
-func (x *MemberInfoResponse) GetLevelName() string {
-	if x != nil {
-		return x.LevelName
+		return x.Msg
 	}
 	return ""
 }
 
-func (x *MemberInfoResponse) GetExpireTime() int64 {
+func (x *MemberInfoResponse) GetData() *MemberInfoData {
 	if x != nil {
-		return x.ExpireTime
+		return x.Data
 	}
-	return 0
-}
-
-func (x *MemberInfoResponse) GetStatus() int32 {
-	if x != nil {
-		return x.Status
-	}
-	return 0
+	return nil
 }
 
 type UpgradeMemberRequest struct {
@@ -155,7 +215,7 @@ type UpgradeMemberRequest struct {
 
 func (x *UpgradeMemberRequest) Reset() {
 	*x = UpgradeMemberRequest{}
-	mi := &file_member_proto_msgTypes[2]
+	mi := &file_member_proto_msgTypes[3]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -167,7 +227,7 @@ func (x *UpgradeMemberRequest) String() string {
 func (*UpgradeMemberRequest) ProtoMessage() {}
 
 func (x *UpgradeMemberRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_member_proto_msgTypes[2]
+	mi := &file_member_proto_msgTypes[3]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -180,7 +240,7 @@ func (x *UpgradeMemberRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UpgradeMemberRequest.ProtoReflect.Descriptor instead.
 func (*UpgradeMemberRequest) Descriptor() ([]byte, []int) {
-	return file_member_proto_rawDescGZIP(), []int{2}
+	return file_member_proto_rawDescGZIP(), []int{3}
 }
 
 func (x *UpgradeMemberRequest) GetUserId() int64 {
@@ -227,13 +287,15 @@ func (x *UpgradeMemberRequest) GetPayChannel() string {
 
 type UpgradeMemberResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
+	Code          int64                  `protobuf:"varint,1,opt,name=code,proto3" json:"code,omitempty"`
+	Msg           string                 `protobuf:"bytes,2,opt,name=msg,proto3" json:"msg,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
 func (x *UpgradeMemberResponse) Reset() {
 	*x = UpgradeMemberResponse{}
-	mi := &file_member_proto_msgTypes[3]
+	mi := &file_member_proto_msgTypes[4]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -245,7 +307,7 @@ func (x *UpgradeMemberResponse) String() string {
 func (*UpgradeMemberResponse) ProtoMessage() {}
 
 func (x *UpgradeMemberResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_member_proto_msgTypes[3]
+	mi := &file_member_proto_msgTypes[4]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -258,7 +320,21 @@ func (x *UpgradeMemberResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UpgradeMemberResponse.ProtoReflect.Descriptor instead.
 func (*UpgradeMemberResponse) Descriptor() ([]byte, []int) {
-	return file_member_proto_rawDescGZIP(), []int{3}
+	return file_member_proto_rawDescGZIP(), []int{4}
+}
+
+func (x *UpgradeMemberResponse) GetCode() int64 {
+	if x != nil {
+		return x.Code
+	}
+	return 0
+}
+
+func (x *UpgradeMemberResponse) GetMsg() string {
+	if x != nil {
+		return x.Msg
+	}
+	return ""
 }
 
 type CheckMemberRightRequest struct {
@@ -271,7 +347,7 @@ type CheckMemberRightRequest struct {
 
 func (x *CheckMemberRightRequest) Reset() {
 	*x = CheckMemberRightRequest{}
-	mi := &file_member_proto_msgTypes[4]
+	mi := &file_member_proto_msgTypes[5]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -283,7 +359,7 @@ func (x *CheckMemberRightRequest) String() string {
 func (*CheckMemberRightRequest) ProtoMessage() {}
 
 func (x *CheckMemberRightRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_member_proto_msgTypes[4]
+	mi := &file_member_proto_msgTypes[5]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -296,7 +372,7 @@ func (x *CheckMemberRightRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CheckMemberRightRequest.ProtoReflect.Descriptor instead.
 func (*CheckMemberRightRequest) Descriptor() ([]byte, []int) {
-	return file_member_proto_rawDescGZIP(), []int{4}
+	return file_member_proto_rawDescGZIP(), []int{5}
 }
 
 func (x *CheckMemberRightRequest) GetUserId() int64 {
@@ -313,7 +389,7 @@ func (x *CheckMemberRightRequest) GetRightKey() string {
 	return ""
 }
 
-type CheckMemberRightResponse struct {
+type CheckMemberRightData struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	HasRight      bool                   `protobuf:"varint,1,opt,name=hasRight,proto3" json:"hasRight,omitempty"`
 	Level         int32                  `protobuf:"varint,2,opt,name=level,proto3" json:"level,omitempty"`
@@ -321,9 +397,62 @@ type CheckMemberRightResponse struct {
 	sizeCache     protoimpl.SizeCache
 }
 
+func (x *CheckMemberRightData) Reset() {
+	*x = CheckMemberRightData{}
+	mi := &file_member_proto_msgTypes[6]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *CheckMemberRightData) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*CheckMemberRightData) ProtoMessage() {}
+
+func (x *CheckMemberRightData) ProtoReflect() protoreflect.Message {
+	mi := &file_member_proto_msgTypes[6]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use CheckMemberRightData.ProtoReflect.Descriptor instead.
+func (*CheckMemberRightData) Descriptor() ([]byte, []int) {
+	return file_member_proto_rawDescGZIP(), []int{6}
+}
+
+func (x *CheckMemberRightData) GetHasRight() bool {
+	if x != nil {
+		return x.HasRight
+	}
+	return false
+}
+
+func (x *CheckMemberRightData) GetLevel() int32 {
+	if x != nil {
+		return x.Level
+	}
+	return 0
+}
+
+type CheckMemberRightResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Code          int64                  `protobuf:"varint,1,opt,name=code,proto3" json:"code,omitempty"`
+	Msg           string                 `protobuf:"bytes,2,opt,name=msg,proto3" json:"msg,omitempty"`
+	Data          *CheckMemberRightData  `protobuf:"bytes,3,opt,name=data,proto3" json:"data,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
 func (x *CheckMemberRightResponse) Reset() {
 	*x = CheckMemberRightResponse{}
-	mi := &file_member_proto_msgTypes[5]
+	mi := &file_member_proto_msgTypes[7]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -335,7 +464,7 @@ func (x *CheckMemberRightResponse) String() string {
 func (*CheckMemberRightResponse) ProtoMessage() {}
 
 func (x *CheckMemberRightResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_member_proto_msgTypes[5]
+	mi := &file_member_proto_msgTypes[7]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -348,21 +477,28 @@ func (x *CheckMemberRightResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CheckMemberRightResponse.ProtoReflect.Descriptor instead.
 func (*CheckMemberRightResponse) Descriptor() ([]byte, []int) {
-	return file_member_proto_rawDescGZIP(), []int{5}
+	return file_member_proto_rawDescGZIP(), []int{7}
 }
 
-func (x *CheckMemberRightResponse) GetHasRight() bool {
+func (x *CheckMemberRightResponse) GetCode() int64 {
 	if x != nil {
-		return x.HasRight
-	}
-	return false
-}
-
-func (x *CheckMemberRightResponse) GetLevel() int32 {
-	if x != nil {
-		return x.Level
+		return x.Code
 	}
 	return 0
+}
+
+func (x *CheckMemberRightResponse) GetMsg() string {
+	if x != nil {
+		return x.Msg
+	}
+	return ""
+}
+
+func (x *CheckMemberRightResponse) GetData() *CheckMemberRightData {
+	if x != nil {
+		return x.Data
+	}
+	return nil
 }
 
 type MemberOrderListRequest struct {
@@ -376,7 +512,7 @@ type MemberOrderListRequest struct {
 
 func (x *MemberOrderListRequest) Reset() {
 	*x = MemberOrderListRequest{}
-	mi := &file_member_proto_msgTypes[6]
+	mi := &file_member_proto_msgTypes[8]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -388,7 +524,7 @@ func (x *MemberOrderListRequest) String() string {
 func (*MemberOrderListRequest) ProtoMessage() {}
 
 func (x *MemberOrderListRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_member_proto_msgTypes[6]
+	mi := &file_member_proto_msgTypes[8]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -401,7 +537,7 @@ func (x *MemberOrderListRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use MemberOrderListRequest.ProtoReflect.Descriptor instead.
 func (*MemberOrderListRequest) Descriptor() ([]byte, []int) {
-	return file_member_proto_rawDescGZIP(), []int{6}
+	return file_member_proto_rawDescGZIP(), []int{8}
 }
 
 func (x *MemberOrderListRequest) GetUserId() int64 {
@@ -425,66 +561,6 @@ func (x *MemberOrderListRequest) GetPageSize() int64 {
 	return 0
 }
 
-type MemberOrderListResponse struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Items         []*MemberOrderItem     `protobuf:"bytes,1,rep,name=items,proto3" json:"items,omitempty"`
-	Cursor        int64                  `protobuf:"varint,2,opt,name=cursor,proto3" json:"cursor,omitempty"`
-	IsEnd         bool                   `protobuf:"varint,3,opt,name=isEnd,proto3" json:"isEnd,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *MemberOrderListResponse) Reset() {
-	*x = MemberOrderListResponse{}
-	mi := &file_member_proto_msgTypes[7]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *MemberOrderListResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*MemberOrderListResponse) ProtoMessage() {}
-
-func (x *MemberOrderListResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_member_proto_msgTypes[7]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use MemberOrderListResponse.ProtoReflect.Descriptor instead.
-func (*MemberOrderListResponse) Descriptor() ([]byte, []int) {
-	return file_member_proto_rawDescGZIP(), []int{7}
-}
-
-func (x *MemberOrderListResponse) GetItems() []*MemberOrderItem {
-	if x != nil {
-		return x.Items
-	}
-	return nil
-}
-
-func (x *MemberOrderListResponse) GetCursor() int64 {
-	if x != nil {
-		return x.Cursor
-	}
-	return 0
-}
-
-func (x *MemberOrderListResponse) GetIsEnd() bool {
-	if x != nil {
-		return x.IsEnd
-	}
-	return false
-}
-
 type MemberOrderItem struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Id            int64                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
@@ -501,7 +577,7 @@ type MemberOrderItem struct {
 
 func (x *MemberOrderItem) Reset() {
 	*x = MemberOrderItem{}
-	mi := &file_member_proto_msgTypes[8]
+	mi := &file_member_proto_msgTypes[9]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -513,7 +589,7 @@ func (x *MemberOrderItem) String() string {
 func (*MemberOrderItem) ProtoMessage() {}
 
 func (x *MemberOrderItem) ProtoReflect() protoreflect.Message {
-	mi := &file_member_proto_msgTypes[8]
+	mi := &file_member_proto_msgTypes[9]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -526,7 +602,7 @@ func (x *MemberOrderItem) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use MemberOrderItem.ProtoReflect.Descriptor instead.
 func (*MemberOrderItem) Descriptor() ([]byte, []int) {
-	return file_member_proto_rawDescGZIP(), []int{8}
+	return file_member_proto_rawDescGZIP(), []int{9}
 }
 
 func (x *MemberOrderItem) GetId() int64 {
@@ -585,6 +661,126 @@ func (x *MemberOrderItem) GetCreateTime() int64 {
 	return 0
 }
 
+type MemberOrderListData struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Items         []*MemberOrderItem     `protobuf:"bytes,1,rep,name=items,proto3" json:"items,omitempty"`
+	Cursor        int64                  `protobuf:"varint,2,opt,name=cursor,proto3" json:"cursor,omitempty"`
+	IsEnd         bool                   `protobuf:"varint,3,opt,name=isEnd,proto3" json:"isEnd,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *MemberOrderListData) Reset() {
+	*x = MemberOrderListData{}
+	mi := &file_member_proto_msgTypes[10]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *MemberOrderListData) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*MemberOrderListData) ProtoMessage() {}
+
+func (x *MemberOrderListData) ProtoReflect() protoreflect.Message {
+	mi := &file_member_proto_msgTypes[10]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use MemberOrderListData.ProtoReflect.Descriptor instead.
+func (*MemberOrderListData) Descriptor() ([]byte, []int) {
+	return file_member_proto_rawDescGZIP(), []int{10}
+}
+
+func (x *MemberOrderListData) GetItems() []*MemberOrderItem {
+	if x != nil {
+		return x.Items
+	}
+	return nil
+}
+
+func (x *MemberOrderListData) GetCursor() int64 {
+	if x != nil {
+		return x.Cursor
+	}
+	return 0
+}
+
+func (x *MemberOrderListData) GetIsEnd() bool {
+	if x != nil {
+		return x.IsEnd
+	}
+	return false
+}
+
+type MemberOrderListResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Code          int64                  `protobuf:"varint,1,opt,name=code,proto3" json:"code,omitempty"`
+	Msg           string                 `protobuf:"bytes,2,opt,name=msg,proto3" json:"msg,omitempty"`
+	Data          *MemberOrderListData   `protobuf:"bytes,3,opt,name=data,proto3" json:"data,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *MemberOrderListResponse) Reset() {
+	*x = MemberOrderListResponse{}
+	mi := &file_member_proto_msgTypes[11]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *MemberOrderListResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*MemberOrderListResponse) ProtoMessage() {}
+
+func (x *MemberOrderListResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_member_proto_msgTypes[11]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use MemberOrderListResponse.ProtoReflect.Descriptor instead.
+func (*MemberOrderListResponse) Descriptor() ([]byte, []int) {
+	return file_member_proto_rawDescGZIP(), []int{11}
+}
+
+func (x *MemberOrderListResponse) GetCode() int64 {
+	if x != nil {
+		return x.Code
+	}
+	return 0
+}
+
+func (x *MemberOrderListResponse) GetMsg() string {
+	if x != nil {
+		return x.Msg
+	}
+	return ""
+}
+
+func (x *MemberOrderListResponse) GetData() *MemberOrderListData {
+	if x != nil {
+		return x.Data
+	}
+	return nil
+}
+
 type CreateOrderRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	UserId        int64                  `protobuf:"varint,1,opt,name=userId,proto3" json:"userId,omitempty"`
@@ -592,14 +788,13 @@ type CreateOrderRequest struct {
 	DurationDays  int32                  `protobuf:"varint,3,opt,name=durationDays,proto3" json:"durationDays,omitempty"`
 	Amount        int64                  `protobuf:"varint,4,opt,name=amount,proto3" json:"amount,omitempty"`
 	PayChannel    string                 `protobuf:"bytes,5,opt,name=payChannel,proto3" json:"payChannel,omitempty"`
-	PlanId        int32                  `protobuf:"varint,6,opt,name=planId,proto3" json:"planId,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
 func (x *CreateOrderRequest) Reset() {
 	*x = CreateOrderRequest{}
-	mi := &file_member_proto_msgTypes[9]
+	mi := &file_member_proto_msgTypes[12]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -611,7 +806,7 @@ func (x *CreateOrderRequest) String() string {
 func (*CreateOrderRequest) ProtoMessage() {}
 
 func (x *CreateOrderRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_member_proto_msgTypes[9]
+	mi := &file_member_proto_msgTypes[12]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -624,7 +819,7 @@ func (x *CreateOrderRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CreateOrderRequest.ProtoReflect.Descriptor instead.
 func (*CreateOrderRequest) Descriptor() ([]byte, []int) {
-	return file_member_proto_rawDescGZIP(), []int{9}
+	return file_member_proto_rawDescGZIP(), []int{12}
 }
 
 func (x *CreateOrderRequest) GetUserId() int64 {
@@ -662,14 +857,7 @@ func (x *CreateOrderRequest) GetPayChannel() string {
 	return ""
 }
 
-func (x *CreateOrderRequest) GetPlanId() int32 {
-	if x != nil {
-		return x.PlanId
-	}
-	return 0
-}
-
-type CreateOrderResponse struct {
+type CreateOrderData struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	OrderSn       string                 `protobuf:"bytes,1,opt,name=orderSn,proto3" json:"orderSn,omitempty"`
 	Amount        int64                  `protobuf:"varint,2,opt,name=amount,proto3" json:"amount,omitempty"`
@@ -677,9 +865,62 @@ type CreateOrderResponse struct {
 	sizeCache     protoimpl.SizeCache
 }
 
+func (x *CreateOrderData) Reset() {
+	*x = CreateOrderData{}
+	mi := &file_member_proto_msgTypes[13]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *CreateOrderData) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*CreateOrderData) ProtoMessage() {}
+
+func (x *CreateOrderData) ProtoReflect() protoreflect.Message {
+	mi := &file_member_proto_msgTypes[13]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use CreateOrderData.ProtoReflect.Descriptor instead.
+func (*CreateOrderData) Descriptor() ([]byte, []int) {
+	return file_member_proto_rawDescGZIP(), []int{13}
+}
+
+func (x *CreateOrderData) GetOrderSn() string {
+	if x != nil {
+		return x.OrderSn
+	}
+	return ""
+}
+
+func (x *CreateOrderData) GetAmount() int64 {
+	if x != nil {
+		return x.Amount
+	}
+	return 0
+}
+
+type CreateOrderResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Code          int64                  `protobuf:"varint,1,opt,name=code,proto3" json:"code,omitempty"`
+	Msg           string                 `protobuf:"bytes,2,opt,name=msg,proto3" json:"msg,omitempty"`
+	Data          *CreateOrderData       `protobuf:"bytes,3,opt,name=data,proto3" json:"data,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
 func (x *CreateOrderResponse) Reset() {
 	*x = CreateOrderResponse{}
-	mi := &file_member_proto_msgTypes[10]
+	mi := &file_member_proto_msgTypes[14]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -691,7 +932,7 @@ func (x *CreateOrderResponse) String() string {
 func (*CreateOrderResponse) ProtoMessage() {}
 
 func (x *CreateOrderResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_member_proto_msgTypes[10]
+	mi := &file_member_proto_msgTypes[14]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -704,21 +945,28 @@ func (x *CreateOrderResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CreateOrderResponse.ProtoReflect.Descriptor instead.
 func (*CreateOrderResponse) Descriptor() ([]byte, []int) {
-	return file_member_proto_rawDescGZIP(), []int{10}
+	return file_member_proto_rawDescGZIP(), []int{14}
 }
 
-func (x *CreateOrderResponse) GetOrderSn() string {
+func (x *CreateOrderResponse) GetCode() int64 {
 	if x != nil {
-		return x.OrderSn
+		return x.Code
+	}
+	return 0
+}
+
+func (x *CreateOrderResponse) GetMsg() string {
+	if x != nil {
+		return x.Msg
 	}
 	return ""
 }
 
-func (x *CreateOrderResponse) GetAmount() int64 {
+func (x *CreateOrderResponse) GetData() *CreateOrderData {
 	if x != nil {
-		return x.Amount
+		return x.Data
 	}
-	return 0
+	return nil
 }
 
 type PayCallbackRequest struct {
@@ -731,7 +979,7 @@ type PayCallbackRequest struct {
 
 func (x *PayCallbackRequest) Reset() {
 	*x = PayCallbackRequest{}
-	mi := &file_member_proto_msgTypes[11]
+	mi := &file_member_proto_msgTypes[15]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -743,7 +991,7 @@ func (x *PayCallbackRequest) String() string {
 func (*PayCallbackRequest) ProtoMessage() {}
 
 func (x *PayCallbackRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_member_proto_msgTypes[11]
+	mi := &file_member_proto_msgTypes[15]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -756,7 +1004,7 @@ func (x *PayCallbackRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PayCallbackRequest.ProtoReflect.Descriptor instead.
 func (*PayCallbackRequest) Descriptor() ([]byte, []int) {
-	return file_member_proto_rawDescGZIP(), []int{11}
+	return file_member_proto_rawDescGZIP(), []int{15}
 }
 
 func (x *PayCallbackRequest) GetOrderSn() string {
@@ -775,13 +1023,15 @@ func (x *PayCallbackRequest) GetTransactionId() string {
 
 type PayCallbackResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
+	Code          int64                  `protobuf:"varint,1,opt,name=code,proto3" json:"code,omitempty"`
+	Msg           string                 `protobuf:"bytes,2,opt,name=msg,proto3" json:"msg,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
 func (x *PayCallbackResponse) Reset() {
 	*x = PayCallbackResponse{}
-	mi := &file_member_proto_msgTypes[12]
+	mi := &file_member_proto_msgTypes[16]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -793,7 +1043,7 @@ func (x *PayCallbackResponse) String() string {
 func (*PayCallbackResponse) ProtoMessage() {}
 
 func (x *PayCallbackResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_member_proto_msgTypes[12]
+	mi := &file_member_proto_msgTypes[16]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -806,24 +1056,42 @@ func (x *PayCallbackResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PayCallbackResponse.ProtoReflect.Descriptor instead.
 func (*PayCallbackResponse) Descriptor() ([]byte, []int) {
-	return file_member_proto_rawDescGZIP(), []int{12}
+	return file_member_proto_rawDescGZIP(), []int{16}
+}
+
+func (x *PayCallbackResponse) GetCode() int64 {
+	if x != nil {
+		return x.Code
+	}
+	return 0
+}
+
+func (x *PayCallbackResponse) GetMsg() string {
+	if x != nil {
+		return x.Msg
+	}
+	return ""
 }
 
 var File_member_proto protoreflect.FileDescriptor
 
 const file_member_proto_rawDesc = "" +
 	"\n" +
-	"\fmember.proto\x12\x02pb\"+\n" +
+	"\fmember.proto\x12\x04user\"+\n" +
 	"\x11MemberInfoRequest\x12\x16\n" +
-	"\x06userId\x18\x01 \x01(\x03R\x06userId\"\x98\x01\n" +
-	"\x12MemberInfoResponse\x12\x16\n" +
+	"\x06userId\x18\x01 \x01(\x03R\x06userId\"\x94\x01\n" +
+	"\x0eMemberInfoData\x12\x16\n" +
 	"\x06userId\x18\x01 \x01(\x03R\x06userId\x12\x14\n" +
 	"\x05level\x18\x02 \x01(\x05R\x05level\x12\x1c\n" +
 	"\tlevelName\x18\x03 \x01(\tR\tlevelName\x12\x1e\n" +
 	"\n" +
 	"expireTime\x18\x04 \x01(\x03R\n" +
 	"expireTime\x12\x16\n" +
-	"\x06status\x18\x05 \x01(\x05R\x06status\"\xc6\x01\n" +
+	"\x06status\x18\x05 \x01(\x05R\x06status\"d\n" +
+	"\x12MemberInfoResponse\x12\x12\n" +
+	"\x04code\x18\x01 \x01(\x03R\x04code\x12\x10\n" +
+	"\x03msg\x18\x02 \x01(\tR\x03msg\x12(\n" +
+	"\x04data\x18\x03 \x01(\v2\x14.user.MemberInfoDataR\x04data\"\xc6\x01\n" +
 	"\x14UpgradeMemberRequest\x12\x16\n" +
 	"\x06userId\x18\x01 \x01(\x03R\x06userId\x12\x14\n" +
 	"\x05level\x18\x02 \x01(\x05R\x05level\x12\"\n" +
@@ -832,22 +1100,24 @@ const file_member_proto_rawDesc = "" +
 	"\x06amount\x18\x05 \x01(\x03R\x06amount\x12\x1e\n" +
 	"\n" +
 	"payChannel\x18\x06 \x01(\tR\n" +
-	"payChannel\"\x17\n" +
-	"\x15UpgradeMemberResponse\"M\n" +
+	"payChannel\"=\n" +
+	"\x15UpgradeMemberResponse\x12\x12\n" +
+	"\x04code\x18\x01 \x01(\x03R\x04code\x12\x10\n" +
+	"\x03msg\x18\x02 \x01(\tR\x03msg\"M\n" +
 	"\x17CheckMemberRightRequest\x12\x16\n" +
 	"\x06userId\x18\x01 \x01(\x03R\x06userId\x12\x1a\n" +
-	"\brightKey\x18\x02 \x01(\tR\brightKey\"L\n" +
-	"\x18CheckMemberRightResponse\x12\x1a\n" +
+	"\brightKey\x18\x02 \x01(\tR\brightKey\"H\n" +
+	"\x14CheckMemberRightData\x12\x1a\n" +
 	"\bhasRight\x18\x01 \x01(\bR\bhasRight\x12\x14\n" +
-	"\x05level\x18\x02 \x01(\x05R\x05level\"d\n" +
+	"\x05level\x18\x02 \x01(\x05R\x05level\"p\n" +
+	"\x18CheckMemberRightResponse\x12\x12\n" +
+	"\x04code\x18\x01 \x01(\x03R\x04code\x12\x10\n" +
+	"\x03msg\x18\x02 \x01(\tR\x03msg\x12.\n" +
+	"\x04data\x18\x03 \x01(\v2\x1a.user.CheckMemberRightDataR\x04data\"d\n" +
 	"\x16MemberOrderListRequest\x12\x16\n" +
 	"\x06userId\x18\x01 \x01(\x03R\x06userId\x12\x16\n" +
 	"\x06cursor\x18\x02 \x01(\x03R\x06cursor\x12\x1a\n" +
-	"\bpageSize\x18\x03 \x01(\x03R\bpageSize\"r\n" +
-	"\x17MemberOrderListResponse\x12)\n" +
-	"\x05items\x18\x01 \x03(\v2\x13.pb.MemberOrderItemR\x05items\x12\x16\n" +
-	"\x06cursor\x18\x02 \x01(\x03R\x06cursor\x12\x14\n" +
-	"\x05isEnd\x18\x03 \x01(\bR\x05isEnd\"\xe3\x01\n" +
+	"\bpageSize\x18\x03 \x01(\x03R\bpageSize\"\xe3\x01\n" +
 	"\x0fMemberOrderItem\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\x03R\x02id\x12\x16\n" +
 	"\x06userId\x18\x02 \x01(\x03R\x06userId\x12\x14\n" +
@@ -860,7 +1130,15 @@ const file_member_proto_rawDesc = "" +
 	"\x06status\x18\a \x01(\x05R\x06status\x12\x1e\n" +
 	"\n" +
 	"createTime\x18\b \x01(\x03R\n" +
-	"createTime\"\x9e\x01\n" +
+	"createTime\"p\n" +
+	"\x13MemberOrderListData\x12+\n" +
+	"\x05items\x18\x01 \x03(\v2\x15.user.MemberOrderItemR\x05items\x12\x16\n" +
+	"\x06cursor\x18\x02 \x01(\x03R\x06cursor\x12\x14\n" +
+	"\x05isEnd\x18\x03 \x01(\bR\x05isEnd\"n\n" +
+	"\x17MemberOrderListResponse\x12\x12\n" +
+	"\x04code\x18\x01 \x01(\x03R\x04code\x12\x10\n" +
+	"\x03msg\x18\x02 \x01(\tR\x03msg\x12-\n" +
+	"\x04data\x18\x03 \x01(\v2\x19.user.MemberOrderListDataR\x04data\"\x9e\x01\n" +
 	"\x12CreateOrderRequest\x12\x16\n" +
 	"\x06userId\x18\x01 \x01(\x03R\x06userId\x12\x14\n" +
 	"\x05level\x18\x02 \x01(\x05R\x05level\x12\"\n" +
@@ -868,22 +1146,28 @@ const file_member_proto_rawDesc = "" +
 	"\x06amount\x18\x04 \x01(\x03R\x06amount\x12\x1e\n" +
 	"\n" +
 	"payChannel\x18\x05 \x01(\tR\n" +
-	"payChannel\"G\n" +
-	"\x13CreateOrderResponse\x12\x18\n" +
+	"payChannel\"C\n" +
+	"\x0fCreateOrderData\x12\x18\n" +
 	"\aorderSn\x18\x01 \x01(\tR\aorderSn\x12\x16\n" +
-	"\x06amount\x18\x02 \x01(\x03R\x06amount\"T\n" +
+	"\x06amount\x18\x02 \x01(\x03R\x06amount\"f\n" +
+	"\x13CreateOrderResponse\x12\x12\n" +
+	"\x04code\x18\x01 \x01(\x03R\x04code\x12\x10\n" +
+	"\x03msg\x18\x02 \x01(\tR\x03msg\x12)\n" +
+	"\x04data\x18\x03 \x01(\v2\x15.user.CreateOrderDataR\x04data\"T\n" +
 	"\x12PayCallbackRequest\x12\x18\n" +
 	"\aorderSn\x18\x01 \x01(\tR\aorderSn\x12$\n" +
-	"\rtransactionId\x18\x02 \x01(\tR\rtransactionId\"\x15\n" +
-	"\x13PayCallbackResponse2\xa6\x03\n" +
-	"\x06Member\x12;\n" +
+	"\rtransactionId\x18\x02 \x01(\tR\rtransactionId\";\n" +
+	"\x13PayCallbackResponse\x12\x12\n" +
+	"\x04code\x18\x01 \x01(\x03R\x04code\x12\x10\n" +
+	"\x03msg\x18\x02 \x01(\tR\x03msg2\xbe\x03\n" +
+	"\x06Member\x12?\n" +
 	"\n" +
-	"MemberInfo\x12\x15.pb.MemberInfoRequest\x1a\x16.pb.MemberInfoResponse\x12D\n" +
-	"\rUpgradeMember\x12\x18.pb.UpgradeMemberRequest\x1a\x19.pb.UpgradeMemberResponse\x12M\n" +
-	"\x10CheckMemberRight\x12\x1b.pb.CheckMemberRightRequest\x1a\x1c.pb.CheckMemberRightResponse\x12J\n" +
-	"\x0fMemberOrderList\x12\x1a.pb.MemberOrderListRequest\x1a\x1b.pb.MemberOrderListResponse\x12>\n" +
-	"\vCreateOrder\x12\x16.pb.CreateOrderRequest\x1a\x17.pb.CreateOrderResponse\x12>\n" +
-	"\vPayCallback\x12\x16.pb.PayCallbackRequest\x1a\x17.pb.PayCallbackResponseB\x06Z\x04./pbb\x06proto3"
+	"MemberInfo\x12\x17.user.MemberInfoRequest\x1a\x18.user.MemberInfoResponse\x12H\n" +
+	"\rUpgradeMember\x12\x1a.user.UpgradeMemberRequest\x1a\x1b.user.UpgradeMemberResponse\x12Q\n" +
+	"\x10CheckMemberRight\x12\x1d.user.CheckMemberRightRequest\x1a\x1e.user.CheckMemberRightResponse\x12N\n" +
+	"\x0fMemberOrderList\x12\x1c.user.MemberOrderListRequest\x1a\x1d.user.MemberOrderListResponse\x12B\n" +
+	"\vCreateOrder\x12\x18.user.CreateOrderRequest\x1a\x19.user.CreateOrderResponse\x12B\n" +
+	"\vPayCallback\x12\x18.user.PayCallbackRequest\x1a\x19.user.PayCallbackResponseB#Z!api-thinktalk/client/member/pb;pbb\x06proto3"
 
 var (
 	file_member_proto_rawDescOnce sync.Once
@@ -897,41 +1181,49 @@ func file_member_proto_rawDescGZIP() []byte {
 	return file_member_proto_rawDescData
 }
 
-var file_member_proto_msgTypes = make([]protoimpl.MessageInfo, 13)
+var file_member_proto_msgTypes = make([]protoimpl.MessageInfo, 17)
 var file_member_proto_goTypes = []any{
-	(*MemberInfoRequest)(nil),        // 0: pb.MemberInfoRequest
-	(*MemberInfoResponse)(nil),       // 1: pb.MemberInfoResponse
-	(*UpgradeMemberRequest)(nil),     // 2: pb.UpgradeMemberRequest
-	(*UpgradeMemberResponse)(nil),    // 3: pb.UpgradeMemberResponse
-	(*CheckMemberRightRequest)(nil),  // 4: pb.CheckMemberRightRequest
-	(*CheckMemberRightResponse)(nil), // 5: pb.CheckMemberRightResponse
-	(*MemberOrderListRequest)(nil),   // 6: pb.MemberOrderListRequest
-	(*MemberOrderListResponse)(nil),  // 7: pb.MemberOrderListResponse
-	(*MemberOrderItem)(nil),          // 8: pb.MemberOrderItem
-	(*CreateOrderRequest)(nil),       // 9: pb.CreateOrderRequest
-	(*CreateOrderResponse)(nil),      // 10: pb.CreateOrderResponse
-	(*PayCallbackRequest)(nil),       // 11: pb.PayCallbackRequest
-	(*PayCallbackResponse)(nil),      // 12: pb.PayCallbackResponse
+	(*MemberInfoRequest)(nil),        // 0: user.MemberInfoRequest
+	(*MemberInfoData)(nil),           // 1: user.MemberInfoData
+	(*MemberInfoResponse)(nil),       // 2: user.MemberInfoResponse
+	(*UpgradeMemberRequest)(nil),     // 3: user.UpgradeMemberRequest
+	(*UpgradeMemberResponse)(nil),    // 4: user.UpgradeMemberResponse
+	(*CheckMemberRightRequest)(nil),  // 5: user.CheckMemberRightRequest
+	(*CheckMemberRightData)(nil),     // 6: user.CheckMemberRightData
+	(*CheckMemberRightResponse)(nil), // 7: user.CheckMemberRightResponse
+	(*MemberOrderListRequest)(nil),   // 8: user.MemberOrderListRequest
+	(*MemberOrderItem)(nil),          // 9: user.MemberOrderItem
+	(*MemberOrderListData)(nil),      // 10: user.MemberOrderListData
+	(*MemberOrderListResponse)(nil),  // 11: user.MemberOrderListResponse
+	(*CreateOrderRequest)(nil),       // 12: user.CreateOrderRequest
+	(*CreateOrderData)(nil),          // 13: user.CreateOrderData
+	(*CreateOrderResponse)(nil),      // 14: user.CreateOrderResponse
+	(*PayCallbackRequest)(nil),       // 15: user.PayCallbackRequest
+	(*PayCallbackResponse)(nil),      // 16: user.PayCallbackResponse
 }
 var file_member_proto_depIdxs = []int32{
-	8,  // 0: pb.MemberOrderListResponse.items:type_name -> pb.MemberOrderItem
-	0,  // 1: pb.Member.MemberInfo:input_type -> pb.MemberInfoRequest
-	2,  // 2: pb.Member.UpgradeMember:input_type -> pb.UpgradeMemberRequest
-	4,  // 3: pb.Member.CheckMemberRight:input_type -> pb.CheckMemberRightRequest
-	6,  // 4: pb.Member.MemberOrderList:input_type -> pb.MemberOrderListRequest
-	9,  // 5: pb.Member.CreateOrder:input_type -> pb.CreateOrderRequest
-	11, // 6: pb.Member.PayCallback:input_type -> pb.PayCallbackRequest
-	1,  // 7: pb.Member.MemberInfo:output_type -> pb.MemberInfoResponse
-	3,  // 8: pb.Member.UpgradeMember:output_type -> pb.UpgradeMemberResponse
-	5,  // 9: pb.Member.CheckMemberRight:output_type -> pb.CheckMemberRightResponse
-	7,  // 10: pb.Member.MemberOrderList:output_type -> pb.MemberOrderListResponse
-	10, // 11: pb.Member.CreateOrder:output_type -> pb.CreateOrderResponse
-	12, // 12: pb.Member.PayCallback:output_type -> pb.PayCallbackResponse
-	7,  // [7:13] is the sub-list for method output_type
-	1,  // [1:7] is the sub-list for method input_type
-	1,  // [1:1] is the sub-list for extension type_name
-	1,  // [1:1] is the sub-list for extension extendee
-	0,  // [0:1] is the sub-list for field type_name
+	1,  // 0: user.MemberInfoResponse.data:type_name -> user.MemberInfoData
+	6,  // 1: user.CheckMemberRightResponse.data:type_name -> user.CheckMemberRightData
+	9,  // 2: user.MemberOrderListData.items:type_name -> user.MemberOrderItem
+	10, // 3: user.MemberOrderListResponse.data:type_name -> user.MemberOrderListData
+	13, // 4: user.CreateOrderResponse.data:type_name -> user.CreateOrderData
+	0,  // 5: user.Member.MemberInfo:input_type -> user.MemberInfoRequest
+	3,  // 6: user.Member.UpgradeMember:input_type -> user.UpgradeMemberRequest
+	5,  // 7: user.Member.CheckMemberRight:input_type -> user.CheckMemberRightRequest
+	8,  // 8: user.Member.MemberOrderList:input_type -> user.MemberOrderListRequest
+	12, // 9: user.Member.CreateOrder:input_type -> user.CreateOrderRequest
+	15, // 10: user.Member.PayCallback:input_type -> user.PayCallbackRequest
+	2,  // 11: user.Member.MemberInfo:output_type -> user.MemberInfoResponse
+	4,  // 12: user.Member.UpgradeMember:output_type -> user.UpgradeMemberResponse
+	7,  // 13: user.Member.CheckMemberRight:output_type -> user.CheckMemberRightResponse
+	11, // 14: user.Member.MemberOrderList:output_type -> user.MemberOrderListResponse
+	14, // 15: user.Member.CreateOrder:output_type -> user.CreateOrderResponse
+	16, // 16: user.Member.PayCallback:output_type -> user.PayCallbackResponse
+	11, // [11:17] is the sub-list for method output_type
+	5,  // [5:11] is the sub-list for method input_type
+	5,  // [5:5] is the sub-list for extension type_name
+	5,  // [5:5] is the sub-list for extension extendee
+	0,  // [0:5] is the sub-list for field type_name
 }
 
 func init() { file_member_proto_init() }
@@ -945,7 +1237,7 @@ func file_member_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_member_proto_rawDesc), len(file_member_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   13,
+			NumMessages:   17,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

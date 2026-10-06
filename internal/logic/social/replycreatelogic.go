@@ -25,9 +25,9 @@ func (l *ReplyCreateLogic) CreateReply(userId int64, req *types.ReplyCreateReque
 
 	rpcResp, err := l.svcCtx.ReplyRPC.CreateReply(l.ctx, &reply.CreateReplyRequest{
 		BizId:         req.BizId,
-		TargetId:      req.TargetId,
+		TargetId:      req.ObjId,
 		ReplyUserId:   userId,
-		BeReplyUserId: req.BeReplyUserId,
+		BeReplyUserId: 0,
 		ParentId:      req.ParentId,
 		Content:       req.Content,
 	})
@@ -35,6 +35,8 @@ func (l *ReplyCreateLogic) CreateReply(userId int64, req *types.ReplyCreateReque
 		l.Errorf("[CreateReply] rpc err: %v", err)
 		return nil, err
 	}
-	resp.ReplyId = rpcResp.ReplyId
+	if rpcResp != nil && rpcResp.Data != nil {
+		resp.Id = rpcResp.Data.ReplyId
+	}
 	return resp, nil
 }

@@ -96,6 +96,16 @@ type (
 		Status    int32 `json:"status"`
 	}
 	AdminAuditResponse {}
+	UploadTokenRequest {
+		FileType string `json:"file_type"`
+		Scene    string `json:"scene,optional"`
+	}
+	UploadTokenResponse {
+		UploadUrl   string `json:"upload_url"`
+		DownloadUrl string `json:"download_url"`
+		ObjectKey   string `json:"object_key"`
+		ExpiresIn   int64  `json:"expires_in"`
+	}
 )
 
 @server (
@@ -106,6 +116,9 @@ type (
 service api {
 	@handler UploadCoverHandler
 	post /upload/cover returns (UploadCoverResponse)
+
+	@handler UploadTokenHandler
+	post /upload/token (UploadTokenRequest) returns (UploadTokenResponse)
 
 	@handler PublishHandler
 	post /publish (PublishRequest) returns (PublishResponse)

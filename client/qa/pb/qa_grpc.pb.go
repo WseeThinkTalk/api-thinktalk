@@ -19,38 +19,29 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	QA_PublishQuestion_FullMethodName = "/service.QA/PublishQuestion"
-	QA_AnswerQuestion_FullMethodName  = "/service.QA/AnswerQuestion"
-	QA_AcceptAnswer_FullMethodName    = "/service.QA/AcceptAnswer"
-	QA_Questions_FullMethodName       = "/service.QA/Questions"
-	QA_QuestionDetail_FullMethodName  = "/service.QA/QuestionDetail"
-	QA_QuestionDelete_FullMethodName  = "/service.QA/QuestionDelete"
-	QA_AnswerList_FullMethodName      = "/service.QA/AnswerList"
-	QA_AnswerDelete_FullMethodName    = "/service.QA/AnswerDelete"
-	QA_SearchQuestions_FullMethodName = "/service.QA/SearchQuestions"
+	QA_PublishQuestion_FullMethodName = "/content.QA/PublishQuestion"
+	QA_AnswerQuestion_FullMethodName  = "/content.QA/AnswerQuestion"
+	QA_AcceptAnswer_FullMethodName    = "/content.QA/AcceptAnswer"
+	QA_Questions_FullMethodName       = "/content.QA/Questions"
+	QA_QuestionDetail_FullMethodName  = "/content.QA/QuestionDetail"
+	QA_QuestionDelete_FullMethodName  = "/content.QA/QuestionDelete"
+	QA_AnswerList_FullMethodName      = "/content.QA/AnswerList"
+	QA_AnswerDelete_FullMethodName    = "/content.QA/AnswerDelete"
+	QA_SearchQuestions_FullMethodName = "/content.QA/SearchQuestions"
 )
 
 // QAClient is the client API for QA service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type QAClient interface {
-	// 发布问题
 	PublishQuestion(ctx context.Context, in *PublishQuestionRequest, opts ...grpc.CallOption) (*PublishQuestionResponse, error)
-	// 回答
 	AnswerQuestion(ctx context.Context, in *AnswerQuestionRequest, opts ...grpc.CallOption) (*AnswerQuestionResponse, error)
-	// 采纳回答
 	AcceptAnswer(ctx context.Context, in *AcceptAnswerRequest, opts ...grpc.CallOption) (*AcceptAnswerResponse, error)
-	// 问题列表
 	Questions(ctx context.Context, in *QuestionsRequest, opts ...grpc.CallOption) (*QuestionsResponse, error)
-	// 问题详情
 	QuestionDetail(ctx context.Context, in *QuestionDetailRequest, opts ...grpc.CallOption) (*QuestionDetailResponse, error)
-	// 删除问题
 	QuestionDelete(ctx context.Context, in *QuestionDeleteRequest, opts ...grpc.CallOption) (*QuestionDeleteResponse, error)
-	// 回答列表
 	AnswerList(ctx context.Context, in *AnswerListRequest, opts ...grpc.CallOption) (*AnswerListResponse, error)
-	// 删除回答
 	AnswerDelete(ctx context.Context, in *AnswerDeleteRequest, opts ...grpc.CallOption) (*AnswerDeleteResponse, error)
-	// 搜索问题
 	SearchQuestions(ctx context.Context, in *SearchQuestionsRequest, opts ...grpc.CallOption) (*SearchQuestionsResponse, error)
 }
 
@@ -156,23 +147,14 @@ func (c *qAClient) SearchQuestions(ctx context.Context, in *SearchQuestionsReque
 // All implementations must embed UnimplementedQAServer
 // for forward compatibility.
 type QAServer interface {
-	// 发布问题
 	PublishQuestion(context.Context, *PublishQuestionRequest) (*PublishQuestionResponse, error)
-	// 回答
 	AnswerQuestion(context.Context, *AnswerQuestionRequest) (*AnswerQuestionResponse, error)
-	// 采纳回答
 	AcceptAnswer(context.Context, *AcceptAnswerRequest) (*AcceptAnswerResponse, error)
-	// 问题列表
 	Questions(context.Context, *QuestionsRequest) (*QuestionsResponse, error)
-	// 问题详情
 	QuestionDetail(context.Context, *QuestionDetailRequest) (*QuestionDetailResponse, error)
-	// 删除问题
 	QuestionDelete(context.Context, *QuestionDeleteRequest) (*QuestionDeleteResponse, error)
-	// 回答列表
 	AnswerList(context.Context, *AnswerListRequest) (*AnswerListResponse, error)
-	// 删除回答
 	AnswerDelete(context.Context, *AnswerDeleteRequest) (*AnswerDeleteResponse, error)
-	// 搜索问题
 	SearchQuestions(context.Context, *SearchQuestionsRequest) (*SearchQuestionsResponse, error)
 	mustEmbedUnimplementedQAServer()
 }
@@ -398,7 +380,7 @@ func _QA_SearchQuestions_Handler(srv interface{}, ctx context.Context, dec func(
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
 var QA_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "service.QA",
+	ServiceName: "content.QA",
 	HandlerType: (*QAServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{

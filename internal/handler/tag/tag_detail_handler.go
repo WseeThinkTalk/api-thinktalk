@@ -14,8 +14,10 @@ import (
 func TagDetailHandler(svcCtx *svc.ServiceContext) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		var req types.TagDetailRequest
-		if v := r.URL.Query().Get("tag_id"); v != "" {
-			json.Unmarshal([]byte(v), &req.TagId)
+		if v := r.URL.Query().Get("id"); v != "" {
+			json.Unmarshal([]byte(v), &req.Id)
+		} else if v := r.URL.Query().Get("tag_id"); v != "" {
+			json.Unmarshal([]byte(v), &req.Id)
 		}
 		l := logic.NewTagDetailLogic(r.Context(), svcCtx)
 		resp, err := l.TagDetail(&req)

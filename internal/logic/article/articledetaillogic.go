@@ -4,13 +4,13 @@
 package article
 
 import (
-	article "api-thinktalk/client/article/pb"
-	user "api-thinktalk/client/user/service"
 	"context"
 	"time"
 
 	"api-thinktalk/internal/svc"
 	"api-thinktalk/internal/types"
+	article "api-thinktalk/client/article/pb"
+	user "api-thinktalk/client/user/service"
 
 	"github.com/zeromicro/go-zero/core/logx"
 )
@@ -39,26 +39,35 @@ func (l *ArticleDetailLogic) ArticleDetail(req *types.ArticleDetailRequest) (res
 		logx.Errorf("get article detail id: %d err: %v", req.ArticleId, err)
 		return nil, err
 	}
-	if articleInfo == nil || articleInfo.Article == nil {
+	if articleInfo == nil || articleInfo.Data == nil {
 		return nil, nil
 	}
+	artData := articleInfo.Data
 	userInfo, err := l.svcCtx.UserRPC.FindById(l.ctx, &user.FindByIdRequest{
-		UserId: articleInfo.Article.AuthorId,
+		UserId: artData.AuthorId,
 	})
 	if err != nil {
-		logx.Errorf("get user info id: %d err: %v", articleInfo.Article.AuthorId, err)
+		logx.Errorf("get user info id: %d err: %v", artData.AuthorId, err)
 		return nil, err
 	}
-	publishTime := time.Unix(articleInfo.Article.PublishTime, 0).Format("2006-01-02 15:04:05")
-	resp.ArticleId = articleInfo.Article.Id
-	resp.Title = articleInfo.Article.Title
-	resp.Content = articleInfo.Article.Content
-	resp.Description = articleInfo.Article.Description
-	resp.Cover = articleInfo.Article.Cover
-	resp.AuthorId = articleInfo.Article.AuthorId
-	resp.AuthorName = userInfo.Username
-	resp.AuthorAvatar = userInfo.Avatar
+
+	authorName := ""
+	authorAvatar := ""
+	if userInfo != nil && userInfo.Data != nil {
+		authorName = userInfo.Data.Username
+		authorAvatar = userInfo.Data.Avatar
+	}
+
+	publishTime := time.Unix(artData.PublishTime, 0).Format("2006-01-02 15:04:05")
+	resp.ArticleId = artData.Id
+	resp.Title = artData.Title
+	resp.Content = artData.Content
+	resp.Description = artData.Description
+	resp.Cover = artData.Cover
+	resp.AuthorId = artData.AuthorId
+	resp.AuthorName = authorName
+	resp.AuthorAvatar = authorAvatar
 	resp.PublishTime = publishTime
-	resp.LikeNum = articleInfo.Article.LikeCount
+	resp.LikeNum = artData.LikeCount
 	return resp, nil
 }

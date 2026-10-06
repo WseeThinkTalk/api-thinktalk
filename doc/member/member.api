@@ -9,7 +9,9 @@ type (
 		IsActive      bool  `json:"is_active"`
 		RemainDays    int64 `json:"remain_days"`
 	}
-	MemberRightRequest {}
+	MemberRightRequest {
+		RightKey string `form:"right_key,optional"`
+	}
 	MemberRightItem {
 		Id          int64  `json:"id"`
 		Level       int32  `json:"level"`
@@ -19,7 +21,9 @@ type (
 		Icon        string `json:"icon"`
 	}
 	MemberRightResponse {
-		Rights []*MemberRightItem `json:"rights"`
+		HasRight bool               `json:"has_right"`
+		Level    int32              `json:"level"`
+		Rights   []*MemberRightItem `json:"rights,optional"`
 	}
 	MemberOrderListRequest {
 		Cursor   int64 `form:"cursor"`
@@ -42,27 +46,33 @@ type (
 		IsEnd  bool               `json:"is_end"`
 	}
 	UpgradeMemberRequest {
-		TargetLevel    int32 `json:"target_level"`
-		DurationMonths int32 `json:"duration_months"`
+		Level         int32  `json:"level"`
+		DurationDays  int32  `json:"duration_days"`
+		TransactionId string `json:"transaction_id,optional"`
+		Amount        int64  `json:"amount,optional"`
+		PayChannel    string `json:"pay_channel,optional"`
 	}
-	UpgradeMemberResponse {
-		Amount float64 `json:"amount"`
+	UpgradeMemberResponse {}
+	CreateMemberOrderReq {
+		Level        int32  `json:"level"`
+		DurationDays int32  `json:"duration_days"`
+		Amount       int64  `json:"amount"`
+		PayChannel   string `json:"pay_channel"`
 	}
-	CreateMemberOrderRequest {
-		TargetLevel    int32  `json:"target_level"`
-		DurationMonths int32  `json:"duration_months"`
-		PayChannel     string `json:"pay_channel"`
-	}
-	CreateMemberOrderResponse {
-		OrderId string `json:"order_id"`
+	CreateMemberOrderResp {
+		OrderSn string `json:"order_sn"`
+		Amount  int64  `json:"amount"`
 		PayUrl  string `json:"pay_url"`
 	}
-	QueryOrderStatusRequest {
-		OrderId string `json:"order_id"`
+	QueryOrderStatusReq {
+		OrderSn string `json:"order_sn"`
 	}
-	QueryOrderStatusResponse {
-		OrderId   string `json:"order_id"`
-		PayStatus int32  `json:"pay_status"`
+	QueryOrderStatusResp {
+		OrderSn     string `json:"order_sn"`
+		Status      int32  `json:"status"`
+		StatusText  string `json:"status_text"`
+		TradeNo     string `json:"trade_no,optional"`
+		TotalAmount string `json:"total_amount,optional"`
 	}
 )
 
@@ -93,10 +103,10 @@ service api {
 	post /upgrade (UpgradeMemberRequest) returns (UpgradeMemberResponse)
 
 	@handler CreateMemberOrderHandler
-	post /order/create (CreateMemberOrderRequest) returns (CreateMemberOrderResponse)
+	post /order/create (CreateMemberOrderReq) returns (CreateMemberOrderResp)
 
 	@handler QueryOrderStatusHandler
-	post /order/query-status (QueryOrderStatusRequest) returns (QueryOrderStatusResponse)
+	post /order/query-status (QueryOrderStatusReq) returns (QueryOrderStatusResp)
 }
 
 @server (

@@ -36,25 +36,26 @@ func (l *AdminUserListLogic) AdminUserList(req *types.AdminUserListRequest) (res
 		return nil, err
 	}
 
-	// 转换用户管理列表数据项
-	var items []*types.AdminUserItem
-	for _, v := range rpcResp.Items {
-		items = append(items, &types.AdminUserItem{
-			UserId:       v.UserId,
-			Username:     v.Username,
-			Mobile:       v.Mobile,
-			Avatar:       v.Avatar,
-			Role:         v.Role,
-			DisplayId:    v.DisplayId,
-			Bio:          v.Bio,
-			Gender:       v.Gender,
-			ProfileCover: v.ProfileCover,
-			CreateTime:   v.CreateTime,
-		})
+	var users []types.AdminUserInfo
+	if rpcResp != nil && rpcResp.Data != nil {
+		for _, v := range rpcResp.Data.Users {
+			if v != nil {
+				users = append(users, types.AdminUserInfo{
+					UserId:       v.UserId,
+					Username:     v.Username,
+					Avatar:       v.Avatar,
+					Role:         v.Role,
+					DisplayId:    v.DisplayId,
+					Bio:          v.Bio,
+					Gender:       v.Gender,
+					ProfileCover: v.ProfileCover,
+				})
+			}
+		}
+		resp.Cursor = rpcResp.Data.Cursor
+		resp.IsEnd = rpcResp.Data.IsEnd
 	}
 
-	resp.Items = items
-	resp.Cursor = rpcResp.Cursor
-	resp.IsEnd = rpcResp.IsEnd
+	resp.Users = users
 	return resp, nil
 }

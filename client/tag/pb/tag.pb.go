@@ -23,8 +23,8 @@ const (
 
 type CreateTagRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	TagName       string                 `protobuf:"bytes,1,opt,name=tagName,proto3" json:"tagName,omitempty"` // 标签名
-	TagDesc       string                 `protobuf:"bytes,2,opt,name=tagDesc,proto3" json:"tagDesc,omitempty"` // 标签描述
+	TagName       string                 `protobuf:"bytes,1,opt,name=tagName,proto3" json:"tagName,omitempty"`
+	TagDesc       string                 `protobuf:"bytes,2,opt,name=tagDesc,proto3" json:"tagDesc,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -73,16 +73,62 @@ func (x *CreateTagRequest) GetTagDesc() string {
 	return ""
 }
 
+type CreateTagData struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	TagId         int64                  `protobuf:"varint,1,opt,name=tagId,proto3" json:"tagId,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *CreateTagData) Reset() {
+	*x = CreateTagData{}
+	mi := &file_tag_proto_msgTypes[1]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *CreateTagData) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*CreateTagData) ProtoMessage() {}
+
+func (x *CreateTagData) ProtoReflect() protoreflect.Message {
+	mi := &file_tag_proto_msgTypes[1]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use CreateTagData.ProtoReflect.Descriptor instead.
+func (*CreateTagData) Descriptor() ([]byte, []int) {
+	return file_tag_proto_rawDescGZIP(), []int{1}
+}
+
+func (x *CreateTagData) GetTagId() int64 {
+	if x != nil {
+		return x.TagId
+	}
+	return 0
+}
+
 type CreateTagResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	TagId         int64                  `protobuf:"varint,1,opt,name=tagId,proto3" json:"tagId,omitempty"` // 标签ID
+	Code          int64                  `protobuf:"varint,1,opt,name=code,proto3" json:"code,omitempty"`
+	Msg           string                 `protobuf:"bytes,2,opt,name=msg,proto3" json:"msg,omitempty"`
+	Data          *CreateTagData         `protobuf:"bytes,3,opt,name=data,proto3" json:"data,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
 func (x *CreateTagResponse) Reset() {
 	*x = CreateTagResponse{}
-	mi := &file_tag_proto_msgTypes[1]
+	mi := &file_tag_proto_msgTypes[2]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -94,7 +140,7 @@ func (x *CreateTagResponse) String() string {
 func (*CreateTagResponse) ProtoMessage() {}
 
 func (x *CreateTagResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_tag_proto_msgTypes[1]
+	mi := &file_tag_proto_msgTypes[2]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -107,28 +153,42 @@ func (x *CreateTagResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CreateTagResponse.ProtoReflect.Descriptor instead.
 func (*CreateTagResponse) Descriptor() ([]byte, []int) {
-	return file_tag_proto_rawDescGZIP(), []int{1}
+	return file_tag_proto_rawDescGZIP(), []int{2}
 }
 
-func (x *CreateTagResponse) GetTagId() int64 {
+func (x *CreateTagResponse) GetCode() int64 {
 	if x != nil {
-		return x.TagId
+		return x.Code
 	}
 	return 0
 }
 
+func (x *CreateTagResponse) GetMsg() string {
+	if x != nil {
+		return x.Msg
+	}
+	return ""
+}
+
+func (x *CreateTagResponse) GetData() *CreateTagData {
+	if x != nil {
+		return x.Data
+	}
+	return nil
+}
+
 type UpdateTagRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	TagId         int64                  `protobuf:"varint,1,opt,name=tagId,proto3" json:"tagId,omitempty"`    // 标签ID
-	TagName       string                 `protobuf:"bytes,2,opt,name=tagName,proto3" json:"tagName,omitempty"` // 标签名
-	TagDesc       string                 `protobuf:"bytes,3,opt,name=tagDesc,proto3" json:"tagDesc,omitempty"` // 标签描述
+	TagId         int64                  `protobuf:"varint,1,opt,name=tagId,proto3" json:"tagId,omitempty"`
+	TagName       string                 `protobuf:"bytes,2,opt,name=tagName,proto3" json:"tagName,omitempty"`
+	TagDesc       string                 `protobuf:"bytes,3,opt,name=tagDesc,proto3" json:"tagDesc,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
 func (x *UpdateTagRequest) Reset() {
 	*x = UpdateTagRequest{}
-	mi := &file_tag_proto_msgTypes[2]
+	mi := &file_tag_proto_msgTypes[3]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -140,7 +200,7 @@ func (x *UpdateTagRequest) String() string {
 func (*UpdateTagRequest) ProtoMessage() {}
 
 func (x *UpdateTagRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_tag_proto_msgTypes[2]
+	mi := &file_tag_proto_msgTypes[3]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -153,7 +213,7 @@ func (x *UpdateTagRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UpdateTagRequest.ProtoReflect.Descriptor instead.
 func (*UpdateTagRequest) Descriptor() ([]byte, []int) {
-	return file_tag_proto_rawDescGZIP(), []int{2}
+	return file_tag_proto_rawDescGZIP(), []int{3}
 }
 
 func (x *UpdateTagRequest) GetTagId() int64 {
@@ -179,13 +239,15 @@ func (x *UpdateTagRequest) GetTagDesc() string {
 
 type UpdateTagResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
+	Code          int64                  `protobuf:"varint,1,opt,name=code,proto3" json:"code,omitempty"`
+	Msg           string                 `protobuf:"bytes,2,opt,name=msg,proto3" json:"msg,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
 func (x *UpdateTagResponse) Reset() {
 	*x = UpdateTagResponse{}
-	mi := &file_tag_proto_msgTypes[3]
+	mi := &file_tag_proto_msgTypes[4]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -197,7 +259,7 @@ func (x *UpdateTagResponse) String() string {
 func (*UpdateTagResponse) ProtoMessage() {}
 
 func (x *UpdateTagResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_tag_proto_msgTypes[3]
+	mi := &file_tag_proto_msgTypes[4]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -210,19 +272,33 @@ func (x *UpdateTagResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UpdateTagResponse.ProtoReflect.Descriptor instead.
 func (*UpdateTagResponse) Descriptor() ([]byte, []int) {
-	return file_tag_proto_rawDescGZIP(), []int{3}
+	return file_tag_proto_rawDescGZIP(), []int{4}
+}
+
+func (x *UpdateTagResponse) GetCode() int64 {
+	if x != nil {
+		return x.Code
+	}
+	return 0
+}
+
+func (x *UpdateTagResponse) GetMsg() string {
+	if x != nil {
+		return x.Msg
+	}
+	return ""
 }
 
 type DeleteTagRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	TagId         int64                  `protobuf:"varint,1,opt,name=tagId,proto3" json:"tagId,omitempty"` // 标签ID
+	TagId         int64                  `protobuf:"varint,1,opt,name=tagId,proto3" json:"tagId,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
 func (x *DeleteTagRequest) Reset() {
 	*x = DeleteTagRequest{}
-	mi := &file_tag_proto_msgTypes[4]
+	mi := &file_tag_proto_msgTypes[5]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -234,7 +310,7 @@ func (x *DeleteTagRequest) String() string {
 func (*DeleteTagRequest) ProtoMessage() {}
 
 func (x *DeleteTagRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_tag_proto_msgTypes[4]
+	mi := &file_tag_proto_msgTypes[5]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -247,7 +323,7 @@ func (x *DeleteTagRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DeleteTagRequest.ProtoReflect.Descriptor instead.
 func (*DeleteTagRequest) Descriptor() ([]byte, []int) {
-	return file_tag_proto_rawDescGZIP(), []int{4}
+	return file_tag_proto_rawDescGZIP(), []int{5}
 }
 
 func (x *DeleteTagRequest) GetTagId() int64 {
@@ -259,13 +335,15 @@ func (x *DeleteTagRequest) GetTagId() int64 {
 
 type DeleteTagResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
+	Code          int64                  `protobuf:"varint,1,opt,name=code,proto3" json:"code,omitempty"`
+	Msg           string                 `protobuf:"bytes,2,opt,name=msg,proto3" json:"msg,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
 func (x *DeleteTagResponse) Reset() {
 	*x = DeleteTagResponse{}
-	mi := &file_tag_proto_msgTypes[5]
+	mi := &file_tag_proto_msgTypes[6]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -277,7 +355,7 @@ func (x *DeleteTagResponse) String() string {
 func (*DeleteTagResponse) ProtoMessage() {}
 
 func (x *DeleteTagResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_tag_proto_msgTypes[5]
+	mi := &file_tag_proto_msgTypes[6]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -290,19 +368,33 @@ func (x *DeleteTagResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DeleteTagResponse.ProtoReflect.Descriptor instead.
 func (*DeleteTagResponse) Descriptor() ([]byte, []int) {
-	return file_tag_proto_rawDescGZIP(), []int{5}
+	return file_tag_proto_rawDescGZIP(), []int{6}
+}
+
+func (x *DeleteTagResponse) GetCode() int64 {
+	if x != nil {
+		return x.Code
+	}
+	return 0
+}
+
+func (x *DeleteTagResponse) GetMsg() string {
+	if x != nil {
+		return x.Msg
+	}
+	return ""
 }
 
 type TagDetailRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	TagId         int64                  `protobuf:"varint,1,opt,name=tagId,proto3" json:"tagId,omitempty"` // 标签ID
+	TagId         int64                  `protobuf:"varint,1,opt,name=tagId,proto3" json:"tagId,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
 func (x *TagDetailRequest) Reset() {
 	*x = TagDetailRequest{}
-	mi := &file_tag_proto_msgTypes[6]
+	mi := &file_tag_proto_msgTypes[7]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -314,7 +406,7 @@ func (x *TagDetailRequest) String() string {
 func (*TagDetailRequest) ProtoMessage() {}
 
 func (x *TagDetailRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_tag_proto_msgTypes[6]
+	mi := &file_tag_proto_msgTypes[7]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -327,7 +419,7 @@ func (x *TagDetailRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use TagDetailRequest.ProtoReflect.Descriptor instead.
 func (*TagDetailRequest) Descriptor() ([]byte, []int) {
-	return file_tag_proto_rawDescGZIP(), []int{6}
+	return file_tag_proto_rawDescGZIP(), []int{7}
 }
 
 func (x *TagDetailRequest) GetTagId() int64 {
@@ -337,148 +429,20 @@ func (x *TagDetailRequest) GetTagId() int64 {
 	return 0
 }
 
-type TagDetailResponse struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	TagId         int64                  `protobuf:"varint,1,opt,name=tagId,proto3" json:"tagId,omitempty"`                 // 标签ID
-	TagName       string                 `protobuf:"bytes,2,opt,name=tagName,proto3" json:"tagName,omitempty"`              // 标签名
-	TagDesc       string                 `protobuf:"bytes,3,opt,name=tagDesc,proto3" json:"tagDesc,omitempty"`              // 标签描述
-	ResourceCount int64                  `protobuf:"varint,4,opt,name=resourceCount,proto3" json:"resourceCount,omitempty"` // 关联资源数
-	CreateTime    int64                  `protobuf:"varint,5,opt,name=createTime,proto3" json:"createTime,omitempty"`       // 创建时间
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *TagDetailResponse) Reset() {
-	*x = TagDetailResponse{}
-	mi := &file_tag_proto_msgTypes[7]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *TagDetailResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*TagDetailResponse) ProtoMessage() {}
-
-func (x *TagDetailResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_tag_proto_msgTypes[7]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use TagDetailResponse.ProtoReflect.Descriptor instead.
-func (*TagDetailResponse) Descriptor() ([]byte, []int) {
-	return file_tag_proto_rawDescGZIP(), []int{7}
-}
-
-func (x *TagDetailResponse) GetTagId() int64 {
-	if x != nil {
-		return x.TagId
-	}
-	return 0
-}
-
-func (x *TagDetailResponse) GetTagName() string {
-	if x != nil {
-		return x.TagName
-	}
-	return ""
-}
-
-func (x *TagDetailResponse) GetTagDesc() string {
-	if x != nil {
-		return x.TagDesc
-	}
-	return ""
-}
-
-func (x *TagDetailResponse) GetResourceCount() int64 {
-	if x != nil {
-		return x.ResourceCount
-	}
-	return 0
-}
-
-func (x *TagDetailResponse) GetCreateTime() int64 {
-	if x != nil {
-		return x.CreateTime
-	}
-	return 0
-}
-
-type TagListRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Cursor        int64                  `protobuf:"varint,1,opt,name=cursor,proto3" json:"cursor,omitempty"`     // 游标
-	PageSize      int64                  `protobuf:"varint,2,opt,name=pageSize,proto3" json:"pageSize,omitempty"` // 页大小
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *TagListRequest) Reset() {
-	*x = TagListRequest{}
-	mi := &file_tag_proto_msgTypes[8]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *TagListRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*TagListRequest) ProtoMessage() {}
-
-func (x *TagListRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_tag_proto_msgTypes[8]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use TagListRequest.ProtoReflect.Descriptor instead.
-func (*TagListRequest) Descriptor() ([]byte, []int) {
-	return file_tag_proto_rawDescGZIP(), []int{8}
-}
-
-func (x *TagListRequest) GetCursor() int64 {
-	if x != nil {
-		return x.Cursor
-	}
-	return 0
-}
-
-func (x *TagListRequest) GetPageSize() int64 {
-	if x != nil {
-		return x.PageSize
-	}
-	return 0
-}
-
 type TagItem struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	TagId         int64                  `protobuf:"varint,1,opt,name=tagId,proto3" json:"tagId,omitempty"`                 // 标签ID
-	TagName       string                 `protobuf:"bytes,2,opt,name=tagName,proto3" json:"tagName,omitempty"`              // 标签名
-	TagDesc       string                 `protobuf:"bytes,3,opt,name=tagDesc,proto3" json:"tagDesc,omitempty"`              // 标签描述
-	ResourceCount int64                  `protobuf:"varint,4,opt,name=resourceCount,proto3" json:"resourceCount,omitempty"` // 关联资源数
-	CreateTime    int64                  `protobuf:"varint,5,opt,name=createTime,proto3" json:"createTime,omitempty"`       // 创建时间
+	TagId         int64                  `protobuf:"varint,1,opt,name=tagId,proto3" json:"tagId,omitempty"`
+	TagName       string                 `protobuf:"bytes,2,opt,name=tagName,proto3" json:"tagName,omitempty"`
+	TagDesc       string                 `protobuf:"bytes,3,opt,name=tagDesc,proto3" json:"tagDesc,omitempty"`
+	ResourceCount int64                  `protobuf:"varint,4,opt,name=resourceCount,proto3" json:"resourceCount,omitempty"`
+	CreateTime    int64                  `protobuf:"varint,5,opt,name=createTime,proto3" json:"createTime,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
 func (x *TagItem) Reset() {
 	*x = TagItem{}
-	mi := &file_tag_proto_msgTypes[9]
+	mi := &file_tag_proto_msgTypes[8]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -490,7 +454,7 @@ func (x *TagItem) String() string {
 func (*TagItem) ProtoMessage() {}
 
 func (x *TagItem) ProtoReflect() protoreflect.Message {
-	mi := &file_tag_proto_msgTypes[9]
+	mi := &file_tag_proto_msgTypes[8]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -503,7 +467,7 @@ func (x *TagItem) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use TagItem.ProtoReflect.Descriptor instead.
 func (*TagItem) Descriptor() ([]byte, []int) {
-	return file_tag_proto_rawDescGZIP(), []int{9}
+	return file_tag_proto_rawDescGZIP(), []int{8}
 }
 
 func (x *TagItem) GetTagId() int64 {
@@ -541,18 +505,190 @@ func (x *TagItem) GetCreateTime() int64 {
 	return 0
 }
 
+type TagDetailResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Code          int64                  `protobuf:"varint,1,opt,name=code,proto3" json:"code,omitempty"`
+	Msg           string                 `protobuf:"bytes,2,opt,name=msg,proto3" json:"msg,omitempty"`
+	Data          *TagItem               `protobuf:"bytes,3,opt,name=data,proto3" json:"data,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *TagDetailResponse) Reset() {
+	*x = TagDetailResponse{}
+	mi := &file_tag_proto_msgTypes[9]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *TagDetailResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*TagDetailResponse) ProtoMessage() {}
+
+func (x *TagDetailResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_tag_proto_msgTypes[9]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use TagDetailResponse.ProtoReflect.Descriptor instead.
+func (*TagDetailResponse) Descriptor() ([]byte, []int) {
+	return file_tag_proto_rawDescGZIP(), []int{9}
+}
+
+func (x *TagDetailResponse) GetCode() int64 {
+	if x != nil {
+		return x.Code
+	}
+	return 0
+}
+
+func (x *TagDetailResponse) GetMsg() string {
+	if x != nil {
+		return x.Msg
+	}
+	return ""
+}
+
+func (x *TagDetailResponse) GetData() *TagItem {
+	if x != nil {
+		return x.Data
+	}
+	return nil
+}
+
+type TagListRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Cursor        int64                  `protobuf:"varint,1,opt,name=cursor,proto3" json:"cursor,omitempty"`
+	PageSize      int64                  `protobuf:"varint,2,opt,name=pageSize,proto3" json:"pageSize,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *TagListRequest) Reset() {
+	*x = TagListRequest{}
+	mi := &file_tag_proto_msgTypes[10]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *TagListRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*TagListRequest) ProtoMessage() {}
+
+func (x *TagListRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_tag_proto_msgTypes[10]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use TagListRequest.ProtoReflect.Descriptor instead.
+func (*TagListRequest) Descriptor() ([]byte, []int) {
+	return file_tag_proto_rawDescGZIP(), []int{10}
+}
+
+func (x *TagListRequest) GetCursor() int64 {
+	if x != nil {
+		return x.Cursor
+	}
+	return 0
+}
+
+func (x *TagListRequest) GetPageSize() int64 {
+	if x != nil {
+		return x.PageSize
+	}
+	return 0
+}
+
+type TagListData struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Items         []*TagItem             `protobuf:"bytes,1,rep,name=items,proto3" json:"items,omitempty"`
+	Cursor        int64                  `protobuf:"varint,2,opt,name=cursor,proto3" json:"cursor,omitempty"`
+	IsEnd         bool                   `protobuf:"varint,3,opt,name=isEnd,proto3" json:"isEnd,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *TagListData) Reset() {
+	*x = TagListData{}
+	mi := &file_tag_proto_msgTypes[11]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *TagListData) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*TagListData) ProtoMessage() {}
+
+func (x *TagListData) ProtoReflect() protoreflect.Message {
+	mi := &file_tag_proto_msgTypes[11]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use TagListData.ProtoReflect.Descriptor instead.
+func (*TagListData) Descriptor() ([]byte, []int) {
+	return file_tag_proto_rawDescGZIP(), []int{11}
+}
+
+func (x *TagListData) GetItems() []*TagItem {
+	if x != nil {
+		return x.Items
+	}
+	return nil
+}
+
+func (x *TagListData) GetCursor() int64 {
+	if x != nil {
+		return x.Cursor
+	}
+	return 0
+}
+
+func (x *TagListData) GetIsEnd() bool {
+	if x != nil {
+		return x.IsEnd
+	}
+	return false
+}
+
 type TagListResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Items         []*TagItem             `protobuf:"bytes,1,rep,name=items,proto3" json:"items,omitempty"`    // 标签列表
-	Cursor        int64                  `protobuf:"varint,2,opt,name=cursor,proto3" json:"cursor,omitempty"` // 下一页游标
-	IsEnd         bool                   `protobuf:"varint,3,opt,name=isEnd,proto3" json:"isEnd,omitempty"`   // 是否最后一页
+	Code          int64                  `protobuf:"varint,1,opt,name=code,proto3" json:"code,omitempty"`
+	Msg           string                 `protobuf:"bytes,2,opt,name=msg,proto3" json:"msg,omitempty"`
+	Data          *TagListData           `protobuf:"bytes,3,opt,name=data,proto3" json:"data,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
 func (x *TagListResponse) Reset() {
 	*x = TagListResponse{}
-	mi := &file_tag_proto_msgTypes[10]
+	mi := &file_tag_proto_msgTypes[12]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -564,7 +700,7 @@ func (x *TagListResponse) String() string {
 func (*TagListResponse) ProtoMessage() {}
 
 func (x *TagListResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_tag_proto_msgTypes[10]
+	mi := &file_tag_proto_msgTypes[12]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -577,40 +713,40 @@ func (x *TagListResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use TagListResponse.ProtoReflect.Descriptor instead.
 func (*TagListResponse) Descriptor() ([]byte, []int) {
-	return file_tag_proto_rawDescGZIP(), []int{10}
+	return file_tag_proto_rawDescGZIP(), []int{12}
 }
 
-func (x *TagListResponse) GetItems() []*TagItem {
+func (x *TagListResponse) GetCode() int64 {
 	if x != nil {
-		return x.Items
-	}
-	return nil
-}
-
-func (x *TagListResponse) GetCursor() int64 {
-	if x != nil {
-		return x.Cursor
+		return x.Code
 	}
 	return 0
 }
 
-func (x *TagListResponse) GetIsEnd() bool {
+func (x *TagListResponse) GetMsg() string {
 	if x != nil {
-		return x.IsEnd
+		return x.Msg
 	}
-	return false
+	return ""
+}
+
+func (x *TagListResponse) GetData() *TagListData {
+	if x != nil {
+		return x.Data
+	}
+	return nil
 }
 
 type HotTagsRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Limit         int32                  `protobuf:"varint,1,opt,name=limit,proto3" json:"limit,omitempty"` // 数量上限
+	Limit         int32                  `protobuf:"varint,1,opt,name=limit,proto3" json:"limit,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
 func (x *HotTagsRequest) Reset() {
 	*x = HotTagsRequest{}
-	mi := &file_tag_proto_msgTypes[11]
+	mi := &file_tag_proto_msgTypes[13]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -622,7 +758,7 @@ func (x *HotTagsRequest) String() string {
 func (*HotTagsRequest) ProtoMessage() {}
 
 func (x *HotTagsRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_tag_proto_msgTypes[11]
+	mi := &file_tag_proto_msgTypes[13]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -635,7 +771,7 @@ func (x *HotTagsRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use HotTagsRequest.ProtoReflect.Descriptor instead.
 func (*HotTagsRequest) Descriptor() ([]byte, []int) {
-	return file_tag_proto_rawDescGZIP(), []int{11}
+	return file_tag_proto_rawDescGZIP(), []int{13}
 }
 
 func (x *HotTagsRequest) GetLimit() int32 {
@@ -647,14 +783,16 @@ func (x *HotTagsRequest) GetLimit() int32 {
 
 type HotTagsResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Items         []*TagItem             `protobuf:"bytes,1,rep,name=items,proto3" json:"items,omitempty"` // 热门标签列表
+	Code          int64                  `protobuf:"varint,1,opt,name=code,proto3" json:"code,omitempty"`
+	Msg           string                 `protobuf:"bytes,2,opt,name=msg,proto3" json:"msg,omitempty"`
+	Data          []*TagItem             `protobuf:"bytes,3,rep,name=data,proto3" json:"data,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
 func (x *HotTagsResponse) Reset() {
 	*x = HotTagsResponse{}
-	mi := &file_tag_proto_msgTypes[12]
+	mi := &file_tag_proto_msgTypes[14]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -666,7 +804,7 @@ func (x *HotTagsResponse) String() string {
 func (*HotTagsResponse) ProtoMessage() {}
 
 func (x *HotTagsResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_tag_proto_msgTypes[12]
+	mi := &file_tag_proto_msgTypes[14]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -679,29 +817,43 @@ func (x *HotTagsResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use HotTagsResponse.ProtoReflect.Descriptor instead.
 func (*HotTagsResponse) Descriptor() ([]byte, []int) {
-	return file_tag_proto_rawDescGZIP(), []int{12}
+	return file_tag_proto_rawDescGZIP(), []int{14}
 }
 
-func (x *HotTagsResponse) GetItems() []*TagItem {
+func (x *HotTagsResponse) GetCode() int64 {
 	if x != nil {
-		return x.Items
+		return x.Code
+	}
+	return 0
+}
+
+func (x *HotTagsResponse) GetMsg() string {
+	if x != nil {
+		return x.Msg
+	}
+	return ""
+}
+
+func (x *HotTagsResponse) GetData() []*TagItem {
+	if x != nil {
+		return x.Data
 	}
 	return nil
 }
 
 type TagResourceRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	BizId         string                 `protobuf:"bytes,1,opt,name=bizId,proto3" json:"bizId,omitempty"`        // 业务ID (如 "article" / "qa")
-	TargetId      int64                  `protobuf:"varint,2,opt,name=targetId,proto3" json:"targetId,omitempty"` // 资源ID
-	TagId         int64                  `protobuf:"varint,3,opt,name=tagId,proto3" json:"tagId,omitempty"`       // 标签ID
-	UserId        int64                  `protobuf:"varint,4,opt,name=userId,proto3" json:"userId,omitempty"`     // 操作用户ID
+	BizId         string                 `protobuf:"bytes,1,opt,name=bizId,proto3" json:"bizId,omitempty"`
+	TargetId      int64                  `protobuf:"varint,2,opt,name=targetId,proto3" json:"targetId,omitempty"`
+	TagId         int64                  `protobuf:"varint,3,opt,name=tagId,proto3" json:"tagId,omitempty"`
+	UserId        int64                  `protobuf:"varint,4,opt,name=userId,proto3" json:"userId,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
 func (x *TagResourceRequest) Reset() {
 	*x = TagResourceRequest{}
-	mi := &file_tag_proto_msgTypes[13]
+	mi := &file_tag_proto_msgTypes[15]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -713,7 +865,7 @@ func (x *TagResourceRequest) String() string {
 func (*TagResourceRequest) ProtoMessage() {}
 
 func (x *TagResourceRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_tag_proto_msgTypes[13]
+	mi := &file_tag_proto_msgTypes[15]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -726,7 +878,7 @@ func (x *TagResourceRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use TagResourceRequest.ProtoReflect.Descriptor instead.
 func (*TagResourceRequest) Descriptor() ([]byte, []int) {
-	return file_tag_proto_rawDescGZIP(), []int{13}
+	return file_tag_proto_rawDescGZIP(), []int{15}
 }
 
 func (x *TagResourceRequest) GetBizId() string {
@@ -759,13 +911,15 @@ func (x *TagResourceRequest) GetUserId() int64 {
 
 type TagResourceResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
+	Code          int64                  `protobuf:"varint,1,opt,name=code,proto3" json:"code,omitempty"`
+	Msg           string                 `protobuf:"bytes,2,opt,name=msg,proto3" json:"msg,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
 func (x *TagResourceResponse) Reset() {
 	*x = TagResourceResponse{}
-	mi := &file_tag_proto_msgTypes[14]
+	mi := &file_tag_proto_msgTypes[16]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -777,7 +931,7 @@ func (x *TagResourceResponse) String() string {
 func (*TagResourceResponse) ProtoMessage() {}
 
 func (x *TagResourceResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_tag_proto_msgTypes[14]
+	mi := &file_tag_proto_msgTypes[16]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -790,22 +944,36 @@ func (x *TagResourceResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use TagResourceResponse.ProtoReflect.Descriptor instead.
 func (*TagResourceResponse) Descriptor() ([]byte, []int) {
-	return file_tag_proto_rawDescGZIP(), []int{14}
+	return file_tag_proto_rawDescGZIP(), []int{16}
+}
+
+func (x *TagResourceResponse) GetCode() int64 {
+	if x != nil {
+		return x.Code
+	}
+	return 0
+}
+
+func (x *TagResourceResponse) GetMsg() string {
+	if x != nil {
+		return x.Msg
+	}
+	return ""
 }
 
 type UntagResourceRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	BizId         string                 `protobuf:"bytes,1,opt,name=bizId,proto3" json:"bizId,omitempty"`        // 业务ID
-	TargetId      int64                  `protobuf:"varint,2,opt,name=targetId,proto3" json:"targetId,omitempty"` // 资源ID
-	TagId         int64                  `protobuf:"varint,3,opt,name=tagId,proto3" json:"tagId,omitempty"`       // 标签ID
-	UserId        int64                  `protobuf:"varint,4,opt,name=userId,proto3" json:"userId,omitempty"`     // 操作用户ID
+	BizId         string                 `protobuf:"bytes,1,opt,name=bizId,proto3" json:"bizId,omitempty"`
+	TargetId      int64                  `protobuf:"varint,2,opt,name=targetId,proto3" json:"targetId,omitempty"`
+	TagId         int64                  `protobuf:"varint,3,opt,name=tagId,proto3" json:"tagId,omitempty"`
+	UserId        int64                  `protobuf:"varint,4,opt,name=userId,proto3" json:"userId,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
 func (x *UntagResourceRequest) Reset() {
 	*x = UntagResourceRequest{}
-	mi := &file_tag_proto_msgTypes[15]
+	mi := &file_tag_proto_msgTypes[17]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -817,7 +985,7 @@ func (x *UntagResourceRequest) String() string {
 func (*UntagResourceRequest) ProtoMessage() {}
 
 func (x *UntagResourceRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_tag_proto_msgTypes[15]
+	mi := &file_tag_proto_msgTypes[17]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -830,7 +998,7 @@ func (x *UntagResourceRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UntagResourceRequest.ProtoReflect.Descriptor instead.
 func (*UntagResourceRequest) Descriptor() ([]byte, []int) {
-	return file_tag_proto_rawDescGZIP(), []int{15}
+	return file_tag_proto_rawDescGZIP(), []int{17}
 }
 
 func (x *UntagResourceRequest) GetBizId() string {
@@ -863,13 +1031,15 @@ func (x *UntagResourceRequest) GetUserId() int64 {
 
 type UntagResourceResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
+	Code          int64                  `protobuf:"varint,1,opt,name=code,proto3" json:"code,omitempty"`
+	Msg           string                 `protobuf:"bytes,2,opt,name=msg,proto3" json:"msg,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
 func (x *UntagResourceResponse) Reset() {
 	*x = UntagResourceResponse{}
-	mi := &file_tag_proto_msgTypes[16]
+	mi := &file_tag_proto_msgTypes[18]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -881,7 +1051,7 @@ func (x *UntagResourceResponse) String() string {
 func (*UntagResourceResponse) ProtoMessage() {}
 
 func (x *UntagResourceResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_tag_proto_msgTypes[16]
+	mi := &file_tag_proto_msgTypes[18]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -894,22 +1064,36 @@ func (x *UntagResourceResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UntagResourceResponse.ProtoReflect.Descriptor instead.
 func (*UntagResourceResponse) Descriptor() ([]byte, []int) {
-	return file_tag_proto_rawDescGZIP(), []int{16}
+	return file_tag_proto_rawDescGZIP(), []int{18}
+}
+
+func (x *UntagResourceResponse) GetCode() int64 {
+	if x != nil {
+		return x.Code
+	}
+	return 0
+}
+
+func (x *UntagResourceResponse) GetMsg() string {
+	if x != nil {
+		return x.Msg
+	}
+	return ""
 }
 
 type ResourcesByTagRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	TagId         int64                  `protobuf:"varint,1,opt,name=tagId,proto3" json:"tagId,omitempty"`       // 标签ID
-	BizId         string                 `protobuf:"bytes,2,opt,name=bizId,proto3" json:"bizId,omitempty"`        // 业务ID (为空则查询所有业务)
-	Cursor        int64                  `protobuf:"varint,3,opt,name=cursor,proto3" json:"cursor,omitempty"`     // 游标
-	PageSize      int64                  `protobuf:"varint,4,opt,name=pageSize,proto3" json:"pageSize,omitempty"` // 页大小
+	TagId         int64                  `protobuf:"varint,1,opt,name=tagId,proto3" json:"tagId,omitempty"`
+	BizId         string                 `protobuf:"bytes,2,opt,name=bizId,proto3" json:"bizId,omitempty"`
+	Cursor        int64                  `protobuf:"varint,3,opt,name=cursor,proto3" json:"cursor,omitempty"`
+	PageSize      int64                  `protobuf:"varint,4,opt,name=pageSize,proto3" json:"pageSize,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
 func (x *ResourcesByTagRequest) Reset() {
 	*x = ResourcesByTagRequest{}
-	mi := &file_tag_proto_msgTypes[17]
+	mi := &file_tag_proto_msgTypes[19]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -921,7 +1105,7 @@ func (x *ResourcesByTagRequest) String() string {
 func (*ResourcesByTagRequest) ProtoMessage() {}
 
 func (x *ResourcesByTagRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_tag_proto_msgTypes[17]
+	mi := &file_tag_proto_msgTypes[19]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -934,7 +1118,7 @@ func (x *ResourcesByTagRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ResourcesByTagRequest.ProtoReflect.Descriptor instead.
 func (*ResourcesByTagRequest) Descriptor() ([]byte, []int) {
-	return file_tag_proto_rawDescGZIP(), []int{17}
+	return file_tag_proto_rawDescGZIP(), []int{19}
 }
 
 func (x *ResourcesByTagRequest) GetTagId() int64 {
@@ -967,16 +1151,16 @@ func (x *ResourcesByTagRequest) GetPageSize() int64 {
 
 type ResourceItem struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	TargetId      int64                  `protobuf:"varint,1,opt,name=targetId,proto3" json:"targetId,omitempty"`     // 资源ID
-	BizId         string                 `protobuf:"bytes,2,opt,name=bizId,proto3" json:"bizId,omitempty"`            // 业务ID
-	CreateTime    int64                  `protobuf:"varint,3,opt,name=createTime,proto3" json:"createTime,omitempty"` // 打标签时间
+	TargetId      int64                  `protobuf:"varint,1,opt,name=targetId,proto3" json:"targetId,omitempty"`
+	BizId         string                 `protobuf:"bytes,2,opt,name=bizId,proto3" json:"bizId,omitempty"`
+	CreateTime    int64                  `protobuf:"varint,3,opt,name=createTime,proto3" json:"createTime,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
 func (x *ResourceItem) Reset() {
 	*x = ResourceItem{}
-	mi := &file_tag_proto_msgTypes[18]
+	mi := &file_tag_proto_msgTypes[20]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -988,7 +1172,7 @@ func (x *ResourceItem) String() string {
 func (*ResourceItem) ProtoMessage() {}
 
 func (x *ResourceItem) ProtoReflect() protoreflect.Message {
-	mi := &file_tag_proto_msgTypes[18]
+	mi := &file_tag_proto_msgTypes[20]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1001,7 +1185,7 @@ func (x *ResourceItem) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ResourceItem.ProtoReflect.Descriptor instead.
 func (*ResourceItem) Descriptor() ([]byte, []int) {
-	return file_tag_proto_rawDescGZIP(), []int{18}
+	return file_tag_proto_rawDescGZIP(), []int{20}
 }
 
 func (x *ResourceItem) GetTargetId() int64 {
@@ -1025,18 +1209,78 @@ func (x *ResourceItem) GetCreateTime() int64 {
 	return 0
 }
 
+type ResourcesByTagData struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Items         []*ResourceItem        `protobuf:"bytes,1,rep,name=items,proto3" json:"items,omitempty"`
+	Cursor        int64                  `protobuf:"varint,2,opt,name=cursor,proto3" json:"cursor,omitempty"`
+	IsEnd         bool                   `protobuf:"varint,3,opt,name=isEnd,proto3" json:"isEnd,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ResourcesByTagData) Reset() {
+	*x = ResourcesByTagData{}
+	mi := &file_tag_proto_msgTypes[21]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ResourcesByTagData) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ResourcesByTagData) ProtoMessage() {}
+
+func (x *ResourcesByTagData) ProtoReflect() protoreflect.Message {
+	mi := &file_tag_proto_msgTypes[21]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ResourcesByTagData.ProtoReflect.Descriptor instead.
+func (*ResourcesByTagData) Descriptor() ([]byte, []int) {
+	return file_tag_proto_rawDescGZIP(), []int{21}
+}
+
+func (x *ResourcesByTagData) GetItems() []*ResourceItem {
+	if x != nil {
+		return x.Items
+	}
+	return nil
+}
+
+func (x *ResourcesByTagData) GetCursor() int64 {
+	if x != nil {
+		return x.Cursor
+	}
+	return 0
+}
+
+func (x *ResourcesByTagData) GetIsEnd() bool {
+	if x != nil {
+		return x.IsEnd
+	}
+	return false
+}
+
 type ResourcesByTagResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Items         []*ResourceItem        `protobuf:"bytes,1,rep,name=items,proto3" json:"items,omitempty"`    // 资源列表
-	Cursor        int64                  `protobuf:"varint,2,opt,name=cursor,proto3" json:"cursor,omitempty"` // 下一页游标
-	IsEnd         bool                   `protobuf:"varint,3,opt,name=isEnd,proto3" json:"isEnd,omitempty"`   // 是否最后一页
+	Code          int64                  `protobuf:"varint,1,opt,name=code,proto3" json:"code,omitempty"`
+	Msg           string                 `protobuf:"bytes,2,opt,name=msg,proto3" json:"msg,omitempty"`
+	Data          *ResourcesByTagData    `protobuf:"bytes,3,opt,name=data,proto3" json:"data,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
 func (x *ResourcesByTagResponse) Reset() {
 	*x = ResourcesByTagResponse{}
-	mi := &file_tag_proto_msgTypes[19]
+	mi := &file_tag_proto_msgTypes[22]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1048,7 +1292,7 @@ func (x *ResourcesByTagResponse) String() string {
 func (*ResourcesByTagResponse) ProtoMessage() {}
 
 func (x *ResourcesByTagResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_tag_proto_msgTypes[19]
+	mi := &file_tag_proto_msgTypes[22]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1061,41 +1305,41 @@ func (x *ResourcesByTagResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ResourcesByTagResponse.ProtoReflect.Descriptor instead.
 func (*ResourcesByTagResponse) Descriptor() ([]byte, []int) {
-	return file_tag_proto_rawDescGZIP(), []int{19}
+	return file_tag_proto_rawDescGZIP(), []int{22}
 }
 
-func (x *ResourcesByTagResponse) GetItems() []*ResourceItem {
+func (x *ResourcesByTagResponse) GetCode() int64 {
 	if x != nil {
-		return x.Items
-	}
-	return nil
-}
-
-func (x *ResourcesByTagResponse) GetCursor() int64 {
-	if x != nil {
-		return x.Cursor
+		return x.Code
 	}
 	return 0
 }
 
-func (x *ResourcesByTagResponse) GetIsEnd() bool {
+func (x *ResourcesByTagResponse) GetMsg() string {
 	if x != nil {
-		return x.IsEnd
+		return x.Msg
 	}
-	return false
+	return ""
+}
+
+func (x *ResourcesByTagResponse) GetData() *ResourcesByTagData {
+	if x != nil {
+		return x.Data
+	}
+	return nil
 }
 
 type TagsByResourceRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	BizId         string                 `protobuf:"bytes,1,opt,name=bizId,proto3" json:"bizId,omitempty"`        // 业务ID
-	TargetId      int64                  `protobuf:"varint,2,opt,name=targetId,proto3" json:"targetId,omitempty"` // 资源ID
+	BizId         string                 `protobuf:"bytes,1,opt,name=bizId,proto3" json:"bizId,omitempty"`
+	TargetId      int64                  `protobuf:"varint,2,opt,name=targetId,proto3" json:"targetId,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
 func (x *TagsByResourceRequest) Reset() {
 	*x = TagsByResourceRequest{}
-	mi := &file_tag_proto_msgTypes[20]
+	mi := &file_tag_proto_msgTypes[23]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1107,7 +1351,7 @@ func (x *TagsByResourceRequest) String() string {
 func (*TagsByResourceRequest) ProtoMessage() {}
 
 func (x *TagsByResourceRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_tag_proto_msgTypes[20]
+	mi := &file_tag_proto_msgTypes[23]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1120,7 +1364,7 @@ func (x *TagsByResourceRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use TagsByResourceRequest.ProtoReflect.Descriptor instead.
 func (*TagsByResourceRequest) Descriptor() ([]byte, []int) {
-	return file_tag_proto_rawDescGZIP(), []int{20}
+	return file_tag_proto_rawDescGZIP(), []int{23}
 }
 
 func (x *TagsByResourceRequest) GetBizId() string {
@@ -1139,14 +1383,16 @@ func (x *TagsByResourceRequest) GetTargetId() int64 {
 
 type TagsByResourceResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Items         []*TagItem             `protobuf:"bytes,1,rep,name=items,proto3" json:"items,omitempty"` // 标签列表
+	Code          int64                  `protobuf:"varint,1,opt,name=code,proto3" json:"code,omitempty"`
+	Msg           string                 `protobuf:"bytes,2,opt,name=msg,proto3" json:"msg,omitempty"`
+	Data          []*TagItem             `protobuf:"bytes,3,rep,name=data,proto3" json:"data,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
 func (x *TagsByResourceResponse) Reset() {
 	*x = TagsByResourceResponse{}
-	mi := &file_tag_proto_msgTypes[21]
+	mi := &file_tag_proto_msgTypes[24]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1158,7 +1404,7 @@ func (x *TagsByResourceResponse) String() string {
 func (*TagsByResourceResponse) ProtoMessage() {}
 
 func (x *TagsByResourceResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_tag_proto_msgTypes[21]
+	mi := &file_tag_proto_msgTypes[24]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1171,12 +1417,26 @@ func (x *TagsByResourceResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use TagsByResourceResponse.ProtoReflect.Descriptor instead.
 func (*TagsByResourceResponse) Descriptor() ([]byte, []int) {
-	return file_tag_proto_rawDescGZIP(), []int{21}
+	return file_tag_proto_rawDescGZIP(), []int{24}
 }
 
-func (x *TagsByResourceResponse) GetItems() []*TagItem {
+func (x *TagsByResourceResponse) GetCode() int64 {
 	if x != nil {
-		return x.Items
+		return x.Code
+	}
+	return 0
+}
+
+func (x *TagsByResourceResponse) GetMsg() string {
+	if x != nil {
+		return x.Msg
+	}
+	return ""
+}
+
+func (x *TagsByResourceResponse) GetData() []*TagItem {
+	if x != nil {
+		return x.Data
 	}
 	return nil
 }
@@ -1185,33 +1445,30 @@ var File_tag_proto protoreflect.FileDescriptor
 
 const file_tag_proto_rawDesc = "" +
 	"\n" +
-	"\ttag.proto\x12\aservice\"F\n" +
+	"\ttag.proto\x12\acontent\"F\n" +
 	"\x10CreateTagRequest\x12\x18\n" +
 	"\atagName\x18\x01 \x01(\tR\atagName\x12\x18\n" +
-	"\atagDesc\x18\x02 \x01(\tR\atagDesc\")\n" +
-	"\x11CreateTagResponse\x12\x14\n" +
-	"\x05tagId\x18\x01 \x01(\x03R\x05tagId\"\\\n" +
+	"\atagDesc\x18\x02 \x01(\tR\atagDesc\"%\n" +
+	"\rCreateTagData\x12\x14\n" +
+	"\x05tagId\x18\x01 \x01(\x03R\x05tagId\"e\n" +
+	"\x11CreateTagResponse\x12\x12\n" +
+	"\x04code\x18\x01 \x01(\x03R\x04code\x12\x10\n" +
+	"\x03msg\x18\x02 \x01(\tR\x03msg\x12*\n" +
+	"\x04data\x18\x03 \x01(\v2\x16.content.CreateTagDataR\x04data\"\\\n" +
 	"\x10UpdateTagRequest\x12\x14\n" +
 	"\x05tagId\x18\x01 \x01(\x03R\x05tagId\x12\x18\n" +
 	"\atagName\x18\x02 \x01(\tR\atagName\x12\x18\n" +
-	"\atagDesc\x18\x03 \x01(\tR\atagDesc\"\x13\n" +
-	"\x11UpdateTagResponse\"(\n" +
+	"\atagDesc\x18\x03 \x01(\tR\atagDesc\"9\n" +
+	"\x11UpdateTagResponse\x12\x12\n" +
+	"\x04code\x18\x01 \x01(\x03R\x04code\x12\x10\n" +
+	"\x03msg\x18\x02 \x01(\tR\x03msg\"(\n" +
 	"\x10DeleteTagRequest\x12\x14\n" +
-	"\x05tagId\x18\x01 \x01(\x03R\x05tagId\"\x13\n" +
-	"\x11DeleteTagResponse\"(\n" +
+	"\x05tagId\x18\x01 \x01(\x03R\x05tagId\"9\n" +
+	"\x11DeleteTagResponse\x12\x12\n" +
+	"\x04code\x18\x01 \x01(\x03R\x04code\x12\x10\n" +
+	"\x03msg\x18\x02 \x01(\tR\x03msg\"(\n" +
 	"\x10TagDetailRequest\x12\x14\n" +
-	"\x05tagId\x18\x01 \x01(\x03R\x05tagId\"\xa3\x01\n" +
-	"\x11TagDetailResponse\x12\x14\n" +
-	"\x05tagId\x18\x01 \x01(\x03R\x05tagId\x12\x18\n" +
-	"\atagName\x18\x02 \x01(\tR\atagName\x12\x18\n" +
-	"\atagDesc\x18\x03 \x01(\tR\atagDesc\x12$\n" +
-	"\rresourceCount\x18\x04 \x01(\x03R\rresourceCount\x12\x1e\n" +
-	"\n" +
-	"createTime\x18\x05 \x01(\x03R\n" +
-	"createTime\"D\n" +
-	"\x0eTagListRequest\x12\x16\n" +
-	"\x06cursor\x18\x01 \x01(\x03R\x06cursor\x12\x1a\n" +
-	"\bpageSize\x18\x02 \x01(\x03R\bpageSize\"\x99\x01\n" +
+	"\x05tagId\x18\x01 \x01(\x03R\x05tagId\"\x99\x01\n" +
 	"\aTagItem\x12\x14\n" +
 	"\x05tagId\x18\x01 \x01(\x03R\x05tagId\x12\x18\n" +
 	"\atagName\x18\x02 \x01(\tR\atagName\x12\x18\n" +
@@ -1219,27 +1476,44 @@ const file_tag_proto_rawDesc = "" +
 	"\rresourceCount\x18\x04 \x01(\x03R\rresourceCount\x12\x1e\n" +
 	"\n" +
 	"createTime\x18\x05 \x01(\x03R\n" +
-	"createTime\"g\n" +
-	"\x0fTagListResponse\x12&\n" +
-	"\x05items\x18\x01 \x03(\v2\x10.service.TagItemR\x05items\x12\x16\n" +
+	"createTime\"_\n" +
+	"\x11TagDetailResponse\x12\x12\n" +
+	"\x04code\x18\x01 \x01(\x03R\x04code\x12\x10\n" +
+	"\x03msg\x18\x02 \x01(\tR\x03msg\x12$\n" +
+	"\x04data\x18\x03 \x01(\v2\x10.content.TagItemR\x04data\"D\n" +
+	"\x0eTagListRequest\x12\x16\n" +
+	"\x06cursor\x18\x01 \x01(\x03R\x06cursor\x12\x1a\n" +
+	"\bpageSize\x18\x02 \x01(\x03R\bpageSize\"c\n" +
+	"\vTagListData\x12&\n" +
+	"\x05items\x18\x01 \x03(\v2\x10.content.TagItemR\x05items\x12\x16\n" +
 	"\x06cursor\x18\x02 \x01(\x03R\x06cursor\x12\x14\n" +
-	"\x05isEnd\x18\x03 \x01(\bR\x05isEnd\"&\n" +
+	"\x05isEnd\x18\x03 \x01(\bR\x05isEnd\"a\n" +
+	"\x0fTagListResponse\x12\x12\n" +
+	"\x04code\x18\x01 \x01(\x03R\x04code\x12\x10\n" +
+	"\x03msg\x18\x02 \x01(\tR\x03msg\x12(\n" +
+	"\x04data\x18\x03 \x01(\v2\x14.content.TagListDataR\x04data\"&\n" +
 	"\x0eHotTagsRequest\x12\x14\n" +
-	"\x05limit\x18\x01 \x01(\x05R\x05limit\"9\n" +
-	"\x0fHotTagsResponse\x12&\n" +
-	"\x05items\x18\x01 \x03(\v2\x10.service.TagItemR\x05items\"t\n" +
+	"\x05limit\x18\x01 \x01(\x05R\x05limit\"]\n" +
+	"\x0fHotTagsResponse\x12\x12\n" +
+	"\x04code\x18\x01 \x01(\x03R\x04code\x12\x10\n" +
+	"\x03msg\x18\x02 \x01(\tR\x03msg\x12$\n" +
+	"\x04data\x18\x03 \x03(\v2\x10.content.TagItemR\x04data\"t\n" +
 	"\x12TagResourceRequest\x12\x14\n" +
 	"\x05bizId\x18\x01 \x01(\tR\x05bizId\x12\x1a\n" +
 	"\btargetId\x18\x02 \x01(\x03R\btargetId\x12\x14\n" +
 	"\x05tagId\x18\x03 \x01(\x03R\x05tagId\x12\x16\n" +
-	"\x06userId\x18\x04 \x01(\x03R\x06userId\"\x15\n" +
-	"\x13TagResourceResponse\"v\n" +
+	"\x06userId\x18\x04 \x01(\x03R\x06userId\";\n" +
+	"\x13TagResourceResponse\x12\x12\n" +
+	"\x04code\x18\x01 \x01(\x03R\x04code\x12\x10\n" +
+	"\x03msg\x18\x02 \x01(\tR\x03msg\"v\n" +
 	"\x14UntagResourceRequest\x12\x14\n" +
 	"\x05bizId\x18\x01 \x01(\tR\x05bizId\x12\x1a\n" +
 	"\btargetId\x18\x02 \x01(\x03R\btargetId\x12\x14\n" +
 	"\x05tagId\x18\x03 \x01(\x03R\x05tagId\x12\x16\n" +
-	"\x06userId\x18\x04 \x01(\x03R\x06userId\"\x17\n" +
-	"\x15UntagResourceResponse\"w\n" +
+	"\x06userId\x18\x04 \x01(\x03R\x06userId\"=\n" +
+	"\x15UntagResourceResponse\x12\x12\n" +
+	"\x04code\x18\x01 \x01(\x03R\x04code\x12\x10\n" +
+	"\x03msg\x18\x02 \x01(\tR\x03msg\"w\n" +
 	"\x15ResourcesByTagRequest\x12\x14\n" +
 	"\x05tagId\x18\x01 \x01(\x03R\x05tagId\x12\x14\n" +
 	"\x05bizId\x18\x02 \x01(\tR\x05bizId\x12\x16\n" +
@@ -1250,27 +1524,33 @@ const file_tag_proto_rawDesc = "" +
 	"\x05bizId\x18\x02 \x01(\tR\x05bizId\x12\x1e\n" +
 	"\n" +
 	"createTime\x18\x03 \x01(\x03R\n" +
-	"createTime\"s\n" +
-	"\x16ResourcesByTagResponse\x12+\n" +
-	"\x05items\x18\x01 \x03(\v2\x15.service.ResourceItemR\x05items\x12\x16\n" +
+	"createTime\"o\n" +
+	"\x12ResourcesByTagData\x12+\n" +
+	"\x05items\x18\x01 \x03(\v2\x15.content.ResourceItemR\x05items\x12\x16\n" +
 	"\x06cursor\x18\x02 \x01(\x03R\x06cursor\x12\x14\n" +
-	"\x05isEnd\x18\x03 \x01(\bR\x05isEnd\"I\n" +
+	"\x05isEnd\x18\x03 \x01(\bR\x05isEnd\"o\n" +
+	"\x16ResourcesByTagResponse\x12\x12\n" +
+	"\x04code\x18\x01 \x01(\x03R\x04code\x12\x10\n" +
+	"\x03msg\x18\x02 \x01(\tR\x03msg\x12/\n" +
+	"\x04data\x18\x03 \x01(\v2\x1b.content.ResourcesByTagDataR\x04data\"I\n" +
 	"\x15TagsByResourceRequest\x12\x14\n" +
 	"\x05bizId\x18\x01 \x01(\tR\x05bizId\x12\x1a\n" +
-	"\btargetId\x18\x02 \x01(\x03R\btargetId\"@\n" +
-	"\x16TagsByResourceResponse\x12&\n" +
-	"\x05items\x18\x01 \x03(\v2\x10.service.TagItemR\x05items2\xd1\x05\n" +
+	"\btargetId\x18\x02 \x01(\x03R\btargetId\"d\n" +
+	"\x16TagsByResourceResponse\x12\x12\n" +
+	"\x04code\x18\x01 \x01(\x03R\x04code\x12\x10\n" +
+	"\x03msg\x18\x02 \x01(\tR\x03msg\x12$\n" +
+	"\x04data\x18\x03 \x03(\v2\x10.content.TagItemR\x04data2\xd1\x05\n" +
 	"\x03Tag\x12B\n" +
-	"\tCreateTag\x12\x19.service.CreateTagRequest\x1a\x1a.service.CreateTagResponse\x12B\n" +
-	"\tUpdateTag\x12\x19.service.UpdateTagRequest\x1a\x1a.service.UpdateTagResponse\x12B\n" +
-	"\tDeleteTag\x12\x19.service.DeleteTagRequest\x1a\x1a.service.DeleteTagResponse\x12B\n" +
-	"\tTagDetail\x12\x19.service.TagDetailRequest\x1a\x1a.service.TagDetailResponse\x12<\n" +
-	"\aTagList\x12\x17.service.TagListRequest\x1a\x18.service.TagListResponse\x12<\n" +
-	"\aHotTags\x12\x17.service.HotTagsRequest\x1a\x18.service.HotTagsResponse\x12H\n" +
-	"\vTagResource\x12\x1b.service.TagResourceRequest\x1a\x1c.service.TagResourceResponse\x12N\n" +
-	"\rUntagResource\x12\x1d.service.UntagResourceRequest\x1a\x1e.service.UntagResourceResponse\x12Q\n" +
-	"\x0eResourcesByTag\x12\x1e.service.ResourcesByTagRequest\x1a\x1f.service.ResourcesByTagResponse\x12Q\n" +
-	"\x0eTagsByResource\x12\x1e.service.TagsByResourceRequest\x1a\x1f.service.TagsByResourceResponseB\x06Z\x04./pbb\x06proto3"
+	"\tCreateTag\x12\x19.content.CreateTagRequest\x1a\x1a.content.CreateTagResponse\x12B\n" +
+	"\tUpdateTag\x12\x19.content.UpdateTagRequest\x1a\x1a.content.UpdateTagResponse\x12B\n" +
+	"\tDeleteTag\x12\x19.content.DeleteTagRequest\x1a\x1a.content.DeleteTagResponse\x12B\n" +
+	"\tTagDetail\x12\x19.content.TagDetailRequest\x1a\x1a.content.TagDetailResponse\x12<\n" +
+	"\aTagList\x12\x17.content.TagListRequest\x1a\x18.content.TagListResponse\x12<\n" +
+	"\aHotTags\x12\x17.content.HotTagsRequest\x1a\x18.content.HotTagsResponse\x12H\n" +
+	"\vTagResource\x12\x1b.content.TagResourceRequest\x1a\x1c.content.TagResourceResponse\x12N\n" +
+	"\rUntagResource\x12\x1d.content.UntagResourceRequest\x1a\x1e.content.UntagResourceResponse\x12Q\n" +
+	"\x0eResourcesByTag\x12\x1e.content.ResourcesByTagRequest\x1a\x1f.content.ResourcesByTagResponse\x12Q\n" +
+	"\x0eTagsByResource\x12\x1e.content.TagsByResourceRequest\x1a\x1f.content.TagsByResourceResponseB Z\x1eapi-thinktalk/client/tag/pb;pbb\x06proto3"
 
 var (
 	file_tag_proto_rawDescOnce sync.Once
@@ -1284,61 +1564,68 @@ func file_tag_proto_rawDescGZIP() []byte {
 	return file_tag_proto_rawDescData
 }
 
-var file_tag_proto_msgTypes = make([]protoimpl.MessageInfo, 22)
+var file_tag_proto_msgTypes = make([]protoimpl.MessageInfo, 25)
 var file_tag_proto_goTypes = []any{
-	(*CreateTagRequest)(nil),       // 0: service.CreateTagRequest
-	(*CreateTagResponse)(nil),      // 1: service.CreateTagResponse
-	(*UpdateTagRequest)(nil),       // 2: service.UpdateTagRequest
-	(*UpdateTagResponse)(nil),      // 3: service.UpdateTagResponse
-	(*DeleteTagRequest)(nil),       // 4: service.DeleteTagRequest
-	(*DeleteTagResponse)(nil),      // 5: service.DeleteTagResponse
-	(*TagDetailRequest)(nil),       // 6: service.TagDetailRequest
-	(*TagDetailResponse)(nil),      // 7: service.TagDetailResponse
-	(*TagListRequest)(nil),         // 8: service.TagListRequest
-	(*TagItem)(nil),                // 9: service.TagItem
-	(*TagListResponse)(nil),        // 10: service.TagListResponse
-	(*HotTagsRequest)(nil),         // 11: service.HotTagsRequest
-	(*HotTagsResponse)(nil),        // 12: service.HotTagsResponse
-	(*TagResourceRequest)(nil),     // 13: service.TagResourceRequest
-	(*TagResourceResponse)(nil),    // 14: service.TagResourceResponse
-	(*UntagResourceRequest)(nil),   // 15: service.UntagResourceRequest
-	(*UntagResourceResponse)(nil),  // 16: service.UntagResourceResponse
-	(*ResourcesByTagRequest)(nil),  // 17: service.ResourcesByTagRequest
-	(*ResourceItem)(nil),           // 18: service.ResourceItem
-	(*ResourcesByTagResponse)(nil), // 19: service.ResourcesByTagResponse
-	(*TagsByResourceRequest)(nil),  // 20: service.TagsByResourceRequest
-	(*TagsByResourceResponse)(nil), // 21: service.TagsByResourceResponse
+	(*CreateTagRequest)(nil),       // 0: content.CreateTagRequest
+	(*CreateTagData)(nil),          // 1: content.CreateTagData
+	(*CreateTagResponse)(nil),      // 2: content.CreateTagResponse
+	(*UpdateTagRequest)(nil),       // 3: content.UpdateTagRequest
+	(*UpdateTagResponse)(nil),      // 4: content.UpdateTagResponse
+	(*DeleteTagRequest)(nil),       // 5: content.DeleteTagRequest
+	(*DeleteTagResponse)(nil),      // 6: content.DeleteTagResponse
+	(*TagDetailRequest)(nil),       // 7: content.TagDetailRequest
+	(*TagItem)(nil),                // 8: content.TagItem
+	(*TagDetailResponse)(nil),      // 9: content.TagDetailResponse
+	(*TagListRequest)(nil),         // 10: content.TagListRequest
+	(*TagListData)(nil),            // 11: content.TagListData
+	(*TagListResponse)(nil),        // 12: content.TagListResponse
+	(*HotTagsRequest)(nil),         // 13: content.HotTagsRequest
+	(*HotTagsResponse)(nil),        // 14: content.HotTagsResponse
+	(*TagResourceRequest)(nil),     // 15: content.TagResourceRequest
+	(*TagResourceResponse)(nil),    // 16: content.TagResourceResponse
+	(*UntagResourceRequest)(nil),   // 17: content.UntagResourceRequest
+	(*UntagResourceResponse)(nil),  // 18: content.UntagResourceResponse
+	(*ResourcesByTagRequest)(nil),  // 19: content.ResourcesByTagRequest
+	(*ResourceItem)(nil),           // 20: content.ResourceItem
+	(*ResourcesByTagData)(nil),     // 21: content.ResourcesByTagData
+	(*ResourcesByTagResponse)(nil), // 22: content.ResourcesByTagResponse
+	(*TagsByResourceRequest)(nil),  // 23: content.TagsByResourceRequest
+	(*TagsByResourceResponse)(nil), // 24: content.TagsByResourceResponse
 }
 var file_tag_proto_depIdxs = []int32{
-	9,  // 0: service.TagListResponse.items:type_name -> service.TagItem
-	9,  // 1: service.HotTagsResponse.items:type_name -> service.TagItem
-	18, // 2: service.ResourcesByTagResponse.items:type_name -> service.ResourceItem
-	9,  // 3: service.TagsByResourceResponse.items:type_name -> service.TagItem
-	0,  // 4: service.Tag.CreateTag:input_type -> service.CreateTagRequest
-	2,  // 5: service.Tag.UpdateTag:input_type -> service.UpdateTagRequest
-	4,  // 6: service.Tag.DeleteTag:input_type -> service.DeleteTagRequest
-	6,  // 7: service.Tag.TagDetail:input_type -> service.TagDetailRequest
-	8,  // 8: service.Tag.TagList:input_type -> service.TagListRequest
-	11, // 9: service.Tag.HotTags:input_type -> service.HotTagsRequest
-	13, // 10: service.Tag.TagResource:input_type -> service.TagResourceRequest
-	15, // 11: service.Tag.UntagResource:input_type -> service.UntagResourceRequest
-	17, // 12: service.Tag.ResourcesByTag:input_type -> service.ResourcesByTagRequest
-	20, // 13: service.Tag.TagsByResource:input_type -> service.TagsByResourceRequest
-	1,  // 14: service.Tag.CreateTag:output_type -> service.CreateTagResponse
-	3,  // 15: service.Tag.UpdateTag:output_type -> service.UpdateTagResponse
-	5,  // 16: service.Tag.DeleteTag:output_type -> service.DeleteTagResponse
-	7,  // 17: service.Tag.TagDetail:output_type -> service.TagDetailResponse
-	10, // 18: service.Tag.TagList:output_type -> service.TagListResponse
-	12, // 19: service.Tag.HotTags:output_type -> service.HotTagsResponse
-	14, // 20: service.Tag.TagResource:output_type -> service.TagResourceResponse
-	16, // 21: service.Tag.UntagResource:output_type -> service.UntagResourceResponse
-	19, // 22: service.Tag.ResourcesByTag:output_type -> service.ResourcesByTagResponse
-	21, // 23: service.Tag.TagsByResource:output_type -> service.TagsByResourceResponse
-	14, // [14:24] is the sub-list for method output_type
-	4,  // [4:14] is the sub-list for method input_type
-	4,  // [4:4] is the sub-list for extension type_name
-	4,  // [4:4] is the sub-list for extension extendee
-	0,  // [0:4] is the sub-list for field type_name
+	1,  // 0: content.CreateTagResponse.data:type_name -> content.CreateTagData
+	8,  // 1: content.TagDetailResponse.data:type_name -> content.TagItem
+	8,  // 2: content.TagListData.items:type_name -> content.TagItem
+	11, // 3: content.TagListResponse.data:type_name -> content.TagListData
+	8,  // 4: content.HotTagsResponse.data:type_name -> content.TagItem
+	20, // 5: content.ResourcesByTagData.items:type_name -> content.ResourceItem
+	21, // 6: content.ResourcesByTagResponse.data:type_name -> content.ResourcesByTagData
+	8,  // 7: content.TagsByResourceResponse.data:type_name -> content.TagItem
+	0,  // 8: content.Tag.CreateTag:input_type -> content.CreateTagRequest
+	3,  // 9: content.Tag.UpdateTag:input_type -> content.UpdateTagRequest
+	5,  // 10: content.Tag.DeleteTag:input_type -> content.DeleteTagRequest
+	7,  // 11: content.Tag.TagDetail:input_type -> content.TagDetailRequest
+	10, // 12: content.Tag.TagList:input_type -> content.TagListRequest
+	13, // 13: content.Tag.HotTags:input_type -> content.HotTagsRequest
+	15, // 14: content.Tag.TagResource:input_type -> content.TagResourceRequest
+	17, // 15: content.Tag.UntagResource:input_type -> content.UntagResourceRequest
+	19, // 16: content.Tag.ResourcesByTag:input_type -> content.ResourcesByTagRequest
+	23, // 17: content.Tag.TagsByResource:input_type -> content.TagsByResourceRequest
+	2,  // 18: content.Tag.CreateTag:output_type -> content.CreateTagResponse
+	4,  // 19: content.Tag.UpdateTag:output_type -> content.UpdateTagResponse
+	6,  // 20: content.Tag.DeleteTag:output_type -> content.DeleteTagResponse
+	9,  // 21: content.Tag.TagDetail:output_type -> content.TagDetailResponse
+	12, // 22: content.Tag.TagList:output_type -> content.TagListResponse
+	14, // 23: content.Tag.HotTags:output_type -> content.HotTagsResponse
+	16, // 24: content.Tag.TagResource:output_type -> content.TagResourceResponse
+	18, // 25: content.Tag.UntagResource:output_type -> content.UntagResourceResponse
+	22, // 26: content.Tag.ResourcesByTag:output_type -> content.ResourcesByTagResponse
+	24, // 27: content.Tag.TagsByResource:output_type -> content.TagsByResourceResponse
+	18, // [18:28] is the sub-list for method output_type
+	8,  // [8:18] is the sub-list for method input_type
+	8,  // [8:8] is the sub-list for extension type_name
+	8,  // [8:8] is the sub-list for extension extendee
+	0,  // [0:8] is the sub-list for field type_name
 }
 
 func init() { file_tag_proto_init() }
@@ -1352,7 +1639,7 @@ func file_tag_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_tag_proto_rawDesc), len(file_tag_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   22,
+			NumMessages:   25,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

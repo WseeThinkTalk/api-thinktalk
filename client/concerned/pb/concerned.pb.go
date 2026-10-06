@@ -23,9 +23,9 @@ const (
 
 type AddConcernedRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	BizId         string                 `protobuf:"bytes,1,opt,name=bizId,proto3" json:"bizId,omitempty"`    // 业务ID
-	ObjId         int64                  `protobuf:"varint,2,opt,name=objId,proto3" json:"objId,omitempty"`   // 收藏对象id
-	UserId        int64                  `protobuf:"varint,3,opt,name=userId,proto3" json:"userId,omitempty"` // 用户ID
+	BizId         string                 `protobuf:"bytes,1,opt,name=bizId,proto3" json:"bizId,omitempty"`
+	ObjId         int64                  `protobuf:"varint,2,opt,name=objId,proto3" json:"objId,omitempty"`
+	UserId        int64                  `protobuf:"varint,3,opt,name=userId,proto3" json:"userId,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -83,6 +83,8 @@ func (x *AddConcernedRequest) GetUserId() int64 {
 
 type AddConcernedResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
+	Code          int64                  `protobuf:"varint,1,opt,name=code,proto3" json:"code,omitempty"`
+	Msg           string                 `protobuf:"bytes,2,opt,name=msg,proto3" json:"msg,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -117,11 +119,25 @@ func (*AddConcernedResponse) Descriptor() ([]byte, []int) {
 	return file_concerned_proto_rawDescGZIP(), []int{1}
 }
 
+func (x *AddConcernedResponse) GetCode() int64 {
+	if x != nil {
+		return x.Code
+	}
+	return 0
+}
+
+func (x *AddConcernedResponse) GetMsg() string {
+	if x != nil {
+		return x.Msg
+	}
+	return ""
+}
+
 type CancelConcernedRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	BizId         string                 `protobuf:"bytes,1,opt,name=bizId,proto3" json:"bizId,omitempty"`    // 业务ID
-	ObjId         int64                  `protobuf:"varint,2,opt,name=objId,proto3" json:"objId,omitempty"`   // 收藏对象id
-	UserId        int64                  `protobuf:"varint,3,opt,name=userId,proto3" json:"userId,omitempty"` // 用户ID
+	BizId         string                 `protobuf:"bytes,1,opt,name=bizId,proto3" json:"bizId,omitempty"`
+	ObjId         int64                  `protobuf:"varint,2,opt,name=objId,proto3" json:"objId,omitempty"`
+	UserId        int64                  `protobuf:"varint,3,opt,name=userId,proto3" json:"userId,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -179,6 +195,8 @@ func (x *CancelConcernedRequest) GetUserId() int64 {
 
 type CancelConcernedResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
+	Code          int64                  `protobuf:"varint,1,opt,name=code,proto3" json:"code,omitempty"`
+	Msg           string                 `protobuf:"bytes,2,opt,name=msg,proto3" json:"msg,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -213,11 +231,25 @@ func (*CancelConcernedResponse) Descriptor() ([]byte, []int) {
 	return file_concerned_proto_rawDescGZIP(), []int{3}
 }
 
+func (x *CancelConcernedResponse) GetCode() int64 {
+	if x != nil {
+		return x.Code
+	}
+	return 0
+}
+
+func (x *CancelConcernedResponse) GetMsg() string {
+	if x != nil {
+		return x.Msg
+	}
+	return ""
+}
+
 type IsConcernedRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	BizId         string                 `protobuf:"bytes,1,opt,name=bizId,proto3" json:"bizId,omitempty"`    // 业务ID
-	ObjId         int64                  `protobuf:"varint,2,opt,name=objId,proto3" json:"objId,omitempty"`   // 收藏对象id
-	UserId        int64                  `protobuf:"varint,3,opt,name=userId,proto3" json:"userId,omitempty"` // 用户ID
+	BizId         string                 `protobuf:"bytes,1,opt,name=bizId,proto3" json:"bizId,omitempty"`
+	ObjId         int64                  `protobuf:"varint,2,opt,name=objId,proto3" json:"objId,omitempty"`
+	UserId        int64                  `protobuf:"varint,3,opt,name=userId,proto3" json:"userId,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -273,16 +305,62 @@ func (x *IsConcernedRequest) GetUserId() int64 {
 	return 0
 }
 
+type IsConcernedData struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	IsConcerned   bool                   `protobuf:"varint,1,opt,name=isConcerned,proto3" json:"isConcerned,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *IsConcernedData) Reset() {
+	*x = IsConcernedData{}
+	mi := &file_concerned_proto_msgTypes[5]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *IsConcernedData) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*IsConcernedData) ProtoMessage() {}
+
+func (x *IsConcernedData) ProtoReflect() protoreflect.Message {
+	mi := &file_concerned_proto_msgTypes[5]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use IsConcernedData.ProtoReflect.Descriptor instead.
+func (*IsConcernedData) Descriptor() ([]byte, []int) {
+	return file_concerned_proto_rawDescGZIP(), []int{5}
+}
+
+func (x *IsConcernedData) GetIsConcerned() bool {
+	if x != nil {
+		return x.IsConcerned
+	}
+	return false
+}
+
 type IsConcernedResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	IsConcerned   bool                   `protobuf:"varint,1,opt,name=isConcerned,proto3" json:"isConcerned,omitempty"` // 是否已收藏
+	Code          int64                  `protobuf:"varint,1,opt,name=code,proto3" json:"code,omitempty"`
+	Msg           string                 `protobuf:"bytes,2,opt,name=msg,proto3" json:"msg,omitempty"`
+	Data          *IsConcernedData       `protobuf:"bytes,3,opt,name=data,proto3" json:"data,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
 func (x *IsConcernedResponse) Reset() {
 	*x = IsConcernedResponse{}
-	mi := &file_concerned_proto_msgTypes[5]
+	mi := &file_concerned_proto_msgTypes[6]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -294,7 +372,7 @@ func (x *IsConcernedResponse) String() string {
 func (*IsConcernedResponse) ProtoMessage() {}
 
 func (x *IsConcernedResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_concerned_proto_msgTypes[5]
+	mi := &file_concerned_proto_msgTypes[6]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -307,29 +385,43 @@ func (x *IsConcernedResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use IsConcernedResponse.ProtoReflect.Descriptor instead.
 func (*IsConcernedResponse) Descriptor() ([]byte, []int) {
-	return file_concerned_proto_rawDescGZIP(), []int{5}
+	return file_concerned_proto_rawDescGZIP(), []int{6}
 }
 
-func (x *IsConcernedResponse) GetIsConcerned() bool {
+func (x *IsConcernedResponse) GetCode() int64 {
 	if x != nil {
-		return x.IsConcerned
+		return x.Code
 	}
-	return false
+	return 0
+}
+
+func (x *IsConcernedResponse) GetMsg() string {
+	if x != nil {
+		return x.Msg
+	}
+	return ""
+}
+
+func (x *IsConcernedResponse) GetData() *IsConcernedData {
+	if x != nil {
+		return x.Data
+	}
+	return nil
 }
 
 type ConcernedListRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	UserId        int64                  `protobuf:"varint,1,opt,name=userId,proto3" json:"userId,omitempty"`     // 用户ID
-	BizId         string                 `protobuf:"bytes,2,opt,name=bizId,proto3" json:"bizId,omitempty"`        // 业务ID (空表示全部)
-	Cursor        int64                  `protobuf:"varint,3,opt,name=cursor,proto3" json:"cursor,omitempty"`     // 游标
-	PageSize      int64                  `protobuf:"varint,4,opt,name=pageSize,proto3" json:"pageSize,omitempty"` // 页大小
+	UserId        int64                  `protobuf:"varint,1,opt,name=userId,proto3" json:"userId,omitempty"`
+	BizId         string                 `protobuf:"bytes,2,opt,name=bizId,proto3" json:"bizId,omitempty"`
+	Cursor        int64                  `protobuf:"varint,3,opt,name=cursor,proto3" json:"cursor,omitempty"`
+	PageSize      int64                  `protobuf:"varint,4,opt,name=pageSize,proto3" json:"pageSize,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
 func (x *ConcernedListRequest) Reset() {
 	*x = ConcernedListRequest{}
-	mi := &file_concerned_proto_msgTypes[6]
+	mi := &file_concerned_proto_msgTypes[7]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -341,7 +433,7 @@ func (x *ConcernedListRequest) String() string {
 func (*ConcernedListRequest) ProtoMessage() {}
 
 func (x *ConcernedListRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_concerned_proto_msgTypes[6]
+	mi := &file_concerned_proto_msgTypes[7]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -354,7 +446,7 @@ func (x *ConcernedListRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ConcernedListRequest.ProtoReflect.Descriptor instead.
 func (*ConcernedListRequest) Descriptor() ([]byte, []int) {
-	return file_concerned_proto_rawDescGZIP(), []int{6}
+	return file_concerned_proto_rawDescGZIP(), []int{7}
 }
 
 func (x *ConcernedListRequest) GetUserId() int64 {
@@ -387,17 +479,17 @@ func (x *ConcernedListRequest) GetPageSize() int64 {
 
 type ConcernedItem struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Id            int64                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`                 // 记录ID
-	BizId         string                 `protobuf:"bytes,2,opt,name=bizId,proto3" json:"bizId,omitempty"`            // 业务ID
-	ObjId         int64                  `protobuf:"varint,3,opt,name=objId,proto3" json:"objId,omitempty"`           // 收藏对象id
-	CreateTime    int64                  `protobuf:"varint,4,opt,name=createTime,proto3" json:"createTime,omitempty"` // 收藏时间
+	Id            int64                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
+	BizId         string                 `protobuf:"bytes,2,opt,name=bizId,proto3" json:"bizId,omitempty"`
+	ObjId         int64                  `protobuf:"varint,3,opt,name=objId,proto3" json:"objId,omitempty"`
+	CreateTime    int64                  `protobuf:"varint,4,opt,name=createTime,proto3" json:"createTime,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
 func (x *ConcernedItem) Reset() {
 	*x = ConcernedItem{}
-	mi := &file_concerned_proto_msgTypes[7]
+	mi := &file_concerned_proto_msgTypes[8]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -409,7 +501,7 @@ func (x *ConcernedItem) String() string {
 func (*ConcernedItem) ProtoMessage() {}
 
 func (x *ConcernedItem) ProtoReflect() protoreflect.Message {
-	mi := &file_concerned_proto_msgTypes[7]
+	mi := &file_concerned_proto_msgTypes[8]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -422,7 +514,7 @@ func (x *ConcernedItem) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ConcernedItem.ProtoReflect.Descriptor instead.
 func (*ConcernedItem) Descriptor() ([]byte, []int) {
-	return file_concerned_proto_rawDescGZIP(), []int{7}
+	return file_concerned_proto_rawDescGZIP(), []int{8}
 }
 
 func (x *ConcernedItem) GetId() int64 {
@@ -453,18 +545,78 @@ func (x *ConcernedItem) GetCreateTime() int64 {
 	return 0
 }
 
+type ConcernedListData struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Items         []*ConcernedItem       `protobuf:"bytes,1,rep,name=items,proto3" json:"items,omitempty"`
+	Cursor        int64                  `protobuf:"varint,2,opt,name=cursor,proto3" json:"cursor,omitempty"`
+	IsEnd         bool                   `protobuf:"varint,3,opt,name=isEnd,proto3" json:"isEnd,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ConcernedListData) Reset() {
+	*x = ConcernedListData{}
+	mi := &file_concerned_proto_msgTypes[9]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ConcernedListData) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ConcernedListData) ProtoMessage() {}
+
+func (x *ConcernedListData) ProtoReflect() protoreflect.Message {
+	mi := &file_concerned_proto_msgTypes[9]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ConcernedListData.ProtoReflect.Descriptor instead.
+func (*ConcernedListData) Descriptor() ([]byte, []int) {
+	return file_concerned_proto_rawDescGZIP(), []int{9}
+}
+
+func (x *ConcernedListData) GetItems() []*ConcernedItem {
+	if x != nil {
+		return x.Items
+	}
+	return nil
+}
+
+func (x *ConcernedListData) GetCursor() int64 {
+	if x != nil {
+		return x.Cursor
+	}
+	return 0
+}
+
+func (x *ConcernedListData) GetIsEnd() bool {
+	if x != nil {
+		return x.IsEnd
+	}
+	return false
+}
+
 type ConcernedListResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Items         []*ConcernedItem       `protobuf:"bytes,1,rep,name=items,proto3" json:"items,omitempty"`    // 收藏列表
-	Cursor        int64                  `protobuf:"varint,2,opt,name=cursor,proto3" json:"cursor,omitempty"` // 下一页游标
-	IsEnd         bool                   `protobuf:"varint,3,opt,name=isEnd,proto3" json:"isEnd,omitempty"`   // 是否最后一页
+	Code          int64                  `protobuf:"varint,1,opt,name=code,proto3" json:"code,omitempty"`
+	Msg           string                 `protobuf:"bytes,2,opt,name=msg,proto3" json:"msg,omitempty"`
+	Data          *ConcernedListData     `protobuf:"bytes,3,opt,name=data,proto3" json:"data,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
 func (x *ConcernedListResponse) Reset() {
 	*x = ConcernedListResponse{}
-	mi := &file_concerned_proto_msgTypes[8]
+	mi := &file_concerned_proto_msgTypes[10]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -476,7 +628,7 @@ func (x *ConcernedListResponse) String() string {
 func (*ConcernedListResponse) ProtoMessage() {}
 
 func (x *ConcernedListResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_concerned_proto_msgTypes[8]
+	mi := &file_concerned_proto_msgTypes[10]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -489,41 +641,41 @@ func (x *ConcernedListResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ConcernedListResponse.ProtoReflect.Descriptor instead.
 func (*ConcernedListResponse) Descriptor() ([]byte, []int) {
-	return file_concerned_proto_rawDescGZIP(), []int{8}
+	return file_concerned_proto_rawDescGZIP(), []int{10}
 }
 
-func (x *ConcernedListResponse) GetItems() []*ConcernedItem {
+func (x *ConcernedListResponse) GetCode() int64 {
 	if x != nil {
-		return x.Items
-	}
-	return nil
-}
-
-func (x *ConcernedListResponse) GetCursor() int64 {
-	if x != nil {
-		return x.Cursor
+		return x.Code
 	}
 	return 0
 }
 
-func (x *ConcernedListResponse) GetIsEnd() bool {
+func (x *ConcernedListResponse) GetMsg() string {
 	if x != nil {
-		return x.IsEnd
+		return x.Msg
 	}
-	return false
+	return ""
+}
+
+func (x *ConcernedListResponse) GetData() *ConcernedListData {
+	if x != nil {
+		return x.Data
+	}
+	return nil
 }
 
 type ConcernedCountRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	BizId         string                 `protobuf:"bytes,1,opt,name=bizId,proto3" json:"bizId,omitempty"`  // 业务ID
-	ObjId         int64                  `protobuf:"varint,2,opt,name=objId,proto3" json:"objId,omitempty"` // 收藏对象id
+	BizId         string                 `protobuf:"bytes,1,opt,name=bizId,proto3" json:"bizId,omitempty"`
+	ObjId         int64                  `protobuf:"varint,2,opt,name=objId,proto3" json:"objId,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
 func (x *ConcernedCountRequest) Reset() {
 	*x = ConcernedCountRequest{}
-	mi := &file_concerned_proto_msgTypes[9]
+	mi := &file_concerned_proto_msgTypes[11]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -535,7 +687,7 @@ func (x *ConcernedCountRequest) String() string {
 func (*ConcernedCountRequest) ProtoMessage() {}
 
 func (x *ConcernedCountRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_concerned_proto_msgTypes[9]
+	mi := &file_concerned_proto_msgTypes[11]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -548,7 +700,7 @@ func (x *ConcernedCountRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ConcernedCountRequest.ProtoReflect.Descriptor instead.
 func (*ConcernedCountRequest) Descriptor() ([]byte, []int) {
-	return file_concerned_proto_rawDescGZIP(), []int{9}
+	return file_concerned_proto_rawDescGZIP(), []int{11}
 }
 
 func (x *ConcernedCountRequest) GetBizId() string {
@@ -565,16 +717,62 @@ func (x *ConcernedCountRequest) GetObjId() int64 {
 	return 0
 }
 
+type ConcernedCountData struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	ConcernedNum  int64                  `protobuf:"varint,1,opt,name=concernedNum,proto3" json:"concernedNum,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ConcernedCountData) Reset() {
+	*x = ConcernedCountData{}
+	mi := &file_concerned_proto_msgTypes[12]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ConcernedCountData) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ConcernedCountData) ProtoMessage() {}
+
+func (x *ConcernedCountData) ProtoReflect() protoreflect.Message {
+	mi := &file_concerned_proto_msgTypes[12]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ConcernedCountData.ProtoReflect.Descriptor instead.
+func (*ConcernedCountData) Descriptor() ([]byte, []int) {
+	return file_concerned_proto_rawDescGZIP(), []int{12}
+}
+
+func (x *ConcernedCountData) GetConcernedNum() int64 {
+	if x != nil {
+		return x.ConcernedNum
+	}
+	return 0
+}
+
 type ConcernedCountResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	ConcernedNum  int64                  `protobuf:"varint,1,opt,name=concernedNum,proto3" json:"concernedNum,omitempty"` // 收藏数
+	Code          int64                  `protobuf:"varint,1,opt,name=code,proto3" json:"code,omitempty"`
+	Msg           string                 `protobuf:"bytes,2,opt,name=msg,proto3" json:"msg,omitempty"`
+	Data          *ConcernedCountData    `protobuf:"bytes,3,opt,name=data,proto3" json:"data,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
 func (x *ConcernedCountResponse) Reset() {
 	*x = ConcernedCountResponse{}
-	mi := &file_concerned_proto_msgTypes[10]
+	mi := &file_concerned_proto_msgTypes[13]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -586,7 +784,7 @@ func (x *ConcernedCountResponse) String() string {
 func (*ConcernedCountResponse) ProtoMessage() {}
 
 func (x *ConcernedCountResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_concerned_proto_msgTypes[10]
+	mi := &file_concerned_proto_msgTypes[13]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -599,37 +797,59 @@ func (x *ConcernedCountResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ConcernedCountResponse.ProtoReflect.Descriptor instead.
 func (*ConcernedCountResponse) Descriptor() ([]byte, []int) {
-	return file_concerned_proto_rawDescGZIP(), []int{10}
+	return file_concerned_proto_rawDescGZIP(), []int{13}
 }
 
-func (x *ConcernedCountResponse) GetConcernedNum() int64 {
+func (x *ConcernedCountResponse) GetCode() int64 {
 	if x != nil {
-		return x.ConcernedNum
+		return x.Code
 	}
 	return 0
+}
+
+func (x *ConcernedCountResponse) GetMsg() string {
+	if x != nil {
+		return x.Msg
+	}
+	return ""
+}
+
+func (x *ConcernedCountResponse) GetData() *ConcernedCountData {
+	if x != nil {
+		return x.Data
+	}
+	return nil
 }
 
 var File_concerned_proto protoreflect.FileDescriptor
 
 const file_concerned_proto_rawDesc = "" +
 	"\n" +
-	"\x0fconcerned.proto\x12\aservice\"Y\n" +
+	"\x0fconcerned.proto\x12\x06social\"Y\n" +
 	"\x13AddConcernedRequest\x12\x14\n" +
 	"\x05bizId\x18\x01 \x01(\tR\x05bizId\x12\x14\n" +
 	"\x05objId\x18\x02 \x01(\x03R\x05objId\x12\x16\n" +
-	"\x06userId\x18\x03 \x01(\x03R\x06userId\"\x16\n" +
-	"\x14AddConcernedResponse\"\\\n" +
+	"\x06userId\x18\x03 \x01(\x03R\x06userId\"<\n" +
+	"\x14AddConcernedResponse\x12\x12\n" +
+	"\x04code\x18\x01 \x01(\x03R\x04code\x12\x10\n" +
+	"\x03msg\x18\x02 \x01(\tR\x03msg\"\\\n" +
 	"\x16CancelConcernedRequest\x12\x14\n" +
 	"\x05bizId\x18\x01 \x01(\tR\x05bizId\x12\x14\n" +
 	"\x05objId\x18\x02 \x01(\x03R\x05objId\x12\x16\n" +
-	"\x06userId\x18\x03 \x01(\x03R\x06userId\"\x19\n" +
-	"\x17CancelConcernedResponse\"X\n" +
+	"\x06userId\x18\x03 \x01(\x03R\x06userId\"?\n" +
+	"\x17CancelConcernedResponse\x12\x12\n" +
+	"\x04code\x18\x01 \x01(\x03R\x04code\x12\x10\n" +
+	"\x03msg\x18\x02 \x01(\tR\x03msg\"X\n" +
 	"\x12IsConcernedRequest\x12\x14\n" +
 	"\x05bizId\x18\x01 \x01(\tR\x05bizId\x12\x14\n" +
 	"\x05objId\x18\x02 \x01(\x03R\x05objId\x12\x16\n" +
-	"\x06userId\x18\x03 \x01(\x03R\x06userId\"7\n" +
-	"\x13IsConcernedResponse\x12 \n" +
-	"\visConcerned\x18\x01 \x01(\bR\visConcerned\"x\n" +
+	"\x06userId\x18\x03 \x01(\x03R\x06userId\"3\n" +
+	"\x0fIsConcernedData\x12 \n" +
+	"\visConcerned\x18\x01 \x01(\bR\visConcerned\"h\n" +
+	"\x13IsConcernedResponse\x12\x12\n" +
+	"\x04code\x18\x01 \x01(\x03R\x04code\x12\x10\n" +
+	"\x03msg\x18\x02 \x01(\tR\x03msg\x12+\n" +
+	"\x04data\x18\x03 \x01(\v2\x17.social.IsConcernedDataR\x04data\"x\n" +
 	"\x14ConcernedListRequest\x12\x16\n" +
 	"\x06userId\x18\x01 \x01(\x03R\x06userId\x12\x14\n" +
 	"\x05bizId\x18\x02 \x01(\tR\x05bizId\x12\x16\n" +
@@ -641,22 +861,30 @@ const file_concerned_proto_rawDesc = "" +
 	"\x05objId\x18\x03 \x01(\x03R\x05objId\x12\x1e\n" +
 	"\n" +
 	"createTime\x18\x04 \x01(\x03R\n" +
-	"createTime\"s\n" +
-	"\x15ConcernedListResponse\x12,\n" +
-	"\x05items\x18\x01 \x03(\v2\x16.service.ConcernedItemR\x05items\x12\x16\n" +
+	"createTime\"n\n" +
+	"\x11ConcernedListData\x12+\n" +
+	"\x05items\x18\x01 \x03(\v2\x15.social.ConcernedItemR\x05items\x12\x16\n" +
 	"\x06cursor\x18\x02 \x01(\x03R\x06cursor\x12\x14\n" +
-	"\x05isEnd\x18\x03 \x01(\bR\x05isEnd\"C\n" +
+	"\x05isEnd\x18\x03 \x01(\bR\x05isEnd\"l\n" +
+	"\x15ConcernedListResponse\x12\x12\n" +
+	"\x04code\x18\x01 \x01(\x03R\x04code\x12\x10\n" +
+	"\x03msg\x18\x02 \x01(\tR\x03msg\x12-\n" +
+	"\x04data\x18\x03 \x01(\v2\x19.social.ConcernedListDataR\x04data\"C\n" +
 	"\x15ConcernedCountRequest\x12\x14\n" +
 	"\x05bizId\x18\x01 \x01(\tR\x05bizId\x12\x14\n" +
-	"\x05objId\x18\x02 \x01(\x03R\x05objId\"<\n" +
-	"\x16ConcernedCountResponse\x12\"\n" +
-	"\fconcernedNum\x18\x01 \x01(\x03R\fconcernedNum2\x9b\x03\n" +
-	"\tConcerned\x12K\n" +
-	"\fAddConcerned\x12\x1c.service.AddConcernedRequest\x1a\x1d.service.AddConcernedResponse\x12T\n" +
-	"\x0fCancelConcerned\x12\x1f.service.CancelConcernedRequest\x1a .service.CancelConcernedResponse\x12H\n" +
-	"\vIsConcerned\x12\x1b.service.IsConcernedRequest\x1a\x1c.service.IsConcernedResponse\x12N\n" +
-	"\rConcernedList\x12\x1d.service.ConcernedListRequest\x1a\x1e.service.ConcernedListResponse\x12Q\n" +
-	"\x0eConcernedCount\x12\x1e.service.ConcernedCountRequest\x1a\x1f.service.ConcernedCountResponseB\x06Z\x04./pbb\x06proto3"
+	"\x05objId\x18\x02 \x01(\x03R\x05objId\"8\n" +
+	"\x12ConcernedCountData\x12\"\n" +
+	"\fconcernedNum\x18\x01 \x01(\x03R\fconcernedNum\"n\n" +
+	"\x16ConcernedCountResponse\x12\x12\n" +
+	"\x04code\x18\x01 \x01(\x03R\x04code\x12\x10\n" +
+	"\x03msg\x18\x02 \x01(\tR\x03msg\x12.\n" +
+	"\x04data\x18\x03 \x01(\v2\x1a.social.ConcernedCountDataR\x04data2\x91\x03\n" +
+	"\tConcerned\x12I\n" +
+	"\fAddConcerned\x12\x1b.social.AddConcernedRequest\x1a\x1c.social.AddConcernedResponse\x12R\n" +
+	"\x0fCancelConcerned\x12\x1e.social.CancelConcernedRequest\x1a\x1f.social.CancelConcernedResponse\x12F\n" +
+	"\vIsConcerned\x12\x1a.social.IsConcernedRequest\x1a\x1b.social.IsConcernedResponse\x12L\n" +
+	"\rConcernedList\x12\x1c.social.ConcernedListRequest\x1a\x1d.social.ConcernedListResponse\x12O\n" +
+	"\x0eConcernedCount\x12\x1d.social.ConcernedCountRequest\x1a\x1e.social.ConcernedCountResponseB&Z$api-thinktalk/client/concerned/pb;pbb\x06proto3"
 
 var (
 	file_concerned_proto_rawDescOnce sync.Once
@@ -670,37 +898,43 @@ func file_concerned_proto_rawDescGZIP() []byte {
 	return file_concerned_proto_rawDescData
 }
 
-var file_concerned_proto_msgTypes = make([]protoimpl.MessageInfo, 11)
+var file_concerned_proto_msgTypes = make([]protoimpl.MessageInfo, 14)
 var file_concerned_proto_goTypes = []any{
-	(*AddConcernedRequest)(nil),     // 0: service.AddConcernedRequest
-	(*AddConcernedResponse)(nil),    // 1: service.AddConcernedResponse
-	(*CancelConcernedRequest)(nil),  // 2: service.CancelConcernedRequest
-	(*CancelConcernedResponse)(nil), // 3: service.CancelConcernedResponse
-	(*IsConcernedRequest)(nil),      // 4: service.IsConcernedRequest
-	(*IsConcernedResponse)(nil),     // 5: service.IsConcernedResponse
-	(*ConcernedListRequest)(nil),    // 6: service.ConcernedListRequest
-	(*ConcernedItem)(nil),           // 7: service.ConcernedItem
-	(*ConcernedListResponse)(nil),   // 8: service.ConcernedListResponse
-	(*ConcernedCountRequest)(nil),   // 9: service.ConcernedCountRequest
-	(*ConcernedCountResponse)(nil),  // 10: service.ConcernedCountResponse
+	(*AddConcernedRequest)(nil),     // 0: social.AddConcernedRequest
+	(*AddConcernedResponse)(nil),    // 1: social.AddConcernedResponse
+	(*CancelConcernedRequest)(nil),  // 2: social.CancelConcernedRequest
+	(*CancelConcernedResponse)(nil), // 3: social.CancelConcernedResponse
+	(*IsConcernedRequest)(nil),      // 4: social.IsConcernedRequest
+	(*IsConcernedData)(nil),         // 5: social.IsConcernedData
+	(*IsConcernedResponse)(nil),     // 6: social.IsConcernedResponse
+	(*ConcernedListRequest)(nil),    // 7: social.ConcernedListRequest
+	(*ConcernedItem)(nil),           // 8: social.ConcernedItem
+	(*ConcernedListData)(nil),       // 9: social.ConcernedListData
+	(*ConcernedListResponse)(nil),   // 10: social.ConcernedListResponse
+	(*ConcernedCountRequest)(nil),   // 11: social.ConcernedCountRequest
+	(*ConcernedCountData)(nil),      // 12: social.ConcernedCountData
+	(*ConcernedCountResponse)(nil),  // 13: social.ConcernedCountResponse
 }
 var file_concerned_proto_depIdxs = []int32{
-	7,  // 0: service.ConcernedListResponse.items:type_name -> service.ConcernedItem
-	0,  // 1: service.Concerned.AddConcerned:input_type -> service.AddConcernedRequest
-	2,  // 2: service.Concerned.CancelConcerned:input_type -> service.CancelConcernedRequest
-	4,  // 3: service.Concerned.IsConcerned:input_type -> service.IsConcernedRequest
-	6,  // 4: service.Concerned.ConcernedList:input_type -> service.ConcernedListRequest
-	9,  // 5: service.Concerned.ConcernedCount:input_type -> service.ConcernedCountRequest
-	1,  // 6: service.Concerned.AddConcerned:output_type -> service.AddConcernedResponse
-	3,  // 7: service.Concerned.CancelConcerned:output_type -> service.CancelConcernedResponse
-	5,  // 8: service.Concerned.IsConcerned:output_type -> service.IsConcernedResponse
-	8,  // 9: service.Concerned.ConcernedList:output_type -> service.ConcernedListResponse
-	10, // 10: service.Concerned.ConcernedCount:output_type -> service.ConcernedCountResponse
-	6,  // [6:11] is the sub-list for method output_type
-	1,  // [1:6] is the sub-list for method input_type
-	1,  // [1:1] is the sub-list for extension type_name
-	1,  // [1:1] is the sub-list for extension extendee
-	0,  // [0:1] is the sub-list for field type_name
+	5,  // 0: social.IsConcernedResponse.data:type_name -> social.IsConcernedData
+	8,  // 1: social.ConcernedListData.items:type_name -> social.ConcernedItem
+	9,  // 2: social.ConcernedListResponse.data:type_name -> social.ConcernedListData
+	12, // 3: social.ConcernedCountResponse.data:type_name -> social.ConcernedCountData
+	0,  // 4: social.Concerned.AddConcerned:input_type -> social.AddConcernedRequest
+	2,  // 5: social.Concerned.CancelConcerned:input_type -> social.CancelConcernedRequest
+	4,  // 6: social.Concerned.IsConcerned:input_type -> social.IsConcernedRequest
+	7,  // 7: social.Concerned.ConcernedList:input_type -> social.ConcernedListRequest
+	11, // 8: social.Concerned.ConcernedCount:input_type -> social.ConcernedCountRequest
+	1,  // 9: social.Concerned.AddConcerned:output_type -> social.AddConcernedResponse
+	3,  // 10: social.Concerned.CancelConcerned:output_type -> social.CancelConcernedResponse
+	6,  // 11: social.Concerned.IsConcerned:output_type -> social.IsConcernedResponse
+	10, // 12: social.Concerned.ConcernedList:output_type -> social.ConcernedListResponse
+	13, // 13: social.Concerned.ConcernedCount:output_type -> social.ConcernedCountResponse
+	9,  // [9:14] is the sub-list for method output_type
+	4,  // [4:9] is the sub-list for method input_type
+	4,  // [4:4] is the sub-list for extension type_name
+	4,  // [4:4] is the sub-list for extension extendee
+	0,  // [0:4] is the sub-list for field type_name
 }
 
 func init() { file_concerned_proto_init() }
@@ -714,7 +948,7 @@ func file_concerned_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_concerned_proto_rawDesc), len(file_concerned_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   11,
+			NumMessages:   14,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

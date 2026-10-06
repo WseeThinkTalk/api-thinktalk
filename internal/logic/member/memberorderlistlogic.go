@@ -2,10 +2,11 @@ package member
 
 import (
 	"context"
+	"strconv"
 
-	"api-thinktalk/client/member/pb"
 	"api-thinktalk/internal/svc"
 	"api-thinktalk/internal/types"
+	member "api-thinktalk/client/member/pb"
 
 	"github.com/zeromicro/go-zero/core/logx"
 )
@@ -23,7 +24,7 @@ func NewMemberOrderListLogic(ctx context.Context, svcCtx *svc.ServiceContext) *M
 func (l *MemberOrderListLogic) MemberOrderList(userId int64, req *types.MemberOrderListRequest) (resp *types.MemberOrderListResponse, err error) {
 	resp = new(types.MemberOrderListResponse)
 
-	rpcResp, err := l.svcCtx.MemberRPC.MemberOrderList(l.ctx, &pb.MemberOrderListRequest{
+	rpcResp, err := l.svcCtx.MemberRPC.MemberOrderList(l.ctx, &member.MemberOrderListRequest{
 		UserId:   userId,
 		Cursor:   req.Cursor,
 		PageSize: req.PageSize,
@@ -33,22 +34,25 @@ func (l *MemberOrderListLogic) MemberOrderList(userId int64, req *types.MemberOr
 		return nil, err
 	}
 
-	// 转换会员订单数据项
-	items := make([]*types.MemberOrderItem, 0, len(rpcResp.Items))
-	for _, v := range rpcResp.Items {
-		items = append(items, &types.MemberOrderItem{
-			Id:           v.Id,
-			UserId:       v.UserId,
-			Level:        v.Level,
-			DurationDays: v.DurationDays,
-			Amount:       v.Amount,
-			PayChannel:   v.PayChannel,
-			Status:       v.Status,
-			CreateTime:   v.CreateTime,
-		})
+	var items []*types.MemberOrderItem
+	if rpcResp != nil && rpcResp.Data != nil {
+		for _, v := range rpcResp.Data.Items {
+			if v != nil {
+				items = append(items, &types.MemberOrderItem{
+					OrderId:        strconv.FormatInt(v.Id, 10),
+					UserId:         v.UserId,
+					TargetLevel:    v.Level,
+					DurationMonths: v.DurationDays / 30,
+					Amount:         float64(v.Amount) / 100.0,
+					PayChannel:     v.PayChannel,
+					PayStatus:      v.Status,
+					CreateTime:     v.CreateTime,
+				})
+			}
+		}
+		resp.Cursor = rpcResp.Data.Cursor
+		resp.IsEnd = rpcResp.Data.IsEnd
 	}
 	resp.Items = items
-	resp.Cursor = rpcResp.Cursor
-	resp.IsEnd = rpcResp.IsEnd
 	return resp, nil
 }

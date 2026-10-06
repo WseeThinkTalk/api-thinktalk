@@ -18,8 +18,10 @@ func ResourcesByTagHandler(svcCtx *svc.ServiceContext) http.HandlerFunc {
 		if v := q.Get("tag_id"); v != "" {
 			json.Unmarshal([]byte(v), &req.TagId)
 		}
-		if v := q.Get("biz_id"); v != "" {
-			req.BizId = v
+		if v := q.Get("resource_type"); v != "" {
+			req.ResourceType = v
+		} else if v := q.Get("biz_id"); v != "" {
+			req.ResourceType = v
 		}
 		if v := q.Get("cursor"); v != "" {
 			json.Unmarshal([]byte(v), &req.Cursor)

@@ -25,7 +25,7 @@ func (l *ResourcesByTagLogic) ResourcesByTag(req *types.ResourcesByTagRequest) (
 
 	rpcResp, err := l.svcCtx.TagRPC.ResourcesByTag(l.ctx, &tag.ResourcesByTagRequest{
 		TagId:    req.TagId,
-		BizId:    req.BizId,
+		BizId:    req.ResourceType,
 		Cursor:   req.Cursor,
 		PageSize: req.PageSize,
 	})
@@ -34,16 +34,14 @@ func (l *ResourcesByTagLogic) ResourcesByTag(req *types.ResourcesByTagRequest) (
 		return nil, err
 	}
 	// 转换标签关联资源项
-	items := make([]*types.ResourceItem, 0, len(rpcResp.Items))
-	for _, v := range rpcResp.Items {
-		items = append(items, &types.ResourceItem{
-			TargetId:   v.TargetId,
-			BizId:      v.BizId,
-			CreateTime: v.CreateTime,
-		})
+	if rpcResp != nil && rpcResp.Data != nil {
+		ids := make([]int64, 0, len(rpcResp.Data.Items))
+		for _, v := range rpcResp.Data.Items {
+			ids = append(ids, v.TargetId)
+		}
+		resp.ResourceIds = ids
+		resp.Cursor = rpcResp.Data.Cursor
+		resp.IsEnd = rpcResp.Data.IsEnd
 	}
-	resp.Items = items
-	resp.Cursor = rpcResp.Cursor
-	resp.IsEnd = rpcResp.IsEnd
 	return resp, nil
 }

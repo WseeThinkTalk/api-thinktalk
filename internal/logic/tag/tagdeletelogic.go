@@ -24,7 +24,7 @@ func (l *TagDeleteLogic) TagDelete(userId int64, req *types.TagDeleteRequest) (r
 	resp = new(types.TagDeleteResponse)
 
 	_, err = l.svcCtx.TagRPC.DeleteTag(l.ctx, &tag.DeleteTagRequest{
-		TagId: req.TagId,
+		TagId: req.Id,
 	})
 	if err != nil {
 		l.Errorf("[DeleteTag] rpc err: %v", err)

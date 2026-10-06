@@ -56,27 +56,29 @@ func (l *SyncOfflineLogic) SyncOnConnect(userId int64) {
 	// 过滤未读会话并补充对方用户信息
 	var unreadConvs []unreadSyncItem
 	var totalUnread int64
-	for _, v := range resp.Items {
-		if v.UnreadCount == 0 {
-			continue
-		}
-		totalUnread += v.UnreadCount
+	if resp != nil && resp.Data != nil {
+		for _, v := range resp.Data.Items {
+			if v.UnreadCount == 0 {
+				continue
+			}
+			totalUnread += v.UnreadCount
 
-		conv := unreadSyncItem{
-			Id:              v.Id,
-			TargetUserId:    v.TargetUserId,
-			LastMessage:     v.LastMessage,
-			LastMessageTime: v.LastMessageTime,
-			UnreadCount:     v.UnreadCount,
-		}
+			conv := unreadSyncItem{
+				Id:              v.Id,
+				TargetUserId:    v.TargetUserId,
+				LastMessage:     v.LastMessage,
+				LastMessageTime: v.LastMessageTime,
+				UnreadCount:     v.UnreadCount,
+			}
 
-		// 获取对方用户信息
-		if userResp, err := l.svcCtx.UserRPC.FindById(l.ctx, &user.FindByIdRequest{UserId: v.TargetUserId}); err == nil {
-			conv.TargetUserName = userResp.Username
-			conv.TargetUserAvatar = userResp.Avatar
-		}
+			// 获取对方用户信息
+			if userResp, err := l.svcCtx.UserRPC.FindById(l.ctx, &user.FindByIdRequest{UserId: v.TargetUserId}); err == nil && userResp != nil && userResp.Data != nil {
+				conv.TargetUserName = userResp.Data.Username
+				conv.TargetUserAvatar = userResp.Data.Avatar
+			}
 
-		unreadConvs = append(unreadConvs, conv)
+			unreadConvs = append(unreadConvs, conv)
+		}
 	}
 
 	if totalUnread == 0 {

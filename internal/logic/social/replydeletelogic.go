@@ -24,7 +24,7 @@ func (l *ReplyDeleteLogic) DeleteReply(userId int64, req *types.ReplyDeleteReque
 	resp = new(types.ReplyDeleteResponse)
 
 	_, err = l.svcCtx.ReplyRPC.DeleteReply(l.ctx, &reply.DeleteReplyRequest{
-		ReplyId: req.ReplyId,
+		ReplyId: req.Id,
 		UserId:  userId,
 	})
 	if err != nil {

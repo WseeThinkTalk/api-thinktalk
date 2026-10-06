@@ -18,9 +18,9 @@ type QuestionsLogic struct {
 
 func NewQuestionsLogic(ctx context.Context, svcCtx *svc.ServiceContext) *QuestionsLogic {
 	return &QuestionsLogic{
+		Logger: logx.WithContext(ctx),
 		ctx:    ctx,
 		svcCtx: svcCtx,
-		Logger: logx.WithContext(ctx),
 	}
 }
 
@@ -38,21 +38,23 @@ func (l *QuestionsLogic) Questions(userId int64, req *types.QuestionListRequest)
 		return nil, err
 	}
 	// 转换问答列表项
-	items := make([]*types.QuestionItem, 0, len(rpcResp.Items))
-	for _, v := range rpcResp.Items {
-		items = append(items, &types.QuestionItem{
-			Id:         v.Id,
-			Title:      v.Title,
-			Content:    v.Content,
-			AuthorId:   v.AuthorId,
-			AnswerNum:  v.AnswerNum,
-			ViewNum:    v.ViewNum,
-			TagIds:     v.TagIds,
-			CreateTime: v.CreateTime,
-		})
+	if rpcResp != nil && rpcResp.Data != nil {
+		items := make([]*types.QuestionItem, 0, len(rpcResp.Data.Items))
+		for _, v := range rpcResp.Data.Items {
+			items = append(items, &types.QuestionItem{
+				Id:         v.Id,
+				Title:      v.Title,
+				Content:    v.Content,
+				AuthorId:   v.AuthorId,
+				AnswerNum:  v.AnswerNum,
+				ViewNum:    v.ViewNum,
+				TagIds:     v.TagIds,
+				CreateTime: v.CreateTime,
+			})
+		}
+		resp.Items = items
+		resp.Cursor = rpcResp.Data.Cursor
+		resp.IsEnd = rpcResp.Data.IsEnd
 	}
-	resp.Items = items
-	resp.Cursor = rpcResp.Cursor
-	resp.IsEnd = rpcResp.IsEnd
 	return resp, nil
 }

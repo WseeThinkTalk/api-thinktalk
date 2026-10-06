@@ -23,15 +23,17 @@ func NewTagResourceLogic(ctx context.Context, svcCtx *svc.ServiceContext) *TagRe
 func (l *TagResourceLogic) TagResource(userId int64, req *types.TagResourceRequest) (resp *types.TagResourceResponse, err error) {
 	resp = new(types.TagResourceResponse)
 
-	_, err = l.svcCtx.TagRPC.TagResource(l.ctx, &tag.TagResourceRequest{
-		BizId:    req.BizId,
-		TargetId: req.TargetId,
-		TagId:    req.TagId,
-		UserId:   userId,
-	})
-	if err != nil {
-		l.Errorf("[TagResource] rpc err: %v", err)
-		return nil, err
+	for _, tagId := range req.TagIds {
+		_, err = l.svcCtx.TagRPC.TagResource(l.ctx, &tag.TagResourceRequest{
+			BizId:    req.ResourceType,
+			TargetId: req.ResourceId,
+			TagId:    tagId,
+			UserId:   userId,
+		})
+		if err != nil {
+			l.Errorf("[TagResource] rpc err: %v", err)
+			return nil, err
+		}
 	}
 	return resp, nil
 }

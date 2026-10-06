@@ -4,12 +4,12 @@
 package article
 
 import (
-	article "api-thinktalk/client/article/pb"
 	"context"
 	"encoding/json"
 
 	"api-thinktalk/internal/svc"
 	"api-thinktalk/internal/types"
+	article "api-thinktalk/client/article/pb"
 
 	"github.com/zeromicro/go-zero/core/logx"
 )
@@ -51,21 +51,23 @@ func (l *ArticleListLogic) ArticleList(req *types.ArticleListRequest) (resp *typ
 		logx.Errorf("get articles req: %v err: %v", req, err)
 		return nil, err
 	}
-	if articles == nil || len(articles.Articles) == 0 {
+	if articles == nil || articles.Data == nil || len(articles.Data.Articles) == 0 {
 		resp.Articles = make([]types.ArticleInfo, 0)
 		return resp, nil
 	}
 
 	// 转换用户文章列表数据项
-	infos := make([]types.ArticleInfo, 0, len(articles.Articles))
-	for _, v := range articles.Articles {
-		infos = append(infos, types.ArticleInfo{
-			ArticleId:   v.Id,
-			Cover:       v.Cover,
-			Description: v.Description,
-			Title:       v.Title,
-			Status:      v.Status,
-		})
+	infos := make([]types.ArticleInfo, 0, len(articles.Data.Articles))
+	for _, v := range articles.Data.Articles {
+		if v != nil {
+			infos = append(infos, types.ArticleInfo{
+				ArticleId:   v.Id,
+				Cover:       v.Cover,
+				Description: v.Description,
+				Title:       v.Title,
+				Status:      v.Status,
+			})
+		}
 	}
 
 	resp.Articles = infos

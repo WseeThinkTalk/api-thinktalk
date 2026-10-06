@@ -40,14 +40,16 @@ func (l *HistoryLogic) History(req *types.HistoryRequest) (resp *types.HistoryRe
 	}
 
 	// 转换会话历史消息列表
-	msgs := make([]types.AgentMessageItem, len(rpcResp.Messages))
-	for i, v := range rpcResp.Messages {
-		msgs[i] = types.AgentMessageItem{Role: v.Role, Content: v.Content}
+	if rpcResp != nil && rpcResp.Data != nil {
+		msgs := make([]types.AgentMessageItem, len(rpcResp.Data.Messages))
+		for i, v := range rpcResp.Data.Messages {
+			msgs[i] = types.AgentMessageItem{Role: v.Role, Content: v.Content}
+		}
+		resp.SessionID = rpcResp.Data.SessionId
+		resp.Title = rpcResp.Data.Title
+		resp.Messages = msgs
+		resp.CreatedAt = rpcResp.Data.CreatedAt
+		resp.UpdatedAt = rpcResp.Data.UpdatedAt
 	}
-	resp.SessionID = rpcResp.SessionId
-	resp.Title = rpcResp.Title
-	resp.Messages = msgs
-	resp.CreatedAt = rpcResp.CreatedAt
-	resp.UpdatedAt = rpcResp.UpdatedAt
 	return resp, nil
 }

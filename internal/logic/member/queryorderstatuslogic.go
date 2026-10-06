@@ -8,7 +8,7 @@ import (
 	"api-thinktalk/internal/svc"
 	"api-thinktalk/internal/types"
 	"api-thinktalk/pkg/code"
-	"api-thinktalk/client/member/pb"
+	member "api-thinktalk/client/member/pb"
 
 	"github.com/smartwalle/alipay/v3"
 	"github.com/zeromicro/go-zero/core/logx"
@@ -59,7 +59,7 @@ func (l *QueryOrderStatusLogic) QueryOrderStatus(req *types.QueryOrderStatusReq)
 	case alipay.TradeStatusSuccess, alipay.TradeStatusFinished:
 		// 支付成功：主动调用 PayCallback 完成订单处理（幂等安全）
 		l.Infof("[QueryOrderStatus] trade success from Alipay, calling PayCallback for orderSn: %s", req.OrderSn)
-		_, err := l.svcCtx.MemberRPC.PayCallback(l.ctx, &pb.PayCallbackRequest{
+		_, err := l.svcCtx.MemberRPC.PayCallback(l.ctx, &member.PayCallbackRequest{
 			OrderSn:       req.OrderSn,
 			TransactionId: tradeResp.TradeNo,
 		})

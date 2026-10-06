@@ -23,12 +23,12 @@ const (
 
 type CreateReplyRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	BizId         string                 `protobuf:"bytes,1,opt,name=bizId,proto3" json:"bizId,omitempty"`                  // 业务ID
-	TargetId      int64                  `protobuf:"varint,2,opt,name=targetId,proto3" json:"targetId,omitempty"`           // 评论目标id
-	ReplyUserId   int64                  `protobuf:"varint,3,opt,name=replyUserId,proto3" json:"replyUserId,omitempty"`     // 评论用户ID
-	BeReplyUserId int64                  `protobuf:"varint,4,opt,name=beReplyUserId,proto3" json:"beReplyUserId,omitempty"` // 被回复用户ID
-	ParentId      int64                  `protobuf:"varint,5,opt,name=parentId,proto3" json:"parentId,omitempty"`           // 父评论ID (0表示根评论)
-	Content       string                 `protobuf:"bytes,6,opt,name=content,proto3" json:"content,omitempty"`              // 内容
+	BizId         string                 `protobuf:"bytes,1,opt,name=bizId,proto3" json:"bizId,omitempty"`
+	TargetId      int64                  `protobuf:"varint,2,opt,name=targetId,proto3" json:"targetId,omitempty"`
+	ReplyUserId   int64                  `protobuf:"varint,3,opt,name=replyUserId,proto3" json:"replyUserId,omitempty"`
+	BeReplyUserId int64                  `protobuf:"varint,4,opt,name=beReplyUserId,proto3" json:"beReplyUserId,omitempty"`
+	ParentId      int64                  `protobuf:"varint,5,opt,name=parentId,proto3" json:"parentId,omitempty"`
+	Content       string                 `protobuf:"bytes,6,opt,name=content,proto3" json:"content,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -105,16 +105,62 @@ func (x *CreateReplyRequest) GetContent() string {
 	return ""
 }
 
+type CreateReplyData struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	ReplyId       int64                  `protobuf:"varint,1,opt,name=replyId,proto3" json:"replyId,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *CreateReplyData) Reset() {
+	*x = CreateReplyData{}
+	mi := &file_reply_proto_msgTypes[1]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *CreateReplyData) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*CreateReplyData) ProtoMessage() {}
+
+func (x *CreateReplyData) ProtoReflect() protoreflect.Message {
+	mi := &file_reply_proto_msgTypes[1]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use CreateReplyData.ProtoReflect.Descriptor instead.
+func (*CreateReplyData) Descriptor() ([]byte, []int) {
+	return file_reply_proto_rawDescGZIP(), []int{1}
+}
+
+func (x *CreateReplyData) GetReplyId() int64 {
+	if x != nil {
+		return x.ReplyId
+	}
+	return 0
+}
+
 type CreateReplyResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	ReplyId       int64                  `protobuf:"varint,1,opt,name=replyId,proto3" json:"replyId,omitempty"` // 评论ID
+	Code          int64                  `protobuf:"varint,1,opt,name=code,proto3" json:"code,omitempty"`
+	Msg           string                 `protobuf:"bytes,2,opt,name=msg,proto3" json:"msg,omitempty"`
+	Data          *CreateReplyData       `protobuf:"bytes,3,opt,name=data,proto3" json:"data,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
 func (x *CreateReplyResponse) Reset() {
 	*x = CreateReplyResponse{}
-	mi := &file_reply_proto_msgTypes[1]
+	mi := &file_reply_proto_msgTypes[2]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -126,7 +172,7 @@ func (x *CreateReplyResponse) String() string {
 func (*CreateReplyResponse) ProtoMessage() {}
 
 func (x *CreateReplyResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_reply_proto_msgTypes[1]
+	mi := &file_reply_proto_msgTypes[2]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -139,28 +185,42 @@ func (x *CreateReplyResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CreateReplyResponse.ProtoReflect.Descriptor instead.
 func (*CreateReplyResponse) Descriptor() ([]byte, []int) {
-	return file_reply_proto_rawDescGZIP(), []int{1}
+	return file_reply_proto_rawDescGZIP(), []int{2}
 }
 
-func (x *CreateReplyResponse) GetReplyId() int64 {
+func (x *CreateReplyResponse) GetCode() int64 {
 	if x != nil {
-		return x.ReplyId
+		return x.Code
 	}
 	return 0
 }
 
+func (x *CreateReplyResponse) GetMsg() string {
+	if x != nil {
+		return x.Msg
+	}
+	return ""
+}
+
+func (x *CreateReplyResponse) GetData() *CreateReplyData {
+	if x != nil {
+		return x.Data
+	}
+	return nil
+}
+
 type DeleteReplyRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	ReplyId       int64                  `protobuf:"varint,1,opt,name=replyId,proto3" json:"replyId,omitempty"` // 评论ID
-	UserId        int64                  `protobuf:"varint,2,opt,name=userId,proto3" json:"userId,omitempty"`   // 操作用户ID
-	IsAdmin       bool                   `protobuf:"varint,3,opt,name=isAdmin,proto3" json:"isAdmin,omitempty"` // 是否管理员
+	ReplyId       int64                  `protobuf:"varint,1,opt,name=replyId,proto3" json:"replyId,omitempty"`
+	UserId        int64                  `protobuf:"varint,2,opt,name=userId,proto3" json:"userId,omitempty"`
+	IsAdmin       bool                   `protobuf:"varint,3,opt,name=isAdmin,proto3" json:"isAdmin,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
 func (x *DeleteReplyRequest) Reset() {
 	*x = DeleteReplyRequest{}
-	mi := &file_reply_proto_msgTypes[2]
+	mi := &file_reply_proto_msgTypes[3]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -172,7 +232,7 @@ func (x *DeleteReplyRequest) String() string {
 func (*DeleteReplyRequest) ProtoMessage() {}
 
 func (x *DeleteReplyRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_reply_proto_msgTypes[2]
+	mi := &file_reply_proto_msgTypes[3]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -185,7 +245,7 @@ func (x *DeleteReplyRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DeleteReplyRequest.ProtoReflect.Descriptor instead.
 func (*DeleteReplyRequest) Descriptor() ([]byte, []int) {
-	return file_reply_proto_rawDescGZIP(), []int{2}
+	return file_reply_proto_rawDescGZIP(), []int{3}
 }
 
 func (x *DeleteReplyRequest) GetReplyId() int64 {
@@ -211,13 +271,15 @@ func (x *DeleteReplyRequest) GetIsAdmin() bool {
 
 type DeleteReplyResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
+	Code          int64                  `protobuf:"varint,1,opt,name=code,proto3" json:"code,omitempty"`
+	Msg           string                 `protobuf:"bytes,2,opt,name=msg,proto3" json:"msg,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
 func (x *DeleteReplyResponse) Reset() {
 	*x = DeleteReplyResponse{}
-	mi := &file_reply_proto_msgTypes[3]
+	mi := &file_reply_proto_msgTypes[4]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -229,7 +291,7 @@ func (x *DeleteReplyResponse) String() string {
 func (*DeleteReplyResponse) ProtoMessage() {}
 
 func (x *DeleteReplyResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_reply_proto_msgTypes[3]
+	mi := &file_reply_proto_msgTypes[4]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -242,19 +304,33 @@ func (x *DeleteReplyResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DeleteReplyResponse.ProtoReflect.Descriptor instead.
 func (*DeleteReplyResponse) Descriptor() ([]byte, []int) {
-	return file_reply_proto_rawDescGZIP(), []int{3}
+	return file_reply_proto_rawDescGZIP(), []int{4}
+}
+
+func (x *DeleteReplyResponse) GetCode() int64 {
+	if x != nil {
+		return x.Code
+	}
+	return 0
+}
+
+func (x *DeleteReplyResponse) GetMsg() string {
+	if x != nil {
+		return x.Msg
+	}
+	return ""
 }
 
 type ReplyDetailRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	ReplyId       int64                  `protobuf:"varint,1,opt,name=replyId,proto3" json:"replyId,omitempty"` // 评论ID
+	ReplyId       int64                  `protobuf:"varint,1,opt,name=replyId,proto3" json:"replyId,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
 func (x *ReplyDetailRequest) Reset() {
 	*x = ReplyDetailRequest{}
-	mi := &file_reply_proto_msgTypes[4]
+	mi := &file_reply_proto_msgTypes[5]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -266,7 +342,7 @@ func (x *ReplyDetailRequest) String() string {
 func (*ReplyDetailRequest) ProtoMessage() {}
 
 func (x *ReplyDetailRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_reply_proto_msgTypes[4]
+	mi := &file_reply_proto_msgTypes[5]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -279,7 +355,7 @@ func (x *ReplyDetailRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ReplyDetailRequest.ProtoReflect.Descriptor instead.
 func (*ReplyDetailRequest) Descriptor() ([]byte, []int) {
-	return file_reply_proto_rawDescGZIP(), []int{4}
+	return file_reply_proto_rawDescGZIP(), []int{5}
 }
 
 func (x *ReplyDetailRequest) GetReplyId() int64 {
@@ -289,145 +365,25 @@ func (x *ReplyDetailRequest) GetReplyId() int64 {
 	return 0
 }
 
-type ReplyDetailResponse struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Reply         *ReplyItem             `protobuf:"bytes,1,opt,name=reply,proto3" json:"reply,omitempty"` // 评论详情
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *ReplyDetailResponse) Reset() {
-	*x = ReplyDetailResponse{}
-	mi := &file_reply_proto_msgTypes[5]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *ReplyDetailResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*ReplyDetailResponse) ProtoMessage() {}
-
-func (x *ReplyDetailResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_reply_proto_msgTypes[5]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use ReplyDetailResponse.ProtoReflect.Descriptor instead.
-func (*ReplyDetailResponse) Descriptor() ([]byte, []int) {
-	return file_reply_proto_rawDescGZIP(), []int{5}
-}
-
-func (x *ReplyDetailResponse) GetReply() *ReplyItem {
-	if x != nil {
-		return x.Reply
-	}
-	return nil
-}
-
-type ReplyListRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	BizId         string                 `protobuf:"bytes,1,opt,name=bizId,proto3" json:"bizId,omitempty"`        // 业务ID
-	TargetId      int64                  `protobuf:"varint,2,opt,name=targetId,proto3" json:"targetId,omitempty"` // 评论目标id
-	Cursor        int64                  `protobuf:"varint,3,opt,name=cursor,proto3" json:"cursor,omitempty"`     // 游标
-	PageSize      int64                  `protobuf:"varint,4,opt,name=pageSize,proto3" json:"pageSize,omitempty"` // 页大小
-	SortType      int32                  `protobuf:"varint,5,opt,name=sortType,proto3" json:"sortType,omitempty"` // 排序类型 0:按时间倒序 1:按点赞数倒序
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *ReplyListRequest) Reset() {
-	*x = ReplyListRequest{}
-	mi := &file_reply_proto_msgTypes[6]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *ReplyListRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*ReplyListRequest) ProtoMessage() {}
-
-func (x *ReplyListRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_reply_proto_msgTypes[6]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use ReplyListRequest.ProtoReflect.Descriptor instead.
-func (*ReplyListRequest) Descriptor() ([]byte, []int) {
-	return file_reply_proto_rawDescGZIP(), []int{6}
-}
-
-func (x *ReplyListRequest) GetBizId() string {
-	if x != nil {
-		return x.BizId
-	}
-	return ""
-}
-
-func (x *ReplyListRequest) GetTargetId() int64 {
-	if x != nil {
-		return x.TargetId
-	}
-	return 0
-}
-
-func (x *ReplyListRequest) GetCursor() int64 {
-	if x != nil {
-		return x.Cursor
-	}
-	return 0
-}
-
-func (x *ReplyListRequest) GetPageSize() int64 {
-	if x != nil {
-		return x.PageSize
-	}
-	return 0
-}
-
-func (x *ReplyListRequest) GetSortType() int32 {
-	if x != nil {
-		return x.SortType
-	}
-	return 0
-}
-
 type ReplyItem struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	ReplyId       int64                  `protobuf:"varint,1,opt,name=replyId,proto3" json:"replyId,omitempty"`             // 评论ID
-	BizId         string                 `protobuf:"bytes,2,opt,name=bizId,proto3" json:"bizId,omitempty"`                  // 业务ID
-	TargetId      int64                  `protobuf:"varint,3,opt,name=targetId,proto3" json:"targetId,omitempty"`           // 评论目标id
-	ReplyUserId   int64                  `protobuf:"varint,4,opt,name=replyUserId,proto3" json:"replyUserId,omitempty"`     // 评论用户ID
-	BeReplyUserId int64                  `protobuf:"varint,5,opt,name=beReplyUserId,proto3" json:"beReplyUserId,omitempty"` // 被回复用户ID
-	ParentId      int64                  `protobuf:"varint,6,opt,name=parentId,proto3" json:"parentId,omitempty"`           // 父评论ID
-	Content       string                 `protobuf:"bytes,7,opt,name=content,proto3" json:"content,omitempty"`              // 内容
-	LikeNum       int64                  `protobuf:"varint,8,opt,name=likeNum,proto3" json:"likeNum,omitempty"`             // 点赞数
-	CreateTime    int64                  `protobuf:"varint,9,opt,name=createTime,proto3" json:"createTime,omitempty"`       // 创建时间
-	SubReplies    []*ReplyItem           `protobuf:"bytes,10,rep,name=subReplies,proto3" json:"subReplies,omitempty"`       // 子回复列表
+	ReplyId       int64                  `protobuf:"varint,1,opt,name=replyId,proto3" json:"replyId,omitempty"`
+	BizId         string                 `protobuf:"bytes,2,opt,name=bizId,proto3" json:"bizId,omitempty"`
+	TargetId      int64                  `protobuf:"varint,3,opt,name=targetId,proto3" json:"targetId,omitempty"`
+	ReplyUserId   int64                  `protobuf:"varint,4,opt,name=replyUserId,proto3" json:"replyUserId,omitempty"`
+	BeReplyUserId int64                  `protobuf:"varint,5,opt,name=beReplyUserId,proto3" json:"beReplyUserId,omitempty"`
+	ParentId      int64                  `protobuf:"varint,6,opt,name=parentId,proto3" json:"parentId,omitempty"`
+	Content       string                 `protobuf:"bytes,7,opt,name=content,proto3" json:"content,omitempty"`
+	LikeNum       int64                  `protobuf:"varint,8,opt,name=likeNum,proto3" json:"likeNum,omitempty"`
+	CreateTime    int64                  `protobuf:"varint,9,opt,name=createTime,proto3" json:"createTime,omitempty"`
+	SubReplies    []*ReplyItem           `protobuf:"bytes,10,rep,name=subReplies,proto3" json:"subReplies,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
 func (x *ReplyItem) Reset() {
 	*x = ReplyItem{}
-	mi := &file_reply_proto_msgTypes[7]
+	mi := &file_reply_proto_msgTypes[6]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -439,7 +395,7 @@ func (x *ReplyItem) String() string {
 func (*ReplyItem) ProtoMessage() {}
 
 func (x *ReplyItem) ProtoReflect() protoreflect.Message {
-	mi := &file_reply_proto_msgTypes[7]
+	mi := &file_reply_proto_msgTypes[6]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -452,7 +408,7 @@ func (x *ReplyItem) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ReplyItem.ProtoReflect.Descriptor instead.
 func (*ReplyItem) Descriptor() ([]byte, []int) {
-	return file_reply_proto_rawDescGZIP(), []int{7}
+	return file_reply_proto_rawDescGZIP(), []int{6}
 }
 
 func (x *ReplyItem) GetReplyId() int64 {
@@ -525,18 +481,214 @@ func (x *ReplyItem) GetSubReplies() []*ReplyItem {
 	return nil
 }
 
+type ReplyDetailResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Code          int64                  `protobuf:"varint,1,opt,name=code,proto3" json:"code,omitempty"`
+	Msg           string                 `protobuf:"bytes,2,opt,name=msg,proto3" json:"msg,omitempty"`
+	Data          *ReplyItem             `protobuf:"bytes,3,opt,name=data,proto3" json:"data,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ReplyDetailResponse) Reset() {
+	*x = ReplyDetailResponse{}
+	mi := &file_reply_proto_msgTypes[7]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ReplyDetailResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ReplyDetailResponse) ProtoMessage() {}
+
+func (x *ReplyDetailResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_reply_proto_msgTypes[7]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ReplyDetailResponse.ProtoReflect.Descriptor instead.
+func (*ReplyDetailResponse) Descriptor() ([]byte, []int) {
+	return file_reply_proto_rawDescGZIP(), []int{7}
+}
+
+func (x *ReplyDetailResponse) GetCode() int64 {
+	if x != nil {
+		return x.Code
+	}
+	return 0
+}
+
+func (x *ReplyDetailResponse) GetMsg() string {
+	if x != nil {
+		return x.Msg
+	}
+	return ""
+}
+
+func (x *ReplyDetailResponse) GetData() *ReplyItem {
+	if x != nil {
+		return x.Data
+	}
+	return nil
+}
+
+type ReplyListRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	BizId         string                 `protobuf:"bytes,1,opt,name=bizId,proto3" json:"bizId,omitempty"`
+	TargetId      int64                  `protobuf:"varint,2,opt,name=targetId,proto3" json:"targetId,omitempty"`
+	Cursor        int64                  `protobuf:"varint,3,opt,name=cursor,proto3" json:"cursor,omitempty"`
+	PageSize      int64                  `protobuf:"varint,4,opt,name=pageSize,proto3" json:"pageSize,omitempty"`
+	SortType      int32                  `protobuf:"varint,5,opt,name=sortType,proto3" json:"sortType,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ReplyListRequest) Reset() {
+	*x = ReplyListRequest{}
+	mi := &file_reply_proto_msgTypes[8]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ReplyListRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ReplyListRequest) ProtoMessage() {}
+
+func (x *ReplyListRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_reply_proto_msgTypes[8]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ReplyListRequest.ProtoReflect.Descriptor instead.
+func (*ReplyListRequest) Descriptor() ([]byte, []int) {
+	return file_reply_proto_rawDescGZIP(), []int{8}
+}
+
+func (x *ReplyListRequest) GetBizId() string {
+	if x != nil {
+		return x.BizId
+	}
+	return ""
+}
+
+func (x *ReplyListRequest) GetTargetId() int64 {
+	if x != nil {
+		return x.TargetId
+	}
+	return 0
+}
+
+func (x *ReplyListRequest) GetCursor() int64 {
+	if x != nil {
+		return x.Cursor
+	}
+	return 0
+}
+
+func (x *ReplyListRequest) GetPageSize() int64 {
+	if x != nil {
+		return x.PageSize
+	}
+	return 0
+}
+
+func (x *ReplyListRequest) GetSortType() int32 {
+	if x != nil {
+		return x.SortType
+	}
+	return 0
+}
+
+type ReplyListData struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Items         []*ReplyItem           `protobuf:"bytes,1,rep,name=items,proto3" json:"items,omitempty"`
+	Cursor        int64                  `protobuf:"varint,2,opt,name=cursor,proto3" json:"cursor,omitempty"`
+	IsEnd         bool                   `protobuf:"varint,3,opt,name=isEnd,proto3" json:"isEnd,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ReplyListData) Reset() {
+	*x = ReplyListData{}
+	mi := &file_reply_proto_msgTypes[9]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ReplyListData) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ReplyListData) ProtoMessage() {}
+
+func (x *ReplyListData) ProtoReflect() protoreflect.Message {
+	mi := &file_reply_proto_msgTypes[9]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ReplyListData.ProtoReflect.Descriptor instead.
+func (*ReplyListData) Descriptor() ([]byte, []int) {
+	return file_reply_proto_rawDescGZIP(), []int{9}
+}
+
+func (x *ReplyListData) GetItems() []*ReplyItem {
+	if x != nil {
+		return x.Items
+	}
+	return nil
+}
+
+func (x *ReplyListData) GetCursor() int64 {
+	if x != nil {
+		return x.Cursor
+	}
+	return 0
+}
+
+func (x *ReplyListData) GetIsEnd() bool {
+	if x != nil {
+		return x.IsEnd
+	}
+	return false
+}
+
 type ReplyListResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Items         []*ReplyItem           `protobuf:"bytes,1,rep,name=items,proto3" json:"items,omitempty"`    // 评论列表
-	Cursor        int64                  `protobuf:"varint,2,opt,name=cursor,proto3" json:"cursor,omitempty"` // 下一页游标
-	IsEnd         bool                   `protobuf:"varint,3,opt,name=isEnd,proto3" json:"isEnd,omitempty"`   // 是否最后一页
+	Code          int64                  `protobuf:"varint,1,opt,name=code,proto3" json:"code,omitempty"`
+	Msg           string                 `protobuf:"bytes,2,opt,name=msg,proto3" json:"msg,omitempty"`
+	Data          *ReplyListData         `protobuf:"bytes,3,opt,name=data,proto3" json:"data,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
 func (x *ReplyListResponse) Reset() {
 	*x = ReplyListResponse{}
-	mi := &file_reply_proto_msgTypes[8]
+	mi := &file_reply_proto_msgTypes[10]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -548,7 +700,7 @@ func (x *ReplyListResponse) String() string {
 func (*ReplyListResponse) ProtoMessage() {}
 
 func (x *ReplyListResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_reply_proto_msgTypes[8]
+	mi := &file_reply_proto_msgTypes[10]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -561,41 +713,41 @@ func (x *ReplyListResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ReplyListResponse.ProtoReflect.Descriptor instead.
 func (*ReplyListResponse) Descriptor() ([]byte, []int) {
-	return file_reply_proto_rawDescGZIP(), []int{8}
+	return file_reply_proto_rawDescGZIP(), []int{10}
 }
 
-func (x *ReplyListResponse) GetItems() []*ReplyItem {
+func (x *ReplyListResponse) GetCode() int64 {
 	if x != nil {
-		return x.Items
-	}
-	return nil
-}
-
-func (x *ReplyListResponse) GetCursor() int64 {
-	if x != nil {
-		return x.Cursor
+		return x.Code
 	}
 	return 0
 }
 
-func (x *ReplyListResponse) GetIsEnd() bool {
+func (x *ReplyListResponse) GetMsg() string {
 	if x != nil {
-		return x.IsEnd
+		return x.Msg
 	}
-	return false
+	return ""
+}
+
+func (x *ReplyListResponse) GetData() *ReplyListData {
+	if x != nil {
+		return x.Data
+	}
+	return nil
 }
 
 type ReplyCountRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	BizId         string                 `protobuf:"bytes,1,opt,name=bizId,proto3" json:"bizId,omitempty"`        // 业务ID
-	TargetId      int64                  `protobuf:"varint,2,opt,name=targetId,proto3" json:"targetId,omitempty"` // 评论目标id
+	BizId         string                 `protobuf:"bytes,1,opt,name=bizId,proto3" json:"bizId,omitempty"`
+	TargetId      int64                  `protobuf:"varint,2,opt,name=targetId,proto3" json:"targetId,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
 func (x *ReplyCountRequest) Reset() {
 	*x = ReplyCountRequest{}
-	mi := &file_reply_proto_msgTypes[9]
+	mi := &file_reply_proto_msgTypes[11]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -607,7 +759,7 @@ func (x *ReplyCountRequest) String() string {
 func (*ReplyCountRequest) ProtoMessage() {}
 
 func (x *ReplyCountRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_reply_proto_msgTypes[9]
+	mi := &file_reply_proto_msgTypes[11]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -620,7 +772,7 @@ func (x *ReplyCountRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ReplyCountRequest.ProtoReflect.Descriptor instead.
 func (*ReplyCountRequest) Descriptor() ([]byte, []int) {
-	return file_reply_proto_rawDescGZIP(), []int{9}
+	return file_reply_proto_rawDescGZIP(), []int{11}
 }
 
 func (x *ReplyCountRequest) GetBizId() string {
@@ -637,17 +789,70 @@ func (x *ReplyCountRequest) GetTargetId() int64 {
 	return 0
 }
 
+type ReplyCountData struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	ReplyNum      int64                  `protobuf:"varint,1,opt,name=replyNum,proto3" json:"replyNum,omitempty"`
+	ReplyRootNum  int64                  `protobuf:"varint,2,opt,name=replyRootNum,proto3" json:"replyRootNum,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ReplyCountData) Reset() {
+	*x = ReplyCountData{}
+	mi := &file_reply_proto_msgTypes[12]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ReplyCountData) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ReplyCountData) ProtoMessage() {}
+
+func (x *ReplyCountData) ProtoReflect() protoreflect.Message {
+	mi := &file_reply_proto_msgTypes[12]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ReplyCountData.ProtoReflect.Descriptor instead.
+func (*ReplyCountData) Descriptor() ([]byte, []int) {
+	return file_reply_proto_rawDescGZIP(), []int{12}
+}
+
+func (x *ReplyCountData) GetReplyNum() int64 {
+	if x != nil {
+		return x.ReplyNum
+	}
+	return 0
+}
+
+func (x *ReplyCountData) GetReplyRootNum() int64 {
+	if x != nil {
+		return x.ReplyRootNum
+	}
+	return 0
+}
+
 type ReplyCountResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	ReplyNum      int64                  `protobuf:"varint,1,opt,name=replyNum,proto3" json:"replyNum,omitempty"`         // 评论总数
-	ReplyRootNum  int64                  `protobuf:"varint,2,opt,name=replyRootNum,proto3" json:"replyRootNum,omitempty"` // 根评论总数
+	Code          int64                  `protobuf:"varint,1,opt,name=code,proto3" json:"code,omitempty"`
+	Msg           string                 `protobuf:"bytes,2,opt,name=msg,proto3" json:"msg,omitempty"`
+	Data          *ReplyCountData        `protobuf:"bytes,3,opt,name=data,proto3" json:"data,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
 func (x *ReplyCountResponse) Reset() {
 	*x = ReplyCountResponse{}
-	mi := &file_reply_proto_msgTypes[10]
+	mi := &file_reply_proto_msgTypes[13]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -659,7 +864,7 @@ func (x *ReplyCountResponse) String() string {
 func (*ReplyCountResponse) ProtoMessage() {}
 
 func (x *ReplyCountResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_reply_proto_msgTypes[10]
+	mi := &file_reply_proto_msgTypes[13]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -672,35 +877,42 @@ func (x *ReplyCountResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ReplyCountResponse.ProtoReflect.Descriptor instead.
 func (*ReplyCountResponse) Descriptor() ([]byte, []int) {
-	return file_reply_proto_rawDescGZIP(), []int{10}
+	return file_reply_proto_rawDescGZIP(), []int{13}
 }
 
-func (x *ReplyCountResponse) GetReplyNum() int64 {
+func (x *ReplyCountResponse) GetCode() int64 {
 	if x != nil {
-		return x.ReplyNum
+		return x.Code
 	}
 	return 0
 }
 
-func (x *ReplyCountResponse) GetReplyRootNum() int64 {
+func (x *ReplyCountResponse) GetMsg() string {
 	if x != nil {
-		return x.ReplyRootNum
+		return x.Msg
 	}
-	return 0
+	return ""
+}
+
+func (x *ReplyCountResponse) GetData() *ReplyCountData {
+	if x != nil {
+		return x.Data
+	}
+	return nil
 }
 
 type AdminReplyListRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Keyword       string                 `protobuf:"bytes,1,opt,name=keyword,proto3" json:"keyword,omitempty"`    // 搜索关键词
-	Cursor        int64                  `protobuf:"varint,2,opt,name=cursor,proto3" json:"cursor,omitempty"`     // 游标
-	PageSize      int64                  `protobuf:"varint,3,opt,name=pageSize,proto3" json:"pageSize,omitempty"` // 页大小
+	Keyword       string                 `protobuf:"bytes,1,opt,name=keyword,proto3" json:"keyword,omitempty"`
+	Cursor        int64                  `protobuf:"varint,2,opt,name=cursor,proto3" json:"cursor,omitempty"`
+	PageSize      int64                  `protobuf:"varint,3,opt,name=pageSize,proto3" json:"pageSize,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
 func (x *AdminReplyListRequest) Reset() {
 	*x = AdminReplyListRequest{}
-	mi := &file_reply_proto_msgTypes[11]
+	mi := &file_reply_proto_msgTypes[14]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -712,7 +924,7 @@ func (x *AdminReplyListRequest) String() string {
 func (*AdminReplyListRequest) ProtoMessage() {}
 
 func (x *AdminReplyListRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_reply_proto_msgTypes[11]
+	mi := &file_reply_proto_msgTypes[14]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -725,7 +937,7 @@ func (x *AdminReplyListRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AdminReplyListRequest.ProtoReflect.Descriptor instead.
 func (*AdminReplyListRequest) Descriptor() ([]byte, []int) {
-	return file_reply_proto_rawDescGZIP(), []int{11}
+	return file_reply_proto_rawDescGZIP(), []int{14}
 }
 
 func (x *AdminReplyListRequest) GetKeyword() string {
@@ -751,16 +963,16 @@ func (x *AdminReplyListRequest) GetPageSize() int64 {
 
 type AdminReplyListResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Items         []*ReplyItem           `protobuf:"bytes,1,rep,name=items,proto3" json:"items,omitempty"`
-	Cursor        int64                  `protobuf:"varint,2,opt,name=cursor,proto3" json:"cursor,omitempty"`
-	IsEnd         bool                   `protobuf:"varint,3,opt,name=isEnd,proto3" json:"isEnd,omitempty"`
+	Code          int64                  `protobuf:"varint,1,opt,name=code,proto3" json:"code,omitempty"`
+	Msg           string                 `protobuf:"bytes,2,opt,name=msg,proto3" json:"msg,omitempty"`
+	Data          *ReplyListData         `protobuf:"bytes,3,opt,name=data,proto3" json:"data,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
 func (x *AdminReplyListResponse) Reset() {
 	*x = AdminReplyListResponse{}
-	mi := &file_reply_proto_msgTypes[12]
+	mi := &file_reply_proto_msgTypes[15]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -772,7 +984,7 @@ func (x *AdminReplyListResponse) String() string {
 func (*AdminReplyListResponse) ProtoMessage() {}
 
 func (x *AdminReplyListResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_reply_proto_msgTypes[12]
+	mi := &file_reply_proto_msgTypes[15]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -785,59 +997,57 @@ func (x *AdminReplyListResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AdminReplyListResponse.ProtoReflect.Descriptor instead.
 func (*AdminReplyListResponse) Descriptor() ([]byte, []int) {
-	return file_reply_proto_rawDescGZIP(), []int{12}
+	return file_reply_proto_rawDescGZIP(), []int{15}
 }
 
-func (x *AdminReplyListResponse) GetItems() []*ReplyItem {
+func (x *AdminReplyListResponse) GetCode() int64 {
 	if x != nil {
-		return x.Items
-	}
-	return nil
-}
-
-func (x *AdminReplyListResponse) GetCursor() int64 {
-	if x != nil {
-		return x.Cursor
+		return x.Code
 	}
 	return 0
 }
 
-func (x *AdminReplyListResponse) GetIsEnd() bool {
+func (x *AdminReplyListResponse) GetMsg() string {
 	if x != nil {
-		return x.IsEnd
+		return x.Msg
 	}
-	return false
+	return ""
+}
+
+func (x *AdminReplyListResponse) GetData() *ReplyListData {
+	if x != nil {
+		return x.Data
+	}
+	return nil
 }
 
 var File_reply_proto protoreflect.FileDescriptor
 
 const file_reply_proto_rawDesc = "" +
 	"\n" +
-	"\vreply.proto\x12\aservice\"\xc4\x01\n" +
+	"\vreply.proto\x12\x06social\"\xc4\x01\n" +
 	"\x12CreateReplyRequest\x12\x14\n" +
 	"\x05bizId\x18\x01 \x01(\tR\x05bizId\x12\x1a\n" +
 	"\btargetId\x18\x02 \x01(\x03R\btargetId\x12 \n" +
 	"\vreplyUserId\x18\x03 \x01(\x03R\vreplyUserId\x12$\n" +
 	"\rbeReplyUserId\x18\x04 \x01(\x03R\rbeReplyUserId\x12\x1a\n" +
 	"\bparentId\x18\x05 \x01(\x03R\bparentId\x12\x18\n" +
-	"\acontent\x18\x06 \x01(\tR\acontent\"/\n" +
-	"\x13CreateReplyResponse\x12\x18\n" +
-	"\areplyId\x18\x01 \x01(\x03R\areplyId\"`\n" +
+	"\acontent\x18\x06 \x01(\tR\acontent\"+\n" +
+	"\x0fCreateReplyData\x12\x18\n" +
+	"\areplyId\x18\x01 \x01(\x03R\areplyId\"h\n" +
+	"\x13CreateReplyResponse\x12\x12\n" +
+	"\x04code\x18\x01 \x01(\x03R\x04code\x12\x10\n" +
+	"\x03msg\x18\x02 \x01(\tR\x03msg\x12+\n" +
+	"\x04data\x18\x03 \x01(\v2\x17.social.CreateReplyDataR\x04data\"`\n" +
 	"\x12DeleteReplyRequest\x12\x18\n" +
 	"\areplyId\x18\x01 \x01(\x03R\areplyId\x12\x16\n" +
 	"\x06userId\x18\x02 \x01(\x03R\x06userId\x12\x18\n" +
-	"\aisAdmin\x18\x03 \x01(\bR\aisAdmin\"\x15\n" +
-	"\x13DeleteReplyResponse\".\n" +
+	"\aisAdmin\x18\x03 \x01(\bR\aisAdmin\";\n" +
+	"\x13DeleteReplyResponse\x12\x12\n" +
+	"\x04code\x18\x01 \x01(\x03R\x04code\x12\x10\n" +
+	"\x03msg\x18\x02 \x01(\tR\x03msg\".\n" +
 	"\x12ReplyDetailRequest\x12\x18\n" +
-	"\areplyId\x18\x01 \x01(\x03R\areplyId\"?\n" +
-	"\x13ReplyDetailResponse\x12(\n" +
-	"\x05reply\x18\x01 \x01(\v2\x12.service.ReplyItemR\x05reply\"\x94\x01\n" +
-	"\x10ReplyListRequest\x12\x14\n" +
-	"\x05bizId\x18\x01 \x01(\tR\x05bizId\x12\x1a\n" +
-	"\btargetId\x18\x02 \x01(\x03R\btargetId\x12\x16\n" +
-	"\x06cursor\x18\x03 \x01(\x03R\x06cursor\x12\x1a\n" +
-	"\bpageSize\x18\x04 \x01(\x03R\bpageSize\x12\x1a\n" +
-	"\bsortType\x18\x05 \x01(\x05R\bsortType\"\xc3\x02\n" +
+	"\areplyId\x18\x01 \x01(\x03R\areplyId\"\xc2\x02\n" +
 	"\tReplyItem\x12\x18\n" +
 	"\areplyId\x18\x01 \x01(\x03R\areplyId\x12\x14\n" +
 	"\x05bizId\x18\x02 \x01(\tR\x05bizId\x12\x1a\n" +
@@ -849,37 +1059,55 @@ const file_reply_proto_rawDesc = "" +
 	"\alikeNum\x18\b \x01(\x03R\alikeNum\x12\x1e\n" +
 	"\n" +
 	"createTime\x18\t \x01(\x03R\n" +
-	"createTime\x122\n" +
+	"createTime\x121\n" +
 	"\n" +
 	"subReplies\x18\n" +
-	" \x03(\v2\x12.service.ReplyItemR\n" +
-	"subReplies\"k\n" +
-	"\x11ReplyListResponse\x12(\n" +
-	"\x05items\x18\x01 \x03(\v2\x12.service.ReplyItemR\x05items\x12\x16\n" +
+	" \x03(\v2\x11.social.ReplyItemR\n" +
+	"subReplies\"b\n" +
+	"\x13ReplyDetailResponse\x12\x12\n" +
+	"\x04code\x18\x01 \x01(\x03R\x04code\x12\x10\n" +
+	"\x03msg\x18\x02 \x01(\tR\x03msg\x12%\n" +
+	"\x04data\x18\x03 \x01(\v2\x11.social.ReplyItemR\x04data\"\x94\x01\n" +
+	"\x10ReplyListRequest\x12\x14\n" +
+	"\x05bizId\x18\x01 \x01(\tR\x05bizId\x12\x1a\n" +
+	"\btargetId\x18\x02 \x01(\x03R\btargetId\x12\x16\n" +
+	"\x06cursor\x18\x03 \x01(\x03R\x06cursor\x12\x1a\n" +
+	"\bpageSize\x18\x04 \x01(\x03R\bpageSize\x12\x1a\n" +
+	"\bsortType\x18\x05 \x01(\x05R\bsortType\"f\n" +
+	"\rReplyListData\x12'\n" +
+	"\x05items\x18\x01 \x03(\v2\x11.social.ReplyItemR\x05items\x12\x16\n" +
 	"\x06cursor\x18\x02 \x01(\x03R\x06cursor\x12\x14\n" +
-	"\x05isEnd\x18\x03 \x01(\bR\x05isEnd\"E\n" +
+	"\x05isEnd\x18\x03 \x01(\bR\x05isEnd\"d\n" +
+	"\x11ReplyListResponse\x12\x12\n" +
+	"\x04code\x18\x01 \x01(\x03R\x04code\x12\x10\n" +
+	"\x03msg\x18\x02 \x01(\tR\x03msg\x12)\n" +
+	"\x04data\x18\x03 \x01(\v2\x15.social.ReplyListDataR\x04data\"E\n" +
 	"\x11ReplyCountRequest\x12\x14\n" +
 	"\x05bizId\x18\x01 \x01(\tR\x05bizId\x12\x1a\n" +
-	"\btargetId\x18\x02 \x01(\x03R\btargetId\"T\n" +
-	"\x12ReplyCountResponse\x12\x1a\n" +
+	"\btargetId\x18\x02 \x01(\x03R\btargetId\"P\n" +
+	"\x0eReplyCountData\x12\x1a\n" +
 	"\breplyNum\x18\x01 \x01(\x03R\breplyNum\x12\"\n" +
-	"\freplyRootNum\x18\x02 \x01(\x03R\freplyRootNum\"e\n" +
+	"\freplyRootNum\x18\x02 \x01(\x03R\freplyRootNum\"f\n" +
+	"\x12ReplyCountResponse\x12\x12\n" +
+	"\x04code\x18\x01 \x01(\x03R\x04code\x12\x10\n" +
+	"\x03msg\x18\x02 \x01(\tR\x03msg\x12*\n" +
+	"\x04data\x18\x03 \x01(\v2\x16.social.ReplyCountDataR\x04data\"e\n" +
 	"\x15AdminReplyListRequest\x12\x18\n" +
 	"\akeyword\x18\x01 \x01(\tR\akeyword\x12\x16\n" +
 	"\x06cursor\x18\x02 \x01(\x03R\x06cursor\x12\x1a\n" +
-	"\bpageSize\x18\x03 \x01(\x03R\bpageSize\"p\n" +
-	"\x16AdminReplyListResponse\x12(\n" +
-	"\x05items\x18\x01 \x03(\v2\x12.service.ReplyItemR\x05items\x12\x16\n" +
-	"\x06cursor\x18\x02 \x01(\x03R\x06cursor\x12\x14\n" +
-	"\x05isEnd\x18\x03 \x01(\bR\x05isEnd2\xc3\x03\n" +
-	"\x05Reply\x12H\n" +
-	"\vCreateReply\x12\x1b.service.CreateReplyRequest\x1a\x1c.service.CreateReplyResponse\x12H\n" +
-	"\vDeleteReply\x12\x1b.service.DeleteReplyRequest\x1a\x1c.service.DeleteReplyResponse\x12H\n" +
-	"\vReplyDetail\x12\x1b.service.ReplyDetailRequest\x1a\x1c.service.ReplyDetailResponse\x12B\n" +
-	"\tReplyList\x12\x19.service.ReplyListRequest\x1a\x1a.service.ReplyListResponse\x12E\n" +
+	"\bpageSize\x18\x03 \x01(\x03R\bpageSize\"i\n" +
+	"\x16AdminReplyListResponse\x12\x12\n" +
+	"\x04code\x18\x01 \x01(\x03R\x04code\x12\x10\n" +
+	"\x03msg\x18\x02 \x01(\tR\x03msg\x12)\n" +
+	"\x04data\x18\x03 \x01(\v2\x15.social.ReplyListDataR\x04data2\xb7\x03\n" +
+	"\x05Reply\x12F\n" +
+	"\vCreateReply\x12\x1a.social.CreateReplyRequest\x1a\x1b.social.CreateReplyResponse\x12F\n" +
+	"\vDeleteReply\x12\x1a.social.DeleteReplyRequest\x1a\x1b.social.DeleteReplyResponse\x12F\n" +
+	"\vReplyDetail\x12\x1a.social.ReplyDetailRequest\x1a\x1b.social.ReplyDetailResponse\x12@\n" +
+	"\tReplyList\x12\x18.social.ReplyListRequest\x1a\x19.social.ReplyListResponse\x12C\n" +
 	"\n" +
-	"ReplyCount\x12\x1a.service.ReplyCountRequest\x1a\x1b.service.ReplyCountResponse\x12Q\n" +
-	"\x0eAdminReplyList\x12\x1e.service.AdminReplyListRequest\x1a\x1f.service.AdminReplyListResponseB\x06Z\x04./pbb\x06proto3"
+	"ReplyCount\x12\x19.social.ReplyCountRequest\x1a\x1a.social.ReplyCountResponse\x12O\n" +
+	"\x0eAdminReplyList\x12\x1d.social.AdminReplyListRequest\x1a\x1e.social.AdminReplyListResponseB\"Z api-thinktalk/client/reply/pb;pbb\x06proto3"
 
 var (
 	file_reply_proto_rawDescOnce sync.Once
@@ -893,44 +1121,50 @@ func file_reply_proto_rawDescGZIP() []byte {
 	return file_reply_proto_rawDescData
 }
 
-var file_reply_proto_msgTypes = make([]protoimpl.MessageInfo, 13)
+var file_reply_proto_msgTypes = make([]protoimpl.MessageInfo, 16)
 var file_reply_proto_goTypes = []any{
-	(*CreateReplyRequest)(nil),     // 0: service.CreateReplyRequest
-	(*CreateReplyResponse)(nil),    // 1: service.CreateReplyResponse
-	(*DeleteReplyRequest)(nil),     // 2: service.DeleteReplyRequest
-	(*DeleteReplyResponse)(nil),    // 3: service.DeleteReplyResponse
-	(*ReplyDetailRequest)(nil),     // 4: service.ReplyDetailRequest
-	(*ReplyDetailResponse)(nil),    // 5: service.ReplyDetailResponse
-	(*ReplyListRequest)(nil),       // 6: service.ReplyListRequest
-	(*ReplyItem)(nil),              // 7: service.ReplyItem
-	(*ReplyListResponse)(nil),      // 8: service.ReplyListResponse
-	(*ReplyCountRequest)(nil),      // 9: service.ReplyCountRequest
-	(*ReplyCountResponse)(nil),     // 10: service.ReplyCountResponse
-	(*AdminReplyListRequest)(nil),  // 11: service.AdminReplyListRequest
-	(*AdminReplyListResponse)(nil), // 12: service.AdminReplyListResponse
+	(*CreateReplyRequest)(nil),     // 0: social.CreateReplyRequest
+	(*CreateReplyData)(nil),        // 1: social.CreateReplyData
+	(*CreateReplyResponse)(nil),    // 2: social.CreateReplyResponse
+	(*DeleteReplyRequest)(nil),     // 3: social.DeleteReplyRequest
+	(*DeleteReplyResponse)(nil),    // 4: social.DeleteReplyResponse
+	(*ReplyDetailRequest)(nil),     // 5: social.ReplyDetailRequest
+	(*ReplyItem)(nil),              // 6: social.ReplyItem
+	(*ReplyDetailResponse)(nil),    // 7: social.ReplyDetailResponse
+	(*ReplyListRequest)(nil),       // 8: social.ReplyListRequest
+	(*ReplyListData)(nil),          // 9: social.ReplyListData
+	(*ReplyListResponse)(nil),      // 10: social.ReplyListResponse
+	(*ReplyCountRequest)(nil),      // 11: social.ReplyCountRequest
+	(*ReplyCountData)(nil),         // 12: social.ReplyCountData
+	(*ReplyCountResponse)(nil),     // 13: social.ReplyCountResponse
+	(*AdminReplyListRequest)(nil),  // 14: social.AdminReplyListRequest
+	(*AdminReplyListResponse)(nil), // 15: social.AdminReplyListResponse
 }
 var file_reply_proto_depIdxs = []int32{
-	7,  // 0: service.ReplyDetailResponse.reply:type_name -> service.ReplyItem
-	7,  // 1: service.ReplyItem.subReplies:type_name -> service.ReplyItem
-	7,  // 2: service.ReplyListResponse.items:type_name -> service.ReplyItem
-	7,  // 3: service.AdminReplyListResponse.items:type_name -> service.ReplyItem
-	0,  // 4: service.Reply.CreateReply:input_type -> service.CreateReplyRequest
-	2,  // 5: service.Reply.DeleteReply:input_type -> service.DeleteReplyRequest
-	4,  // 6: service.Reply.ReplyDetail:input_type -> service.ReplyDetailRequest
-	6,  // 7: service.Reply.ReplyList:input_type -> service.ReplyListRequest
-	9,  // 8: service.Reply.ReplyCount:input_type -> service.ReplyCountRequest
-	11, // 9: service.Reply.AdminReplyList:input_type -> service.AdminReplyListRequest
-	1,  // 10: service.Reply.CreateReply:output_type -> service.CreateReplyResponse
-	3,  // 11: service.Reply.DeleteReply:output_type -> service.DeleteReplyResponse
-	5,  // 12: service.Reply.ReplyDetail:output_type -> service.ReplyDetailResponse
-	8,  // 13: service.Reply.ReplyList:output_type -> service.ReplyListResponse
-	10, // 14: service.Reply.ReplyCount:output_type -> service.ReplyCountResponse
-	12, // 15: service.Reply.AdminReplyList:output_type -> service.AdminReplyListResponse
-	10, // [10:16] is the sub-list for method output_type
-	4,  // [4:10] is the sub-list for method input_type
-	4,  // [4:4] is the sub-list for extension type_name
-	4,  // [4:4] is the sub-list for extension extendee
-	0,  // [0:4] is the sub-list for field type_name
+	1,  // 0: social.CreateReplyResponse.data:type_name -> social.CreateReplyData
+	6,  // 1: social.ReplyItem.subReplies:type_name -> social.ReplyItem
+	6,  // 2: social.ReplyDetailResponse.data:type_name -> social.ReplyItem
+	6,  // 3: social.ReplyListData.items:type_name -> social.ReplyItem
+	9,  // 4: social.ReplyListResponse.data:type_name -> social.ReplyListData
+	12, // 5: social.ReplyCountResponse.data:type_name -> social.ReplyCountData
+	9,  // 6: social.AdminReplyListResponse.data:type_name -> social.ReplyListData
+	0,  // 7: social.Reply.CreateReply:input_type -> social.CreateReplyRequest
+	3,  // 8: social.Reply.DeleteReply:input_type -> social.DeleteReplyRequest
+	5,  // 9: social.Reply.ReplyDetail:input_type -> social.ReplyDetailRequest
+	8,  // 10: social.Reply.ReplyList:input_type -> social.ReplyListRequest
+	11, // 11: social.Reply.ReplyCount:input_type -> social.ReplyCountRequest
+	14, // 12: social.Reply.AdminReplyList:input_type -> social.AdminReplyListRequest
+	2,  // 13: social.Reply.CreateReply:output_type -> social.CreateReplyResponse
+	4,  // 14: social.Reply.DeleteReply:output_type -> social.DeleteReplyResponse
+	7,  // 15: social.Reply.ReplyDetail:output_type -> social.ReplyDetailResponse
+	10, // 16: social.Reply.ReplyList:output_type -> social.ReplyListResponse
+	13, // 17: social.Reply.ReplyCount:output_type -> social.ReplyCountResponse
+	15, // 18: social.Reply.AdminReplyList:output_type -> social.AdminReplyListResponse
+	13, // [13:19] is the sub-list for method output_type
+	7,  // [7:13] is the sub-list for method input_type
+	7,  // [7:7] is the sub-list for extension type_name
+	7,  // [7:7] is the sub-list for extension extendee
+	0,  // [0:7] is the sub-list for field type_name
 }
 
 func init() { file_reply_proto_init() }
@@ -944,7 +1178,7 @@ func file_reply_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_reply_proto_rawDesc), len(file_reply_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   13,
+			NumMessages:   16,
 			NumExtensions: 0,
 			NumServices:   1,
 		},
