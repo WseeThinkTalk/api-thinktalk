@@ -8,23 +8,27 @@ import (
 	"api-thinktalk/internal/config"
 	"api-thinktalk/internal/handler"
 	"api-thinktalk/internal/svc"
-	"api-thinktalk/pkg/env"
+	"api-thinktalk/pkg/lib/etcdx"
 	"api-thinktalk/pkg/lib/zapx"
 
-	"github.com/zeromicro/go-zero/core/conf"
 	"github.com/zeromicro/go-zero/core/logx"
 	"github.com/zeromicro/go-zero/rest"
 )
 
-var configFile = flag.String("f", "etc/api.yaml", "the config file")
+func runRemoteConfig() *config.Config {
+	var c config.Config
+	etcdx.MustLoadRemoteConfig("/thinktalk/config/api", &c)
+	return &c
+}
 
 func main() {
 	flag.Parse()
 
-	env.LoadEnv()
-
-	var c config.Config
-	conf.MustLoad(*configFile, &c, conf.UseEnv())
+	// 从 Etcd 配置中心拉取远程配置 (Fail-Fast)
+	c := runRemoteConfig()
+	if c == nil {
+		return
+	}
 
 	// init logger
 	writer, err := zapx.NewZapWriter()
@@ -40,7 +44,7 @@ func main() {
 	}, func(http.ResponseWriter) {}, "*"))
 	defer server.Stop()
 
-	ctx := svc.NewServiceContext(c)
+	ctx := svc.NewServiceContext(*c)
 	handler.RegisterHandlers(server, ctx)
 
 	fmt.Printf("Starting unified thinktalk-api gateway at %s:%d...\n", c.Host, c.Port)
