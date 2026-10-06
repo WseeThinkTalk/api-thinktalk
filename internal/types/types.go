@@ -959,6 +959,60 @@ type VerificationRequest struct {
 type VerificationResponse struct {
 }
 
+type VideoPartItem struct {
+	PartNumber int    `json:"partNumber"`
+	ETag       string `json:"eTag"`
+}
+
+type VideoStatusRequest struct {
+	VideoId int64 `form:"videoId"`
+}
+
+type VideoStatusResponse struct {
+	VideoId  int64  `json:"videoId"`
+	Status   string `json:"status"`
+	VideoUrl string `json:"videoUrl"`
+	CoverUrl string `json:"coverUrl"`
+	Duration int64  `json:"duration"`
+	Width    int    `json:"width"`
+	Height   int    `json:"height"`
+	ErrMsg   string `json:"errMsg,optional"`
+}
+
+type VideoUploadCompleteRequest struct {
+	VideoId   int64           `json:"videoId"`
+	UploadId  string          `json:"uploadId"`
+	ObjectKey string          `json:"objectKey"`
+	Parts     []VideoPartItem `json:"parts"`
+	FileHash  string          `json:"fileHash,optional"`
+}
+
+type VideoUploadCompleteResponse struct {
+	VideoId  int64  `json:"videoId"`
+	Status   string `json:"status"`
+	VideoUrl string `json:"videoUrl"`
+}
+
+type VideoUploadInitRequest struct {
+	FileName string `json:"fileName"`
+	FileSize int64  `json:"fileSize"`
+	FileType string `json:"fileType"`
+	PartSize int64  `json:"partSize,optional"`
+	FileHash string `json:"fileHash,optional"`
+}
+
+type VideoUploadInitResponse struct {
+	VideoId       int64    `json:"videoId"`
+	UploadId      string   `json:"uploadId"`
+	ObjectKey     string   `json:"objectKey"`
+	PartUrls      []string `json:"partUrls"`
+	PartSize      int64    `json:"partSize"`
+	PartCount     int      `json:"partCount"`
+	ExpireSec     int64    `json:"expireSec"`
+	IsQuickDone   bool     `json:"isQuickDone,optional"`
+	UploadedParts []int    `json:"uploadedParts,optional"`
+}
+
 type WsInMessage struct {
 	Type        string `json:"type"`
 	ReceiverId  int64  `json:"receiver_id,omitempty"`

@@ -1,0 +1,75 @@
+syntax = "v1"
+
+info (
+	title:   "Video Service"
+	desc:    "视频大文件分片直传、秒传与就绪状态查询契约"
+	author:  "ThinkTalk Team"
+	version: "v1"
+)
+
+type (
+	VideoUploadInitRequest {
+		FileName string `json:"fileName"`
+		FileSize int64  `json:"fileSize"`
+		FileType string `json:"fileType"`
+		PartSize int64  `json:"partSize,optional"`
+		FileHash string `json:"fileHash,optional"`
+	}
+	VideoUploadInitResponse {
+		VideoId       int64    `json:"videoId"`
+		UploadId      string   `json:"uploadId"`
+		ObjectKey     string   `json:"objectKey"`
+		PartUrls      []string `json:"partUrls"`
+		PartSize      int64    `json:"partSize"`
+		PartCount     int      `json:"partCount"`
+		ExpireSec     int64    `json:"expireSec"`
+		IsQuickDone   bool     `json:"isQuickDone,optional"`
+		UploadedParts []int    `json:"uploadedParts,optional"`
+	}
+	VideoPartItem {
+		PartNumber int    `json:"partNumber"`
+		ETag       string `json:"eTag"`
+	}
+	VideoUploadCompleteRequest {
+		VideoId   int64           `json:"videoId"`
+		UploadId  string          `json:"uploadId"`
+		ObjectKey string          `json:"objectKey"`
+		Parts     []VideoPartItem `json:"parts"`
+		FileHash  string          `json:"fileHash,optional"`
+	}
+	VideoUploadCompleteResponse {
+		VideoId  int64  `json:"videoId"`
+		Status   string `json:"status"`
+		VideoUrl string `json:"videoUrl"`
+	}
+	VideoStatusRequest {
+		VideoId int64 `form:"videoId"`
+	}
+	VideoStatusResponse {
+		VideoId  int64  `json:"videoId"`
+		Status   string `json:"status"`
+		VideoUrl string `json:"videoUrl"`
+		CoverUrl string `json:"coverUrl"`
+		Duration int64  `json:"duration"`
+		Width    int    `json:"width"`
+		Height   int    `json:"height"`
+		ErrMsg   string `json:"errMsg,optional"`
+	}
+)
+
+@server (
+	jwt:        Auth
+	middleware: RateLimit
+	prefix:     /v1/video
+	group:      video
+)
+service api {
+	@handler UploadInit
+	post /upload/init (VideoUploadInitRequest) returns (VideoUploadInitResponse)
+
+	@handler UploadComplete
+	post /upload/complete (VideoUploadCompleteRequest) returns (VideoUploadCompleteResponse)
+
+	@handler VideoStatus
+	get /status (VideoStatusRequest) returns (VideoStatusResponse)
+}

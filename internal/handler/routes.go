@@ -14,6 +14,7 @@ import (
 	social "api-thinktalk/internal/handler/social"
 	tag "api-thinktalk/internal/handler/tag"
 	user "api-thinktalk/internal/handler/user"
+	video "api-thinktalk/internal/handler/video"
 	"api-thinktalk/internal/svc"
 
 	"github.com/zeromicro/go-zero/rest"
@@ -580,5 +581,30 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 		},
 		rest.WithJwt(serverCtx.Config.Auth.AccessSecret),
 		rest.WithPrefix("/v1/admin/user"),
+	)
+
+	server.AddRoutes(
+		rest.WithMiddlewares(
+			[]rest.Middleware{serverCtx.RateLimit},
+			[]rest.Route{
+				{
+					Method:  http.MethodGet,
+					Path:    "/status",
+					Handler: video.VideoStatusHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodPost,
+					Path:    "/upload/complete",
+					Handler: video.UploadCompleteHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodPost,
+					Path:    "/upload/init",
+					Handler: video.UploadInitHandler(serverCtx),
+				},
+			}...,
+		),
+		rest.WithJwt(serverCtx.Config.Auth.AccessSecret),
+		rest.WithPrefix("/v1/video"),
 	)
 }
