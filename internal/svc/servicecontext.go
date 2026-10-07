@@ -69,12 +69,7 @@ func formatPEMKey(raw string) string {
 
 func NewServiceContext(c config.Config) *ServiceContext {
 	rdb, _ := redis.NewRedis(c.Redis)
-	bizRedis := redis.MustNewRedis(redis.RedisConf{
-		Host:        c.BizRedis.Host,
-		Pass:        c.BizRedis.Pass,
-		Type:        c.BizRedis.Type,
-		PingTimeout: 10000000000,
-	})
+	bizRedis := redis.MustNewRedis(c.BizRedis)
 
 	// 4 Consolidated RPC Clients
 	userClient := zrpc.MustNewClient(c.UserRpc, zrpc.WithUnaryClientInterceptor(interceptors.ClientErrorInterceptor()))
