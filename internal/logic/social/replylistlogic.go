@@ -30,7 +30,7 @@ func (l *ReplyListLogic) ReplyList(req *types.ReplyListRequest) (resp *types.Rep
 		TargetId: req.ObjId,
 		Cursor:   req.Cursor,
 		PageSize: req.PageSize,
-		SortType: 0,
+		SortType: req.SortType,
 	})
 	if err != nil {
 		l.Errorf("[ReplyList] rpc err: %v", err)

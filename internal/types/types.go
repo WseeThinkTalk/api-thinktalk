@@ -677,8 +677,9 @@ type ReplyItem struct {
 type ReplyListRequest struct {
 	BizId    string `form:"biz_id"`
 	ObjId    int64  `form:"obj_id"`
-	Cursor   int64  `form:"cursor"`
-	PageSize int64  `form:"page_size"`
+	Cursor   int64  `form:"cursor,optional"`
+	PageSize int64  `form:"page_size,optional"`
+	SortType int32  `form:"sort_type,optional"`
 }
 
 type ReplyListResponse struct {
