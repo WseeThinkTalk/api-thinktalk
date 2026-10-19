@@ -105,14 +105,6 @@ func (l *UploadCoverLogic) UploadCover(req *http.Request) (resp *types.UploadCov
 		logx.Errorf("put object to minio failed, err: %v", err)
 		return nil, code.PutBucketErr
 	}
-	resp.CoverUrl = genFileURL(
-		l.svcCtx.Config.MinIO.Endpoint,
-		l.svcCtx.Config.MinIO.BucketName,
-		objectKey)
+	resp.CoverUrl = fmt.Sprintf("/static/%s/%s", l.svcCtx.Config.MinIO.BucketName, objectKey)
 	return resp, nil
-}
-
-func genFileURL(endpoint, bucketName, objectKey string) string {
-	// 生成文件访问路径
-	return fmt.Sprintf("/static/%s/%s", bucketName, objectKey)
 }
