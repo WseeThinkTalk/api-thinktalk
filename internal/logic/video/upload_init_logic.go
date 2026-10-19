@@ -31,10 +31,20 @@ func IsValidVideoMimeType(mime string) bool {
 	return ok
 }
 
-// CalculatePartCount 计算分片数量
-func CalculatePartCount(fileSize, partSize int64) int {
-	if partSize <= 0 {
-		partSize = 10 * 1024 * 1024 // 默认 10MB
+const (
+	MaxVideoSize = 2 * 1024 * 1024 * 1024 // 单视频最大 2GB
+	MinPartSize  = 5 * 1024 * 1024        // S3 最小分片 5MB
+	MaxPartCount = 10000                  // S3 最大分片数
+)
+
+// CalculatePartCount 计算分片数量与单片大小
+func CalculatePartCount(fileSize, partSize int64) (int, int64) {
+	if partSize < MinPartSize {
+		partSize = 10 * 1024 * 1024
+	}
+	// 分片超限时自动翻倍分片大小
+	for fileSize/partSize > MaxPartCount {
+		partSize *= 2
 	}
 	parts := fileSize / partSize
 	if fileSize%partSize != 0 {
@@ -43,7 +53,7 @@ func CalculatePartCount(fileSize, partSize int64) int {
 	if parts == 0 {
 		parts = 1
 	}
-	return int(parts)
+	return int(parts), partSize
 }
 
 // UploadInitLogic 视频分片初始化逻辑
@@ -62,19 +72,21 @@ func NewUploadInitLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Upload
 	}
 }
 
-// UploadInit 初始化分片上传、支持秒传判定与断点续传探测并下发直传预签名URL
+// UploadInit 初始化分片上传，支持秒传与断点续传
 func (l *UploadInitLogic) UploadInit(req *types.VideoUploadInitRequest) (resp *types.VideoUploadInitResponse, err error) {
 	resp = new(types.VideoUploadInitResponse)
 
+	if req.FileSize <= 0 {
+		return nil, fmt.Errorf("视频文件大小非法")
+	}
+	if req.FileSize > MaxVideoSize {
+		return nil, fmt.Errorf("视频文件大小超过限制，单文件最大支持 2GB")
+	}
 	if !IsValidVideoMimeType(req.FileType) {
 		return nil, fmt.Errorf("不支持的视频格式，仅支持 mp4/mov/webm")
 	}
 
-	partSize := req.PartSize
-	if partSize <= 0 {
-		partSize = 10 * 1024 * 1024 // 默认 10MB
-	}
-	partCount := CalculatePartCount(req.FileSize, partSize)
+	partCount, partSize := CalculatePartCount(req.FileSize, req.PartSize)
 	bucket := l.svcCtx.Config.MinIO.BucketName
 	expires := 2 * time.Hour
 
@@ -88,7 +100,7 @@ func (l *UploadInitLogic) UploadInit(req *types.VideoUploadInitRequest) (resp *t
 
 	core := minio.Core{Client: l.svcCtx.MinIO}
 
-	// 1. 秒传与断点续传探测（若客户端提供了文件全量 SHA-256 哈希）
+	// 探测秒传与断点续传
 	if req.FileHash != "" && l.svcCtx.BizRedis != nil {
 		hashKey := fmt.Sprintf("biz#video#hash:%s", req.FileHash)
 		hashVal, err := l.svcCtx.BizRedis.GetCtx(l.ctx, hashKey)
@@ -100,7 +112,7 @@ func (l *UploadInitLogic) UploadInit(req *types.VideoUploadInitRequest) (resp *t
 				ObjectKey string `json:"objectKey"`
 			}
 			if json.Unmarshal([]byte(hashVal), &cached) == nil {
-				// 1.1 命中秒传：全网已存在相同视频且已就绪，零流量瞬时完成！
+				// 命中秒传，直接返回已有视频
 				if cached.Status == "ready" {
 					resp.VideoId = cached.VideoID
 					resp.ObjectKey = cached.ObjectKey
@@ -112,7 +124,7 @@ func (l *UploadInitLogic) UploadInit(req *types.VideoUploadInitRequest) (resp *t
 					return resp, nil
 				}
 
-				// 1.2 断点续传探测：正在上传中，探测已成功上传的分片编号列表
+				// 正在上传中，查询已上传的分片编号
 				if cached.Status == "uploading" && cached.UploadID != "" && cached.ObjectKey != "" {
 					partsResult, err := core.ListObjectParts(l.ctx, bucket, cached.ObjectKey, cached.UploadID, 0, 1000)
 					if err == nil {
@@ -132,7 +144,7 @@ func (l *UploadInitLogic) UploadInit(req *types.VideoUploadInitRequest) (resp *t
 		}
 	}
 
-	// 2. 若未复用断点会话，则创建全新的 MinIO Multipart Upload 与 Snowflake 视频ID
+	// 未复用断点会话，创建新的分片上传任务
 	if !isResuming {
 		ext := allowedVideoMimes[req.FileType]
 		objectKey = fmt.Sprintf("video/raw/%s/%s%s", time.Now().Format("20060102"), uuid.New().String(), ext)
@@ -146,7 +158,7 @@ func (l *UploadInitLogic) UploadInit(req *types.VideoUploadInitRequest) (resp *t
 		uploadID = newUploadID
 		videoId = snowflake.GenerateID()
 
-		// 若携带了哈希，记录 uploading 状态供中断重试续传
+		// 记录上传状态，供断点续传查询
 		if req.FileHash != "" && l.svcCtx.BizRedis != nil {
 			hashKey := fmt.Sprintf("biz#video#hash:%s", req.FileHash)
 			metaJSON, _ := json.Marshal(map[string]interface{}{
@@ -159,7 +171,7 @@ func (l *UploadInitLogic) UploadInit(req *types.VideoUploadInitRequest) (resp *t
 		}
 	}
 
-	// 3. 批量签发每个分片的 Presigned PUT 直传 URL
+	// 批量签发分片预签名 URL
 	partUrls := make([]string, partCount)
 	for i := 1; i <= partCount; i++ {
 		queryParams := make(url.Values)
@@ -174,10 +186,16 @@ func (l *UploadInitLogic) UploadInit(req *types.VideoUploadInitRequest) (resp *t
 		partUrls[i-1] = partURL.String()
 	}
 
-	// 4. 将上传元数据写入 Redis 缓存状态表（TTL: 2小时）
+	// 写入上传状态，记录 userId 供后续鉴权
 	if l.svcCtx.BizRedis != nil {
+		var uid int64
+		if uidVal := l.ctx.Value("userId"); uidVal != nil {
+			if n, ok := uidVal.(json.Number); ok {
+				uid, _ = n.Int64()
+			}
+		}
 		redisKey := fmt.Sprintf("biz#video#status:%d", videoId)
-		videoData := fmt.Sprintf(`{"status":"uploading","objectKey":"%s","uploadId":"%s"}`, objectKey, uploadID)
+		videoData := fmt.Sprintf(`{"status":"uploading","objectKey":"%s","uploadId":"%s","userId":%d}`, objectKey, uploadID, uid)
 		_ = l.svcCtx.BizRedis.SetexCtx(l.ctx, redisKey, videoData, int(expires.Seconds()))
 	}
 
